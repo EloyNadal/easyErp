@@ -1,0 +1,157 @@
+package com.easyErp.project.model;
+
+import java.net.URL;
+import java.util.Locale;
+
+public class Producto {
+	
+	private Integer id;	
+	private Integer categoria_id;	
+	private String ean13;	
+	private String referencia;	
+	private String atributo;
+	private String atributo_valor;
+	private String nombre;
+	private String unidad_mesura;
+	private Double precio;
+	private Integer tasa_id;
+	private Double stock_minimo;
+	private Integer activo;
+	private String fabricante;
+	private URL imagen;
+	private Locale created_at;
+	private Locale updated_at;
+	
+	public Producto() {
+		
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getCategoria_id() {
+		return categoria_id;
+	}
+
+	public void setCategoria_id(Integer categoria_id) {
+		this.categoria_id = categoria_id;
+	}
+
+	public String getEan13() {
+		return ean13;
+	}
+
+	public void setEan13(String ean13) {
+		this.ean13 = ean13;
+	}
+
+	public String getReferencia() {
+		return referencia;
+	}
+
+	public void setReferencia(String referencia) {
+		this.referencia = referencia;
+	}
+
+	public String getAtributo() {
+		return atributo;
+	}
+
+	public void setAtributo(String atributo) {
+		this.atributo = atributo;
+	}
+
+	public String getAtributo_valor() {
+		return atributo_valor;
+	}
+
+	public void setAtributo_valor(String atributo_valor) {
+		this.atributo_valor = atributo_valor;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getUnidad_mesura() {
+		return unidad_mesura;
+	}
+
+	public void setUnidad_mesura(String unidad_mesura) {
+		this.unidad_mesura = unidad_mesura;
+	}
+
+	public Double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+
+	public Integer getTasa_id() {
+		return tasa_id;
+	}
+
+	public void setTasa_id(Integer tasa_id) {
+		this.tasa_id = tasa_id;
+	}
+
+	public Double getStock_minimo() {
+		return stock_minimo;
+	}
+
+	public void setStock_minimo(Double stock_minimo) {
+		this.stock_minimo = stock_minimo;
+	}
+
+	public Integer getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Integer activo) {
+		this.activo = activo;
+	}
+
+	public String getFabricante() {
+		return fabricante;
+	}
+
+	public void setFabricante(String fabricante) {
+		this.fabricante = fabricante;
+	}
+
+	public URL getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(URL imagen) {
+		this.imagen = imagen;
+	}
+
+	public Locale getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Locale created_at) {
+		this.created_at = created_at;
+	}
+
+	public Locale getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(Locale updated_at) {
+		this.updated_at = updated_at;
+	}
+	
+}
