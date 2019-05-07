@@ -31,7 +31,6 @@ public class PruebaController {
     	
     	
     	JsonParser parser = new JsonParser();
-        String hola;
     	Gson gson = new GsonBuilder().setPrettyPrinting().create();
     	Integer id = Integer.parseInt(txt_id.getText());
     	
