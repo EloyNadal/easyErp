@@ -5,10 +5,14 @@ public class Cliente extends Persona{
 	private Integer id;
 	private Integer grupo_cliente_id;
 	
-
-	public Cliente() {
+	protected Cliente() {
+		
 	}
-
+	
+	public Cliente(Integer id) {
+		this.grupo_cliente_id= id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

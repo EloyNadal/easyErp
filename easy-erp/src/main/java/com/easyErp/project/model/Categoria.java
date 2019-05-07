@@ -7,7 +7,7 @@ public class Categoria {
 	private String nombre;
 	private Integer categoria_id;
 	
-	public Categoria() {
+	protected Categoria() {
 		
 	}
 

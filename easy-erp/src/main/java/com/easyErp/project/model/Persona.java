@@ -18,7 +18,7 @@ abstract class Persona {
 	private Locale updated_at;
 	
 	
-	public Persona() {
+	protected Persona() {
 
 	}
 	

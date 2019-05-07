@@ -11,7 +11,7 @@ public class CompraLinea {
     private Double cantidad;
     private String unidad_mesura;
     
-	public CompraLinea() {
+	protected CompraLinea() {
 	}
 
 	public Integer getId() {

@@ -25,7 +25,7 @@ public class PruebaController {
     @FXML private Label title;
     
     private static String url = "http://localhost:8000/";
-    private static String token = "1 RkxEbHBJa1dNU2p2bDU0ZlRMcmRqRjdNYWZiWFhkRWRVRVJFNkl3NQ=="; 
+    private static String token = "1 ZnRaYnZjM2piblBUaThJSDlUUlI3eTdFMmpzWFNxcmhuQ2dnTFA4TQ=="; 
     
     @FXML void buscarFilm(MouseEvent event) {
     	
@@ -33,20 +33,18 @@ public class PruebaController {
     	JsonParser parser = new JsonParser();
     	Gson gson = new GsonBuilder().setPrettyPrinting().create();
     	Integer id = Integer.parseInt(txt_id.getText());
-    	
     	try {
     		
     		String jsonString = run(url + "cliente/"+id);
         	
     		
-			
         	JsonObject json = parser.parse(jsonString).getAsJsonObject();
         	Cliente cliente = gson.fromJson(json.get("data"), Cliente.class);
         	
         	
         	formatoJson.setText(gson.toJson(json.get("data")));
         	
-        	title.setText(cliente.getNombre());
+        	title.setText(cliente.getId().toString());
 			
 			
 		} catch (IOException e) {
