@@ -9,7 +9,6 @@ public class CompraLinea {
     private Double precio;
     private Integer tasa_id;
     private Double cantidad;
-    private String unidad_mesura;
     
 	protected CompraLinea() {
 	}
@@ -42,10 +41,6 @@ public class CompraLinea {
 		return cantidad;
 	}
 
-	public String getUnidad_mesura() {
-		return unidad_mesura;
-	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -74,8 +69,5 @@ public class CompraLinea {
 		this.cantidad = cantidad;
 	}
 
-	public void setUnidad_mesura(String unidad_mesura) {
-		this.unidad_mesura = unidad_mesura;
-	}
 	
 }
