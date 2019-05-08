@@ -18,7 +18,7 @@ public class Producto {
 	private Double stock_minimo;
 	private Integer activo;
 	private String fabricante;
-	private URL imagen;
+	private String imagen;
 	private Locale created_at;
 	private Locale updated_at;
 	
@@ -114,8 +114,8 @@ public class Producto {
 		this.stock_minimo = stock_minimo;
 	}
 
-	public Integer getActivo() {
-		return activo;
+	public Boolean isActivo() {
+		return activo == 1;
 	}
 
 	public void setActivo(Integer activo) {
@@ -130,11 +130,11 @@ public class Producto {
 		this.fabricante = fabricante;
 	}
 
-	public URL getImagen() {
+	public String getImagen() {
 		return imagen;
 	}
 
-	public void setImagen(URL imagen) {
+	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
 

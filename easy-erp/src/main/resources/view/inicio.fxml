@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXChipView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="473.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.PruebaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="534.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.PruebaController">
    <children>
-      <Button fx:id="btn_id" layoutX="14.0" layoutY="96.0" mnemonicParsing="false" onMouseClicked="#buscarFilm" text="Button" />
-      <TextField fx:id="txt_id" layoutX="14.0" layoutY="50.0" prefHeight="25.0" prefWidth="79.0" />
-      <Label layoutX="14.0" layoutY="22.0" prefHeight="17.0" prefWidth="61.0" text="ID_FILM" />
-      <Label fx:id="formatoJson" alignment="TOP_LEFT" layoutX="154.0" layoutY="50.0" prefHeight="327.0" prefWidth="304.0" />
-      <Label layoutX="167.0" layoutY="14.0" text="JSON FORMAT:" />
-      <Label layoutX="13.0" layoutY="142.0" text="Parse a la clase:" />
-      <Label fx:id="title" layoutX="13.0" layoutY="174.0" prefHeight="25.0" prefWidth="119.0" />
-      <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="221.0" ripplerFill="#615fa3" />
-      <JFXChipView layoutX="16.0" layoutY="299.0" />
+      <TextField fx:id="txtId" layoutX="114.0" layoutY="37.0" />
+      <TextField fx:id="txtNombre" layoutX="114.0" layoutY="69.0" />
+      <TextField fx:id="txtApellido" layoutX="114.0" layoutY="101.0" />
+      <TextField fx:id="txtDireccion" layoutX="114.0" layoutY="134.0" />
+      <TextField fx:id="txtCiudad" layoutX="114.0" layoutY="166.0" />
+      <TextField fx:id="txtTelefono" layoutX="114.0" layoutY="196.0" />
+      <TextField fx:id="txtCodigo" layoutX="114.0" layoutY="226.0" />
+      <TextField fx:id="txtPais" layoutX="114.0" layoutY="258.0" />
+      <TextField fx:id="txtEmail" layoutX="114.0" layoutY="295.0" />
+      <Label layoutX="29.0" layoutY="41.0" text="ID" />
+      <Label layoutX="29.0" layoutY="73.0" text="Nombre" />
+      <Label layoutX="29.0" layoutY="105.0" text="Apellidos" />
+      <Label layoutX="29.0" layoutY="138.0" text="Direccion" />
+      <Label layoutX="29.0" layoutY="170.0" text="Ciudad" />
+      <Label layoutX="29.0" layoutY="230.0" text="Codigo Postal" />
+      <Label layoutX="29.0" layoutY="262.0" text="Pais" />
+      <Label layoutX="29.0" layoutY="299.0" text="Email" />
+      <Label layoutX="39.0" layoutY="208.0" />
+      <Label layoutX="31.0" layoutY="200.0" text="Telefono" />
+      <Label layoutX="30.0" layoutY="333.0" text="DNI" />
+      <TextField fx:id="txtDni" layoutX="114.0" layoutY="329.0" />
+      <Button fx:id="btnSearch" layoutX="156.0" layoutY="377.0" mnemonicParsing="false" onMouseClicked="#buscarFilm" text="Buscar" />
    </children>
 </AnchorPane>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.AppMainController">
+   <children>
+      <MenuBar VBox.vgrow="NEVER">
+         <menus>
+            <Menu mnemonicParsing="false" text="Clientes">
+               <items>
+                  <MenuItem fx:id="menuClientes" mnemonicParsing="false" onAction="#verClientes" text="Ver clientes" />
+                  <MenuItem mnemonicParsing="false" text="Modificar clientes" />
+                  <MenuItem mnemonicParsing="false" text="Importar clientes" />
+                  <MenuItem mnemonicParsing="false" text="Exportar clientes" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Compras">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Ventas">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="TPV" />
+                  <MenuItem mnemonicParsing="false" text="Facturas" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Empleados">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Productos">
+               <items>
+                  <MenuItem fx:id="menuProductos" mnemonicParsing="false" onAction="#verProductos" text="Productos" />
+                  <MenuItem fx:id="menuProveedores" mnemonicParsing="false" onAction="#verProveedores" text="Proveedores" />
+                  <MenuItem mnemonicParsing="false" text="Tasas" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Informes">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Herramientas">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                  <MenuItem mnemonicParsing="false" text="Close" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Log">
+               <items>
+                  <MenuItem fx:id="menuLog" mnemonicParsing="false" onAction="#mostrarLog" text="Mostrar" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <AnchorPane fx:id="mainWindow" VBox.vgrow="ALWAYS" />
+   </children>
+</VBox>
