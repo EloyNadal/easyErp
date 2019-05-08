@@ -1,6 +1,7 @@
 package com.easyErp.project.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.easyErp.project.model.Producto;
 import com.google.gson.Gson;
@@ -35,8 +36,8 @@ public class ProductoController {
     @FXML private TextField txtImagen;
     @FXML private CheckBox chbActivo;
    
-    private static String url = "http://localhost:8000/";
-    private static String token = "1 T0hyRXJqaW1vd3R4ZnZEVmVpZGZQUTg4MXdkbkwyb2Zpa0Y2MGV2cA=="; 
+    private static String url = "http://192.168.2.251:8000/";
+    private static String token = "1 VkNLd3NFaEZzTHk4ZmdxRHhqZlVWRmQwRzN4Y1NjNEtUQUpGWEx6Zg=="; 
     
     @FXML void buscarFilm(MouseEvent event) {
     	
@@ -46,11 +47,12 @@ public class ProductoController {
     	Integer id = Integer.parseInt(txtId.getText());
     	try {
     		
-    		String jsonString = run(url + "producto/"+id);
+    		String jsonString = run(url + "producto/id=" + id);
         	
     		
         	JsonObject json = parser.parse(jsonString).getAsJsonObject();
-        	Producto producto = gson.fromJson(json.get("data"), Producto.class);
+        	System.out.println(json.get("data"));
+        	Producto producto = gson.fromJson(json.get("data"), Producto[].class)[0];
         	
         	txtCategoria.setText(producto.getCategoria_id().toString());
         	txtEan.setText(producto.getEan13());
@@ -64,8 +66,7 @@ public class ProductoController {
         	txtStock.setText(producto.getStock_minimo().toString());
         	txtFabricante.setText(producto.getFabricante());
         	txtImagen.setText(producto.getImagen());
-        	chbActivo.setSelected(producto.isActivo());
-        	
+        	chbActivo.setSelected(producto.isActivo());     	
 		} catch (IOException e) {
 			//System.out.println("por aqui");
 			e.printStackTrace();

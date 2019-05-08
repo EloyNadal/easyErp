@@ -2,6 +2,8 @@ package com.easyErp.project.controller;
 
 import java.io.IOException;
 
+import com.easyErp.project.log.EasyErpException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -64,5 +66,10 @@ public class AppMainController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@FXML
+	public void lanzarExcepcion() {
+		new EasyErpException("Prueba de error");
 	}
 }

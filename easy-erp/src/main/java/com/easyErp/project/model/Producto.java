@@ -1,6 +1,5 @@
 package com.easyErp.project.model;
 
-import java.net.URL;
 import java.util.Locale;
 
 public class Producto {
