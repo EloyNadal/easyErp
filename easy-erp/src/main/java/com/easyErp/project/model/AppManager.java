@@ -6,7 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,11 +15,10 @@ import okhttp3.Response;
 public class AppManager {
 //	192.168.2.251
 	
-	public static final MediaType JSON = 
-			MediaType.parse("application/json; charset=utf-8");
+	
 	
 	private static String token;
-	private static final String BASE_URL = "http://localhost:8000/";
+	public static final String BASE_URL = "http://localhost:8000/";
 	private static AppManager manager = new AppManager();
 	private static JsonParser parser = new JsonParser();
 	
@@ -52,7 +50,7 @@ public class AppManager {
   	  return true;
 	}
 	
-	public String getToken() {
+	protected String getToken() {
 		return token;
 	}
 }

@@ -3,6 +3,9 @@ package com.easyErp.project.controller;
 import java.io.IOException;
 
 import com.easyErp.project.log.EasyErpException;
+import com.easyErp.project.model.AppManager;
+import com.easyErp.project.model.Producto;
+import com.easyErp.project.model.QueryManager;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -90,4 +93,13 @@ public class AppMainController {
 	public void lanzarExcepcion() {
 		new EasyErpException("Prueba de error");
 	}
+	//TODO eliminar
+	@FXML
+	public void printar() {
+		QueryManager<Producto> query = new QueryManager<Producto>(Producto.class, Producto[].class);
+		for(Producto producto:query.readAll(AppManager.BASE_URL + "producto")) {
+			System.out.println(producto.getNombre());
+		}
+	}
+	
 }

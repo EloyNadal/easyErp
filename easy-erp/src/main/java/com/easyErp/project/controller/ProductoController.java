@@ -37,22 +37,11 @@ public class ProductoController {
     
    
     @FXML void buscarFilm(MouseEvent event) {
-    	QueryManager<Producto> queryManager = new QueryManager<Producto>(Producto.class);
+    	QueryManager<Producto> queryManager = new QueryManager<Producto>(Producto.class, Producto[].class);
     	Integer id = Integer.parseInt(txtId.getText());
     	String jsonString = url + "producto/id="+id;
     	Producto producto = queryManager.readOneById(jsonString);
-    	
-//    	JsonParser parser = new JsonParser();
-//    	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//    	Integer id = Integer.parseInt(txtId.getText());
-//    	try {
-//    		
-//    		String jsonString = run(url + "producto/id=" + id);
-//        	
-//    		
-//        	JsonObject json = parser.parse(jsonString).getAsJsonObject();
-//        	
-//        	Producto producto = gson.fromJson(json.get("data"), Producto[].class)[0];
+
         	
         	txtCategoria.setText(producto.getCategoria_id().toString());
         	txtEan.setText(producto.getEan13());
@@ -67,28 +56,9 @@ public class ProductoController {
         	txtFabricante.setText(producto.getFabricante());
         	txtImagen.setText(producto.getImagen());
         	chbActivo.setSelected(producto.isActivo());     	
-//		} catch (Exception e) {
-//			
-//			new EasyErpException(e.getMessage());
-//		}
-    	
+
     	
     }
     
-    public static String run(String url) throws Exception {
-    	
-    	OkHttpClient client = new OkHttpClient();
-    	  Request request = new Request.Builder()
-    			  .header("Authorization", manager.getToken())
-    			  .url(url)
-    			  .build();
-    	    
-    	  try {
-    		  Response response = client.newCall(request).execute();
-    		  return response.body().string();
-    	  }catch(Exception e) {
-    		  new EasyErpException(e.getMessage());
-    	  }
-    	  return null;
-    }
+ 
 }

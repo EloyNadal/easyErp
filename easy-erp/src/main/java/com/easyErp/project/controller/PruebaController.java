@@ -34,21 +34,11 @@ public class PruebaController {
     	
     }
     @FXML void buscarFilm(MouseEvent event) {
-    	QueryManager<Cliente> queryManager = new QueryManager<Cliente>(Cliente.class);
+    	QueryManager<Cliente> queryManager = new QueryManager<Cliente>(Cliente.class, Cliente[].class);
     	Integer id = Integer.parseInt(txtId.getText());
     	String jsonString = url + "cliente/"+id;
     	Cliente cliente = queryManager.readOneById(jsonString);
-//    	JsonParser parser = new JsonParser();
-//    	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//    	Integer id = Integer.parseInt(txtId.getText());
-//    	try {
-//    		
-//    		String jsonString = run(url + "cliente/"+id);
-//        	
-//    		
-//        	JsonObject json = parser.parse(jsonString).getAsJsonObject();
-//        	Cliente cliente = gson.fromJson(json.get("data"), Cliente.class);
-        	
+   
         	txtNombre.setText(cliente.getNombre());
         	txtApellido.setText(cliente.getApellidos());
         	txtDireccion.setText(cliente.getDireccion());
@@ -60,24 +50,9 @@ public class PruebaController {
         	txtDni.setText(cliente.getDni());
 			
 			
-//		} catch (Exception e) {
-//			new EasyErpException(e.getMessage());
-//		}
-//    	
-
+	
     }
     
-    public static String run(String url) throws Exception {
-    	OkHttpClient client = new OkHttpClient();
-    	  Request request = new Request.Builder()
-    			  .header("Authorization", manager.getToken())
-    			  .url(url)
-    			  .build();
 
-    	  try (Response response = client.newCall(request).execute()) {
-    	    return response.body().string();
-    	  }
-    	  
-    }
 
 }
