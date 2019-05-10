@@ -1,12 +1,8 @@
 package com.easyErp.project.controller;
 
-import java.io.IOException;
-
+import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Cliente;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.easyErp.project.model.QueryManager;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,7 +13,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class PruebaController {
-
+	private static AppManager manager;
     @FXML private Button btnSearch;
     @FXML private TextField txtId;
     @FXML private TextField txtNombre;
@@ -31,21 +27,27 @@ public class PruebaController {
     @FXML private TextField txtDni;
     
     private static String url = "http://localhost:8000/";
-    private static String token = "1 T0hyRXJqaW1vd3R4ZnZEVmVpZGZQUTg4MXdkbkwyb2Zpa0Y2MGV2cA=="; 
     
+    @FXML 
+    public void initialize() {
+    	manager = AppManager.getInstance();
+    	
+    }
     @FXML void buscarFilm(MouseEvent event) {
-    	
-    	
-    	JsonParser parser = new JsonParser();
-    	Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    	QueryManager<Cliente> queryManager = new QueryManager<Cliente>(Cliente.class);
     	Integer id = Integer.parseInt(txtId.getText());
-    	try {
-    		
-    		String jsonString = run(url + "cliente/"+id);
-        	
-    		
-        	JsonObject json = parser.parse(jsonString).getAsJsonObject();
-        	Cliente cliente = gson.fromJson(json.get("data"), Cliente.class);
+    	String jsonString = url + "cliente/"+id;
+    	Cliente cliente = queryManager.readOneById(jsonString);
+//    	JsonParser parser = new JsonParser();
+//    	Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//    	Integer id = Integer.parseInt(txtId.getText());
+//    	try {
+//    		
+//    		String jsonString = run(url + "cliente/"+id);
+//        	
+//    		
+//        	JsonObject json = parser.parse(jsonString).getAsJsonObject();
+//        	Cliente cliente = gson.fromJson(json.get("data"), Cliente.class);
         	
         	txtNombre.setText(cliente.getNombre());
         	txtApellido.setText(cliente.getApellidos());
@@ -58,18 +60,17 @@ public class PruebaController {
         	txtDni.setText(cliente.getDni());
 			
 			
-		} catch (IOException e) {
-			//System.out.println("por aqui");
-			e.printStackTrace();
-		}
-    	
+//		} catch (Exception e) {
+//			new EasyErpException(e.getMessage());
+//		}
+//    	
 
     }
     
-    public static String run(String url) throws IOException {
+    public static String run(String url) throws Exception {
     	OkHttpClient client = new OkHttpClient();
     	  Request request = new Request.Builder()
-    			  .header("Authorization", token)
+    			  .header("Authorization", manager.getToken())
     			  .url(url)
     			  .build();
 

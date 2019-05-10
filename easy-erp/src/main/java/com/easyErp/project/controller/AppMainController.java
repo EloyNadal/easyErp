@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AppMainController {
@@ -25,7 +24,7 @@ public class AppMainController {
 	AnchorPane mainWindow;
 	@FXML
 	MenuItem menuLog;
-	
+
 	@FXML
 	public void verClientes() {
 		loadScene("/view/inicio.fxml");
@@ -48,26 +47,45 @@ public class AppMainController {
 			mainWindow.getChildren().add(node);
 
 		} catch (IOException e) {
+			new EasyErpException(e.getMessage());
+		}
+	}
 
-		}
-	}
-	
 	public void mostrarLog() {
-        
-		try {	
-			FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/logView.fxml"));
-			AnchorPane scene = myLoader.load();
-			Stage log = new Stage();
-			log.setTitle("Log");
-			log.setScene(new Scene(scene));
-			log.show();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+//		if (!LogController.isLogActive()) {
+			try {
+				FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/logView.fxml"));
+				AnchorPane scene = myLoader.load();
+				Stage log = new Stage();
+				log.setTitle("Log");
+				log.setScene(new Scene(scene));
+				log.show();
+			} catch (IOException e) {
+				new EasyErpException(e.getMessage());
+			}
+//		}
+
 	}
-	
+
+	@FXML
+	public void initialize() {
+
+		FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+		AnchorPane scene;
+		try {
+			scene = myLoader.load();
+			Stage log = new Stage();
+			log.setTitle("Login");
+			log.setResizable(false);
+			log.setScene(new Scene(scene));
+			log.showAndWait();
+		} catch (IOException e) {
+			new EasyErpException(e.getMessage());
+		}
+
+	}
+
+	// TODO eliminar
 	@FXML
 	public void lanzarExcepcion() {
 		new EasyErpException("Prueba de error");
