@@ -96,10 +96,10 @@ public class AppMainController {
 	//TODO eliminar
 	@FXML
 	public void printar() {
-		QueryManager<Producto> query = new QueryManager<Producto>(Producto.class, Producto[].class);
-		for(Producto producto:query.readAll(AppManager.BASE_URL + "producto")) {
-			System.out.println(producto.getNombre());
-		}
+		QueryManager<Producto> query = Producto.getQueryManager();
+//		for(Producto producto:query.readAll(AppManager.BASE_URL + "producto")) {
+//			System.out.println(producto.getNombre());
+//		}
 	}
 	
 }

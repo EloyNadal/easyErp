@@ -34,10 +34,9 @@ public class PruebaController {
     	
     }
     @FXML void buscarFilm(MouseEvent event) {
-    	QueryManager<Cliente> queryManager = new QueryManager<Cliente>(Cliente.class, Cliente[].class);
+    	QueryManager<Cliente> queryManager = Cliente.getQueryManager();
     	Integer id = Integer.parseInt(txtId.getText());
-    	String jsonString = url + "cliente/"+id;
-    	Cliente cliente = queryManager.readOneById(jsonString);
+    	Cliente cliente = queryManager.getByPk(txtId.getText());
    
         	txtNombre.setText(cliente.getNombre());
         	txtApellido.setText(cliente.getApellidos());

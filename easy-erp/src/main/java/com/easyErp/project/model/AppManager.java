@@ -15,10 +15,8 @@ import okhttp3.Response;
 public class AppManager {
 //	192.168.2.251
 	
-	
-	
 	private static String token;
-	public static final String BASE_URL = "http://localhost:8000/";
+	protected static final String BASE_URL = "http://localhost:8000/";
 	private static AppManager manager = new AppManager();
 	private static JsonParser parser = new JsonParser();
 	

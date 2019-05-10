@@ -3,7 +3,7 @@ package com.easyErp.project.model;
 
 import java.util.Locale;
 
-abstract class Persona {
+public class Persona{
 	
 	private String nombre;
 	private String apellidos;
@@ -110,9 +110,7 @@ abstract class Persona {
 
 	public void setUpdated_at(Locale updated_at) {
 		
-			this.updated_at = updated_at;
-		
+			this.updated_at = updated_at;	
 	}
-
 
 }

@@ -17,13 +17,15 @@ public class QueryManager<T> {
 	
 	public static final MediaType JSON = 
 			MediaType.parse("application/json; charset=utf-8");
+	private String url;
 	private Class<T> objectClass;
 	private AppManager manager;
 	private JsonParser parser;
 	private Gson gson;
 	private Class<T[]> objectClassArray;
 	
-	public QueryManager(Class<T> objectClass, Class<T[]> objectClassArray) {
+	protected QueryManager(Class<T> objectClass, Class<T[]> objectClassArray, String url) {
+		this.url = AppManager.BASE_URL + url;
 		this.objectClassArray = objectClassArray;
 		this.objectClass = objectClass;
 		manager = AppManager.getInstance();
@@ -31,9 +33,9 @@ public class QueryManager<T> {
 		gson = new GsonBuilder().setPrettyPrinting().create();
 	}
 
-	public T readOneById(String url) {
+	public T getByPk(String endPoint) {
 		OkHttpClient client = new OkHttpClient();
-		Request request = new Request.Builder().header("Authorization", manager.getToken()).url(url).build();
+		Request request = new Request.Builder().header("Authorization", manager.getToken()).url(this.url + endPoint).build();
 		T object = null;
 		try {
 			Response response = client.newCall(request).execute();
@@ -46,9 +48,9 @@ public class QueryManager<T> {
 		return object;
 	}
 	
-	public T[] readAll(String url) {
+	public T[] readAll(String endPoint) {
 		OkHttpClient client = new OkHttpClient();
-		Request request = new Request.Builder().header("Authorization", manager.getToken()).url(url).build();
+		Request request = new Request.Builder().header("Authorization", manager.getToken()).url(this.url + endPoint).build();
 		T[] array = null;
 		try {
 			Response response = client.newCall(request).execute();
@@ -59,4 +61,5 @@ public class QueryManager<T> {
 		}
 		return array;
 	}
+	
 }

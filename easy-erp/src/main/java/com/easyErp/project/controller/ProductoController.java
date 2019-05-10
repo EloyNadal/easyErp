@@ -37,25 +37,25 @@ public class ProductoController {
     
    
     @FXML void buscarFilm(MouseEvent event) {
-    	QueryManager<Producto> queryManager = new QueryManager<Producto>(Producto.class, Producto[].class);
-    	Integer id = Integer.parseInt(txtId.getText());
-    	String jsonString = url + "producto/id="+id;
-    	Producto producto = queryManager.readOneById(jsonString);
-
-        	
-        	txtCategoria.setText(producto.getCategoria_id().toString());
-        	txtEan.setText(producto.getEan13());
-        	txtReferencia.setText(producto.getReferencia());
-        	txtAtributo.setText(producto.getAtributo());
-        	txtValor.setText(producto.getAtributo_valor());
-        	txtNombre.setText(producto.getNombre());
-        	txtUnidad.setText(producto.getUnidad_mesura());
-        	txtPrecio.setText(producto.getPrecio().toString());
-        	txtTasa.setText(producto.getTasa_id().toString());
-        	txtStock.setText(producto.getStock_minimo().toString());
-        	txtFabricante.setText(producto.getFabricante());
-        	txtImagen.setText(producto.getImagen());
-        	chbActivo.setSelected(producto.isActivo());     	
+//    	QueryManager<Producto> queryManager = new QueryManager<Producto>(Producto.class, Producto[].class, "producto/");
+//    	Integer id = Integer.parseInt(txtId.getText());
+//    	String jsonString = url + "producto/id="+id;
+//    	Producto producto = queryManager.readOneById(jsonString);
+//
+//        	
+//        	txtCategoria.setText(producto.getCategoria_id().toString());
+//        	txtEan.setText(producto.getEan13());
+//        	txtReferencia.setText(producto.getReferencia());
+//        	txtAtributo.setText(producto.getAtributo());
+//        	txtValor.setText(producto.getAtributo_valor());
+//        	txtNombre.setText(producto.getNombre());
+//        	txtUnidad.setText(producto.getUnidad_mesura());
+//        	txtPrecio.setText(producto.getPrecio().toString());
+//        	txtTasa.setText(producto.getTasa_id().toString());
+//        	txtStock.setText(producto.getStock_minimo().toString());
+//        	txtFabricante.setText(producto.getFabricante());
+//        	txtImagen.setText(producto.getImagen());
+//        	chbActivo.setSelected(producto.isActivo());     	
 
     	
     }

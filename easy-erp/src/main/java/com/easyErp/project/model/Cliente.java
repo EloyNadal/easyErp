@@ -2,17 +2,18 @@ package com.easyErp.project.model;
 
 public class Cliente extends Persona{
 
+	private static QueryManager<Cliente> manager;
 	private Integer id;
 	private Integer grupo_cliente_id;
-	
+
 	protected Cliente() {
-		
+
 	}
-	
+
 	public Cliente(Integer id) {
-		this.grupo_cliente_id= id;
+		this.grupo_cliente_id = id;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -21,7 +22,6 @@ public class Cliente extends Persona{
 		return grupo_cliente_id;
 	}
 
-	
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -31,4 +31,11 @@ public class Cliente extends Persona{
 	}
 
 	
+	public static QueryManager<Cliente> getQueryManager() {
+		if (null == manager)
+			manager = new QueryManager<Cliente>(Cliente.class, Cliente[].class, "cliente/");
+		return manager;
+
+	}
+
 }

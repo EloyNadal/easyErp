@@ -20,6 +20,7 @@ public class Producto {
 	private String imagen;
 	private Locale created_at;
 	private Locale updated_at;
+	private static QueryManager<Producto> manager;
 	
 	public Producto() {
 		
@@ -153,4 +154,9 @@ public class Producto {
 		this.updated_at = updated_at;
 	}
 	
+	public static QueryManager<Producto> getQueryManager(){
+		if(null == manager)
+			manager = new QueryManager<Producto>(Producto.class, Producto[].class, "producto/");
+		return manager;
+	}
 }
