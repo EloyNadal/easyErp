@@ -1,7 +1,5 @@
 package com.easyErp.project.model;
 
-import java.util.ArrayList;
-
 import com.easyErp.project.log.EasyErpException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,7 +38,7 @@ public class QueryManager<T> {
 		try {
 			Response response = client.newCall(request).execute();
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-			object =  gson.fromJson(json.get("data"), objectClass);
+			object =  gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass);
 			
 		} catch (Exception e) {
 			new EasyErpException(e.getMessage());
@@ -55,7 +53,7 @@ public class QueryManager<T> {
 		try {
 			Response response = client.newCall(request).execute();
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-			array =  gson.fromJson(json.get("data"), objectClassArray);
+			array =  gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
 		} catch (Exception e) {
 			new EasyErpException(e.getMessage());
 		}
