@@ -60,4 +60,20 @@ public class QueryManager<T> {
 		return array;
 	}
 	
+	public T getByShop(String shopId, String pk) {
+		OkHttpClient client = new OkHttpClient();
+		Request request = new Request.Builder().header("Authorization", manager.getToken()).url(this.url + shopId + "/" + pk).build();
+		T object = null;
+		try {
+			Response response = client.newCall(request).execute();
+			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+			object =  gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass);
+			
+		} catch (Exception e) {
+			new EasyErpException(e.getMessage());
+		}
+		return object;
+	}
+	
+	
 }
