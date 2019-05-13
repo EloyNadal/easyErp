@@ -2,6 +2,7 @@ package com.easyErp.project.model;
 
 public class Stock {
 	
+	private static QueryManager<Stock> manager;
 	private Integer id;
 	private Integer tienda_id;
 	private Integer producto_id;
@@ -41,6 +42,12 @@ public class Stock {
 
 	public void setCantidad(Double cantidad) {
 		this.cantidad = cantidad;
+	}
+	
+	public static QueryManager<Stock> getQueryManager(){
+		if(null == manager)
+			manager = new QueryManager<Stock>(Stock.class, Stock[].class, "stock/");
+		return manager;
 	}
 	
 	

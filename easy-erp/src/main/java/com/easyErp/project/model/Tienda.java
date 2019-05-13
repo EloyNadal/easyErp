@@ -4,6 +4,7 @@ import java.util.Locale;
 
 public class Tienda {
 
+	private static QueryManager<Tienda> manager;
 	private Integer id;
 	private String nombre;
 	private String direccion;
@@ -99,5 +100,10 @@ public class Tienda {
 		this.updated_at = updated_at;
 	}
 	
+	public static QueryManager<Tienda> getQueryManager(){
+		if(null == manager)
+			manager = new QueryManager<Tienda>(Tienda.class, Tienda[].class, "tienda/");
+		return manager;
+	}
 	
 }

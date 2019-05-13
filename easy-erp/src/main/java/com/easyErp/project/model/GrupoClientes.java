@@ -2,6 +2,7 @@ package com.easyErp.project.model;
 
 public class GrupoClientes {
 
+	private static QueryManager<GrupoClientes> manager;
 	private Integer id;
 	private String nombre;
 	private Float ratio_descuento;
@@ -27,6 +28,13 @@ public class GrupoClientes {
 	}
 	public void setRatio_descuento(Float ratio_descuento) {
 		this.ratio_descuento = ratio_descuento;
+	}
+	
+	public static QueryManager<GrupoClientes> getQueryManager() {
+		if (null == manager)
+			manager = new QueryManager<GrupoClientes>(GrupoClientes.class, GrupoClientes[].class, "grupocliente/");
+		return manager;
+
 	}
 	
 }

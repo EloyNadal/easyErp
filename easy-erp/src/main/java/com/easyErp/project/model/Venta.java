@@ -1,9 +1,11 @@
 package com.easyErp.project.model;
 
+import java.util.List;
 import java.util.Locale;
 
 public class Venta {
 
+	private static QueryManager<Venta> manager;
 	private Integer id;
 	private Integer tienda_id;
 	private Integer cliente_id;
@@ -13,6 +15,7 @@ public class Venta {
 	private Double precio_total;
 	private Locale created_at;
 	private Locale updated_at;
+	private List<VentaLinea> venta_linea;
 	
 	protected Venta() {
 		
@@ -88,6 +91,20 @@ public class Venta {
 
 	public void setUpdated_at(Locale updated_at) {
 		this.updated_at = updated_at;
+	}
+	
+	public List<VentaLinea> getVenta_linea() {
+		return venta_linea;
+	}
+
+	public void setVenta_linea(List<VentaLinea> venta_linea) {
+		this.venta_linea = venta_linea;
+	}
+
+	public static QueryManager<Venta> getQueryManager(){
+		if(null == manager)
+			manager = new QueryManager<Venta>(Venta.class, Venta[].class, "venta/");
+		return manager;
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.easyErp.project.model;
 
 public class Categoria {
 	
+	private static QueryManager<Categoria> manager;
 	private Integer id;
 	private String nombre;
 	private Integer categoria_id;
@@ -39,7 +40,12 @@ public class Categoria {
 		this.categoria_id = categoria_id;
 	}
 	
-	
+	public static QueryManager<Categoria> getQueryManager() {
+		if (null == manager)
+			manager = new QueryManager<Categoria>(Categoria.class, Categoria[].class, "categoria/");
+		return manager;
+
+	}
 	
 	
 }

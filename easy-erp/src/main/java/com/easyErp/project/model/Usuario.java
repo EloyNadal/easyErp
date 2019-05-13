@@ -2,6 +2,7 @@ package com.easyErp.project.model;
 
 public class Usuario {
 	
+	private static QueryManager<Usuario> manager;
 	private Integer id;
 	private Integer empleado_id;
 	private String user_name;
@@ -22,6 +23,12 @@ public class Usuario {
 
 	public String getUser_name() {
 		return user_name;
+	}
+	
+	public static QueryManager<Usuario> getQueryManager(){
+		if(null == manager)
+			manager = new QueryManager<Usuario>(Usuario.class, Usuario[].class, "usuario/");
+		return manager;
 	}
 	
 }

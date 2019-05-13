@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Compra {
 	
+	
+	private static QueryManager<Compra> manager;
 	private Integer id;
 	private Integer tienda_id;
 	private Integer proveedor_id;
@@ -87,6 +89,13 @@ public class Compra {
 
 	public void setCompra_linea(List<CompraLinea> compra_linea) {
 		this.compra_linea = compra_linea;
+	}
+	
+	public static QueryManager<Compra> getQueryManager() {
+		if (null == manager)
+			manager = new QueryManager<Compra>(Compra.class, Compra[].class, "compra/");
+		return manager;
+
 	}
 	
 }
