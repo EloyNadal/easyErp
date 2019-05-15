@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 public class AppMainController {
 
+	private Stage logView;
 	@FXML
 	MenuItem menuClientes;
 	@FXML
@@ -55,35 +56,42 @@ public class AppMainController {
 	}
 
 	public void mostrarLog() {
-//		if (!LogController.isLogActive()) {
-			try {
-				FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/logView.fxml"));
-				AnchorPane scene = myLoader.load();
-				Stage log = new Stage();
-				log.setTitle("Log");
-				log.setScene(new Scene(scene));
-				log.show();
-			} catch (IOException e) {
-				new EasyErpException(e.getMessage());
-			}
-//		}
+		if (!logView.isShowing()) {
+			logView.show();
+		}
 
 	}
 
 	@FXML
 	public void initialize() {
-
-		FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
-		AnchorPane scene;
-		try {
-			scene = myLoader.load();
-			Stage log = new Stage();
-			log.setTitle("Login");
-			log.setResizable(false);
-			log.setScene(new Scene(scene));
-			log.showAndWait();
-		} catch (IOException e) {
-			new EasyErpException(e.getMessage());
+		while (!AppManager.isLogged()) {
+			FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+			AnchorPane scene;
+			try {
+				scene = myLoader.load();
+				Stage log = new Stage();
+				log.setTitle("Login");
+				log.setResizable(false);
+				log.setScene(new Scene(scene));
+				log.setOnCloseRequest(event -> {
+					if (AppManager.showYesNoQuestion("Cerrar",
+							"No se ha efectuado el login\nDeseas cerrar la aplicacion?"))
+						System.exit(0);
+				});
+				log.showAndWait();
+				FXMLLoader myLoader2 = new FXMLLoader(getClass().getResource("/view/logView.fxml"));
+				AnchorPane scene2 = myLoader2.load();
+				logView = new Stage();
+				logView.setTitle("Log");
+				logView.setScene(new Scene(scene2));
+//				logView.setOnCloseRequest(event -> {
+//					LogController.setActive(false);
+//				});
+			} catch (IOException e) {
+				new EasyErpException(e.getMessage());
+			}
+			if (!AppManager.isLogged())
+				AppManager.showError("No se ha podido realizar el login");
 		}
 
 	}
@@ -93,13 +101,14 @@ public class AppMainController {
 	public void lanzarExcepcion() {
 		new EasyErpException("Prueba de error");
 	}
-	//TODO eliminar
+
+	// TODO eliminar
 	@FXML
 	public void printar() {
 		QueryManager<Producto> query = Producto.getQueryManager();
-//		for(Producto producto:query.readAll(AppManager.BASE_URL + "producto")) {
-//			System.out.println(producto.getNombre());
-//		}
+		for (Producto producto : query.readAll().getObjectsArray()) {
+			System.out.println(producto.getNombre());
+		}
 	}
-	
+
 }

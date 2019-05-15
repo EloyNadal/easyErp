@@ -25,28 +25,21 @@ public class PruebaController {
     @FXML private TextField txtPais;
     @FXML private TextField txtEmail;
     @FXML private TextField txtDni;
+
     
-    private static String url = "http://localhost:8000/";
-    
-    @FXML 
-    public void initialize() {
-    	manager = AppManager.getInstance();
-    	
-    }
     @FXML void buscarFilm(MouseEvent event) {
-    	QueryManager<Cliente> queryManager = Cliente.getQueryManager();
-    	Integer id = Integer.parseInt(txtId.getText());
-    	Cliente cliente = queryManager.getByPk(txtId.getText());
-   
-        	txtNombre.setText(cliente.getNombre());
-        	txtApellido.setText(cliente.getApellidos());
-        	txtDireccion.setText(cliente.getDireccion());
-        	txtCiudad.setText(cliente.getCiudad());
-        	txtTelefono.setText(cliente.getTelefono());
-        	txtCodigo.setText(cliente.getCodigo_postal());
-        	txtPais.setText(cliente.getPais());
-        	txtEmail.setText(cliente.getEmail());
-        	txtDni.setText(cliente.getDni());
+//    	QueryManager<Cliente> queryManager = Cliente.getQueryManager();
+//    	Cliente cliente = queryManager.getByPk(txtId.getText());
+//   
+//        	txtNombre.setText(cliente.getNombre());
+//        	txtApellido.setText(cliente.getApellidos());
+//        	txtDireccion.setText(cliente.getDireccion());
+//        	txtCiudad.setText(cliente.getCiudad());
+//        	txtTelefono.setText(cliente.getTelefono());
+//        	txtCodigo.setText(cliente.getCodigo_postal());
+//        	txtPais.setText(cliente.getPais());
+//        	txtEmail.setText(cliente.getEmail());
+//        	txtDni.setText(cliente.getDni());
 			
 			
 	

@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class EasyErpException {
+public class EasyErpException extends Exception{
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
+	private static String[] ERRORES = {"Problema de conexion con el servidor", "Elemento no encontrado", "Faltan campos por rellenar"};
+	
 	public EasyErpException(String message) {
 		Date date = new Date();
 		SystemLog.print(date, message);
@@ -41,6 +42,14 @@ public class EasyErpException {
 					exc.printStackTrace();
 				}
 			}
+		}
+	}
+	
+	public static void createExceptionFromErrorCode(int codigoError) {
+		switch(codigoError) {
+		case 404:
+			new EasyErpException(ERRORES[0]);
+			break;
 		}
 	}
 

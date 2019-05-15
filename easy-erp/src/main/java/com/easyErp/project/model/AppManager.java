@@ -1,55 +1,96 @@
 package com.easyErp.project.model;
 
-import com.easyErp.project.log.EasyErpException;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import com.easyErp.project.log.EasyErpException;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 public class AppManager {
 //	192.168.2.251
-	
-	private static String token;
-	protected static final String BASE_URL = "http://localhost:8000/";
+	private static boolean logged = false;
+	private static String baseUrl;
+	private static int idTienda;
 	private static AppManager manager = new AppManager();
-	private static JsonParser parser = new JsonParser();
-	
+
+	public AppManager() {
+		inicializarVariables();
+//		baseUrl = "http://localhost:8000/";
+	}
+
 	public static AppManager getInstance() {
 		return manager;
 	}
-	
-	public static boolean login(String email, String password) {
-		OkHttpClient client = new OkHttpClient();
-		RequestBody req = new MultipartBody.Builder()
-		        .setType(MultipartBody.FORM)
-		        .addFormDataPart("user_name", email)
-		        .addFormDataPart("password", password)
-		        .build();
-  	  	Request request = new Request.Builder()
-  			  .url(BASE_URL + "login")
-  			  .post(req)
-  			  .build();
-  	  try {
-  		  
-  		  Gson gson = new GsonBuilder().setPrettyPrinting().create();
-  		  Response response = client.newCall(request).execute();
-  		  JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-  		  token = gson.fromJson(json.get("data"), Usuario.class).getApiToken();
-  	  }catch(Exception e) {
-  		  new EasyErpException(e.getMessage());
-  		  return false;
-  	  }
-  	  return true;
+
+	public static String getBaseUrl() {
+		return baseUrl;
+	}
+
+	public static int getIdTienda() {
+		return idTienda;
+	}
+
+	private void inicializarVariables() {
+		Map<String, String> variables = new HashMap<String, String>();
+		BufferedReader lector = null;
+		try {
+			lector = new BufferedReader(new FileReader("./config.conf"));
+			String[] entrada;
+			String linea;
+			while ((linea = lector.readLine()) != null) {
+				entrada = linea.split(":");
+				variables.put(entrada[0], entrada[1]);
+			}
+		} catch (FileNotFoundException exc) {
+			new EasyErpException(exc.getMessage());
+		} catch (IOException exc) {
+			new EasyErpException(exc.getMessage());
+		} finally {
+			try {
+				lector.close();
+			} catch (IOException exc) {
+				new EasyErpException(exc.getMessage());
+			}
+		}
+		baseUrl = "http://" + variables.get("Url") + ":" + variables.get("port") + "/";
+		idTienda = Integer.parseInt(variables.get("idTienda"));
 	}
 	
-	protected String getToken() {
-		return token;
+	public static void showError(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setContentText(message);
+		alert.setHeaderText(null);
+		alert.showAndWait();
+	}
+	
+	public static void setLogged(boolean loged) {
+		logged = loged;
+	}
+	
+	public static boolean isLogged() {
+		return logged;
+	}
+	
+	public static boolean showYesNoQuestion(String title, String message) {
+		Alert alert =
+                new Alert(Alert.AlertType.CONFIRMATION,
+                        message,
+                        ButtonType.OK,
+                        ButtonType.CANCEL);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) return true;
+        return false;
 	}
 }
-

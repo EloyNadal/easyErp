@@ -1,9 +1,13 @@
 package com.easyErp.project.model;
 
 import java.security.Key;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.bson.internal.Base64;
+
+import com.easyErp.project.log.EasyErpException;
 
 
 public class Encrypt {
@@ -11,7 +15,7 @@ public class Encrypt {
 	private static final String ALGORITHM = "AES";
 	private static final byte[] SALT = "eAsYeRpCeRn0vIGV".getBytes();
 
-    static String getEncrypted(String plainText) {
+    static String getEncrypted(String plainText) throws EasyErpException {
     	
         if (plainText == null) {
             return null;
@@ -24,13 +28,11 @@ public class Encrypt {
             byte[] encodedValue = cipher.doFinal(plainText.getBytes());
             return Base64.encode(encodedValue);
         } catch (Exception e) {
-            e.printStackTrace();
+           throw new EasyErpException("Error al encriptar");
         }
-
-        throw new IllegalArgumentException("Failed to encrypt data");
     }
 
-    public static String getDecrypted(String encodedText) {
+    public static String getDecrypted(String encodedText) throws EasyErpException {
 
         if (encodedText == null) {
             return null;
@@ -44,9 +46,9 @@ public class Encrypt {
             byte[] decValue = cipher.doFinal(decodedValue);
             return new String(decValue);
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new EasyErpException("Error al desencriptar");
         }
-        return null;
+        
     }
 
     static Key getSalt() {

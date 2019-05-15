@@ -31,17 +31,13 @@ public class ProductoController {
     @FXML private TextField txtFabricante;
     @FXML private TextField txtImagen;
     @FXML private CheckBox chbActivo;
-   
-    private static String url = "http://localhost:8000/";
-    private static String token = "1 VkNLd3NFaEZzTHk4ZmdxRHhqZlVWRmQwRzN4Y1NjNEtUQUpGWEx6Zg=="; 
+
     
    
     @FXML void buscarFilm(MouseEvent event) {
-//    	QueryManager<Producto> queryManager = new QueryManager<Producto>(Producto.class, Producto[].class, "producto/");
-//    	Integer id = Integer.parseInt(txtId.getText());
-//    	String jsonString = url + "producto/id="+id;
-//    	Producto producto = queryManager.readOneById(jsonString);
-//
+    	
+//    	QueryManager<Producto> queryManager = Producto.getQueryManager();
+//    	Producto producto = queryManager.getByPk(txtId.getText());
 //        	
 //        	txtCategoria.setText(producto.getCategoria_id().toString());
 //        	txtEan.setText(producto.getEan13());
