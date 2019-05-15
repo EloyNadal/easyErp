@@ -28,6 +28,8 @@ public class AppMainController {
 	AnchorPane mainWindow;
 	@FXML
 	MenuItem menuLog;
+	@FXML
+	MenuItem menuEditProductos;
 
 	@FXML
 	public void verClientes() {
@@ -43,12 +45,22 @@ public class AppMainController {
 	public void verProveedores() {
 		loadScene("/view/proveedorView.fxml");
 	}
+	
+	@FXML
+	public void editarProductos() throws IOException {
+		loadScene("/view/editarProductosView.fxml");
+	}
 
 	public void loadScene(String location) {
 		try {
 			Node node = FXMLLoader.load(getClass().getResource(location));
 			mainWindow.getChildren().clear();
 			mainWindow.getChildren().add(node);
+			
+			AnchorPane.setTopAnchor(node,0.0);
+			AnchorPane.setBottomAnchor(node,0.0);
+			AnchorPane.setLeftAnchor(node, 0.0);
+			AnchorPane.setRightAnchor(node, 0.0);
 
 		} catch (IOException e) {
 			new EasyErpException(e.getMessage());
