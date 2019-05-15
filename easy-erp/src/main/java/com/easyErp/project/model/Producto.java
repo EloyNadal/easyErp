@@ -20,6 +20,8 @@ public class Producto {
 	private String imagen;
 	private Locale created_at;
 	private Locale updated_at;
+	private Categoria categoria;
+	private Tasa tasa;
 	private static QueryManager<Producto> manager;
 	
 	public Producto() {
@@ -152,6 +154,30 @@ public class Producto {
 
 	public void setUpdated_at(Locale updated_at) {
 		this.updated_at = updated_at;
+	}
+	
+	public Categoria getCategoria() {
+		return categoria;
+	}
+	
+	public String getCategoriaNombre() {
+		return categoria.getNombre();
+	}
+
+	public Tasa getTasa() {
+		return tasa;
+	}
+	
+	public String getTasaNombre() {
+		return tasa.getNombre();
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public void setTasa(Tasa tasa) {
+		this.tasa = tasa;
 	}
 	
 	public static QueryManager<Producto> getQueryManager(){

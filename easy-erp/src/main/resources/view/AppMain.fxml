@@ -39,6 +39,7 @@
                   <MenuItem fx:id="menuProductos" mnemonicParsing="false" onAction="#verProductos" text="Productos" />
                   <MenuItem fx:id="menuProveedores" mnemonicParsing="false" onAction="#verProveedores" text="Proveedores" />
                   <MenuItem mnemonicParsing="false" text="Tasas" />
+                  <MenuItem fx:id="menuEditProductos" mnemonicParsing="false" onAction="#editarProductos" text="Editar Productos" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Informes">
