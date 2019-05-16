@@ -8,11 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.easyErp.project.controller.AppMainController;
 import com.easyErp.project.log.EasyErpException;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+
 
 public class AppManager {
 //	192.168.2.251
@@ -20,10 +22,19 @@ public class AppManager {
 	private static String baseUrl;
 	private static int idTienda;
 	private static AppManager manager = new AppManager();
+	private AppMainController main;
 
 	public AppManager() {
 		inicializarVariables();
 //		baseUrl = "http://localhost:8000/";
+	}
+	
+	public void setAppMain(AppMainController main) {
+		this.main = main;
+	}
+	
+	public AppMainController getAppMain() {
+		return this.main;
 	}
 
 	public static AppManager getInstance() {

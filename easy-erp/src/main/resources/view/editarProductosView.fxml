@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,28 +15,52 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="vistaFormProductos" prefHeight="600.0" prefWidth="800.0" stylesheets="" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.EditarProductosController">
    <center>
 		<AnchorPane>
 			<children>
-            <GridPane hgap="10.0" vgap="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+            <GridPane hgap="10.0" vgap="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="52.0" />
                 <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="40.0" minWidth="40.0" prefWidth="20.000030517578125" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="50.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="50.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="50.0" prefWidth="100.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
               </rowConstraints>
+               <children>
+                  <Label text="Nombre" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="txtReferencia" GridPane.columnIndex="1" />
+                  <JFXComboBox fx:id="cmbCategoria" prefHeight="25.0" prefWidth="135.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </JFXComboBox>
+                  <Label text="Categorias" GridPane.rowIndex="2" />
+                  <Label text="Referencia" />
+                  <Label text="Iva" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label prefHeight="17.0" prefWidth="43.0" text="Ean13" GridPane.columnIndex="2" />
+                  <Label text="Precio" GridPane.columnIndex="4" />
+                  <Label text="Activo" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <JFXCheckBox fx:id="chkActivo" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="txtNombre" prefHeight="25.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="txtEan" GridPane.columnIndex="3" />
+                  <JFXTextField fx:id="txtPrecioMin" alignment="BASELINE_CENTER" promptText="0.00€" GridPane.columnIndex="5" />
+                  <JFXTextField fx:id="txtPrecioMax" alignment="BOTTOM_CENTER" prefHeight="25.0" prefWidth="100.0" promptText="0.00€" GridPane.columnIndex="7" />
+                  <Label text="A" GridPane.columnIndex="6" />
+                  <JFXComboBox fx:id="cmbIva" prefHeight="25.0" prefWidth="133.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <JFXButton fx:id="btnFiltrar" prefHeight="25.0" prefWidth="100.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightgreen;" text="Filtrar" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+               </children>
             </GridPane>
 				<HBox spacing="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
 					<padding>
@@ -40,7 +70,7 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                </children>
 				</HBox>
-      				<TableView fx:id="productosTable" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="300.0">
+      				<TableView fx:id="productosTable" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="240.0">
       					<columns>
                         <TableColumn fx:id="id" editable="false" maxWidth="100.0" minWidth="50.0" prefWidth="50.0" text="id" />
                         <TableColumn fx:id="nombre" maxWidth="150.0" minWidth="100.0" prefWidth="100.0" text="Nombre" />
@@ -57,6 +87,20 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
       				</TableView>
+            <Label layoutX="49.0" layoutY="20.0" text="Productos" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="btnFiltrar1" layoutX="677.0" layoutY="209.0" prefHeight="25.0" prefWidth="38.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightblue;" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="200.0" />
+            <HBox layoutX="691.0" layoutY="538.0" prefHeight="41.0" prefWidth="51.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+               <children>
+                  <Button mnemonicParsing="false" text="EXC" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
 			</children>
          <BorderPane.margin>
             <Insets left="1.0" right="1.0" />

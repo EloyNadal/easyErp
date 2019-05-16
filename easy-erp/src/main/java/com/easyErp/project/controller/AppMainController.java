@@ -13,7 +13,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
 
 public class AppMainController {
 
@@ -39,6 +41,32 @@ public class AppMainController {
 	@FXML
 	public void verProductos() {
 		loadScene("/view/productoView.fxml");
+	}
+	
+	public void verProductos(Producto producto) {
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/productoView.fxml"));
+		Node vista;
+		try {
+			vista = loader.load();
+			if (producto != null) {
+				ProductoController controller = loader.getController();
+				controller.cargarProducto(producto);
+			}
+			
+			this.mainWindow.getChildren().clear();
+			this.mainWindow.getChildren().add(vista);
+			
+			AnchorPane.setTopAnchor(vista,0.0);
+			AnchorPane.setBottomAnchor(vista,0.0);
+			AnchorPane.setLeftAnchor(vista, 0.0);
+			AnchorPane.setRightAnchor(vista, 0.0);
+
+		} catch (IOException e) {
+			new EasyErpException("Error al cargar producto");
+		}
+
+				
 	}
 
 	@FXML
@@ -99,6 +127,7 @@ public class AppMainController {
 //				logView.setOnCloseRequest(event -> {
 //					LogController.setActive(false);
 //				});
+				AppManager.getInstance().setAppMain(this);
 			} catch (IOException e) {
 				new EasyErpException(e.getMessage());
 			}

@@ -185,4 +185,11 @@ public class Producto {
 			manager = new QueryManager<Producto>(Producto.class, Producto[].class, "producto/");
 		return manager;
 	}
+
+	@Override
+	public String toString() {
+		return this.getNombre();
+	}
+	
+	
 }

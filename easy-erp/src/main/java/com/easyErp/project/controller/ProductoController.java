@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class ProductoController {
 	
-	private static AppManager manager;
+	
 	@FXML private Button btnSearch;
     @FXML private TextField txtId;
     @FXML private TextField txtCategoria;
@@ -36,25 +36,59 @@ public class ProductoController {
    
     @FXML void buscarFilm(MouseEvent event) {
     	
-//    	QueryManager<Producto> queryManager = Producto.getQueryManager();
-//    	Producto producto = queryManager.getByPk(txtId.getText());
-//        	
-//        	txtCategoria.setText(producto.getCategoria_id().toString());
-//        	txtEan.setText(producto.getEan13());
-//        	txtReferencia.setText(producto.getReferencia());
-//        	txtAtributo.setText(producto.getAtributo());
-//        	txtValor.setText(producto.getAtributo_valor());
-//        	txtNombre.setText(producto.getNombre());
-//        	txtUnidad.setText(producto.getUnidad_mesura());
-//        	txtPrecio.setText(producto.getPrecio().toString());
-//        	txtTasa.setText(producto.getTasa_id().toString());
-//        	txtStock.setText(producto.getStock_minimo().toString());
-//        	txtFabricante.setText(producto.getFabricante());
-//        	txtImagen.setText(producto.getImagen());
-//        	chbActivo.setSelected(producto.isActivo());     	
-
+    	QueryManager<Producto> queryManager = Producto.getQueryManager();
+    	Producto producto = queryManager.getByPk(txtId.getText()).getObject();
+    		
+    	
+        	txtCategoria.setText(producto.getCategoriaNombre());
+        	txtEan.setText(producto.getEan13());
+        	txtReferencia.setText(producto.getReferencia());
+        	txtAtributo.setText(producto.getAtributo());
+        	txtValor.setText(producto.getAtributo_valor());
+        	txtNombre.setText(producto.getNombre());
+        	txtUnidad.setText(producto.getUnidad_mesura());
+        	txtPrecio.setText(producto.getPrecio().toString());
+        	txtTasa.setText(producto.getTasaNombre());
+        	txtStock.setText(producto.getStock_minimo().toString());
+        	txtFabricante.setText(producto.getFabricante());
+        	txtImagen.setText(producto.getImagen());
+        	chbActivo.setSelected(producto.isActivo());
+        	
+    }
+    
+    public void cargarProducto(Producto producto) {
+    	
+    	txtId.setText(producto.getId().toString());
+    	txtCategoria.setText(producto.getCategoriaNombre());
+    	txtEan.setText(producto.getEan13());
+    	txtReferencia.setText(producto.getReferencia());
+    	txtAtributo.setText(producto.getAtributo());
+    	txtValor.setText(producto.getAtributo_valor());
+    	txtNombre.setText(producto.getNombre());
+    	txtUnidad.setText(producto.getUnidad_mesura());
+    	txtPrecio.setText(producto.getPrecio().toString());
+    	txtTasa.setText(producto.getTasaNombre());
+    	txtStock.setText(producto.getStock_minimo().toString());
+    	txtFabricante.setText(producto.getFabricante());
+    	txtImagen.setText(producto.getImagen());
+    	chbActivo.setSelected(producto.isActivo());
+    	
+    	txtCategoria.setEditable(false);
+    	txtEan.setEditable(false);
+    	txtReferencia.setEditable(false);
+    	txtAtributo.setEditable(false);
+    	txtValor.setEditable(false);
+    	txtNombre.setEditable(false);
+    	txtUnidad.setEditable(false);
+    	txtPrecio.setEditable(false);
+    	txtTasa.setEditable(false);
+    	txtStock.setEditable(false);
+    	txtFabricante.setEditable(false);
+    	txtImagen.setEditable(false);
+    	chbActivo.setDisable(false);
     	
     }
+    
     
  
 }
