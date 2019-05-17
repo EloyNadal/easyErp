@@ -262,5 +262,10 @@ public class EditarProductosController{
 
 	}
 	
+	public void newProducto() {
+		AppManager.getInstance().getAppMain().verProductos(null);
+	}
+	
 	
 }
+

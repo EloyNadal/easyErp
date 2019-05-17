@@ -16,7 +16,7 @@ public class Tienda {
 	private Locale created_at;
 	private Locale updated_at;
 	
-	protected Tienda() {
+	public Tienda() {
 		
 	}
 

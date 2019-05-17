@@ -1,5 +1,6 @@
 package com.easyErp.project.model;
 
+import java.util.List;
 import java.util.Locale;
 
 public class Producto {
@@ -22,6 +23,12 @@ public class Producto {
 	private Locale updated_at;
 	private Categoria categoria;
 	private Tasa tasa;
+	
+	//TODO es para pruebas
+	private List<Stock> stocks; 
+	private List<Compra> compras;
+	private List<Venta> ventas;
+	
 	private static QueryManager<Producto> manager;
 	
 	public Producto() {
@@ -180,6 +187,43 @@ public class Producto {
 		this.tasa = tasa;
 	}
 	
+
+	public List<Stock> getStock() {
+		return this.stocks;
+	}
+
+	public void setStock(List<Stock> stock) {
+		this.stocks = stock;
+	}
+	
+	
+	public List<Compra> getCompras() {
+		return compras;
+	}
+
+	public List<Venta> getVentas() {
+		return ventas;
+	}
+
+	public void setCompras(List<Compra> compras) {
+		this.compras = compras;
+	}
+
+	public void setVentas(List<Venta> ventas) {
+		this.ventas = ventas;
+	}
+
+	public Double getStockTienda() {
+		
+		for (Stock stock : stocks) {
+			if (stock.getTienda_id() == AppManager.getIdTienda()) {
+				return stock.getCantidad();
+			}
+		}
+		return 0.000;
+	}
+	
+
 	public static QueryManager<Producto> getQueryManager(){
 		if(null == manager)
 			manager = new QueryManager<Producto>(Producto.class, Producto[].class, "producto/");

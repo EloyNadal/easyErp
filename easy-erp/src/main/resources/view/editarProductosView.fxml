@@ -92,7 +92,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <JFXButton fx:id="btnFiltrar1" layoutX="677.0" layoutY="209.0" prefHeight="25.0" prefWidth="38.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightblue;" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="200.0" />
+            <JFXButton fx:id="btnNew" layoutX="677.0" layoutY="209.0" onMouseClicked="#newProducto" prefHeight="25.0" prefWidth="38.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightblue;" text="+" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="200.0" />
             <HBox layoutX="691.0" layoutY="538.0" prefHeight="41.0" prefWidth="51.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
                <children>
                   <Button mnemonicParsing="false" text="EXC" />
