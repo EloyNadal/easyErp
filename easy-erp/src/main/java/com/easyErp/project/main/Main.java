@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class Main extends Application {
+	
+	private Stage logView;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -29,33 +31,33 @@ public class Main extends Application {
 		primaryStage.setTitle("EasyERP");
 		primaryStage.setMinWidth(800);
 		primaryStage.setMinHeight(600);
+		FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/logView.fxml"));
+		AnchorPane scene2;
+		try {
+			scene2 = myLoader.load();
+
+			this.logView = new Stage();
+			this.logView.setTitle("Log");
+			this.logView.setScene(new Scene(scene2));
+			
+		} catch (IOException e) {
+			new EasyErpException(e.getMessage());
+		}
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (AppMainController.isKeyPressed(event, KeyCode.F11)) {
-				FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/logView.fxml"));
-				AnchorPane scene2;
-				try {
-					scene2 = myLoader.load();
-				
-				Stage logView = new Stage();
-				logView.setTitle("Log");
-				logView.setScene(new Scene(scene2));
-				if(!logView.isShowing())
+				if (!logView.isShowing())
 					logView.show();
-				} catch (IOException e) {
-					new EasyErpException(e.getMessage());
-				}
 			}
 
 		});
-		primaryStage.addEventFilter( WindowEvent.WINDOW_CLOSE_REQUEST, event->{
+		primaryStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
 			event.consume();
-			if (AppManager.showYesNoQuestion("Cerrar",
-					"Deseas cerrar la aplicacion?"))
+			if (AppManager.showYesNoQuestion("Cerrar", "Deseas cerrar la aplicacion?"))
 				System.exit(0);
-		}
-		);
+		});
 		primaryStage.show();
 	}
+
 	public static void main(String[] args) {
 		launch(args);
 	}

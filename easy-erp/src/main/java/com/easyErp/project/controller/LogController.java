@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 
-public class LogController implements Runnable{
+public class LogController extends Thread{
 
 	@FXML
 	CheckBox chbErrores;
@@ -19,6 +19,7 @@ public class LogController implements Runnable{
 	
 	@FXML
 	public void initialize() {
+		chbErrores.setSelected(true);
 		chbErrores.setOnMouseClicked(event -> {
 			SystemLog.setErrores(chbErrores.isSelected());
 
@@ -31,14 +32,13 @@ public class LogController implements Runnable{
 			SystemLog.setConexiones(chbConexiones.isSelected());
 
 		});
+		this.start();
 	}
 
 	@Override
 	public void run() {
-		chbErrores.setSelected(true);
 		while (true) {
 			if (!SystemLog.isEmpty()) {
-				System.out.println("funciona");
 				txtLog.setText(txtLog.getText() + SystemLog.viewLog());
 			}
 		}
