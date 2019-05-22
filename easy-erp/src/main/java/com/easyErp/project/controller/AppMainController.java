@@ -50,16 +50,14 @@ public class AppMainController {
 		Node vista;
 		try {
 			vista = loader.load();
-			if (producto != null) {
-				ProductoController2 controller = loader.getController();
-				controller.cargarProducto(producto);
-			}
-
+			ProductoController2 controller = loader.getController();
+			controller.cargarProducto(producto);
+			
 			this.mainWindow.getChildren().clear();
 			this.mainWindow.getChildren().add(vista);
-
-			AnchorPane.setTopAnchor(vista, 0.0);
-			AnchorPane.setBottomAnchor(vista, 0.0);
+			
+			AnchorPane.setTopAnchor(vista,0.0);
+			AnchorPane.setBottomAnchor(vista,0.0);
 			AnchorPane.setLeftAnchor(vista, 0.0);
 			AnchorPane.setRightAnchor(vista, 0.0);
 
