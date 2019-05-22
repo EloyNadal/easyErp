@@ -100,6 +100,11 @@ public class Proveedor {
 		this.updated_at = updated_at;
 	}
 	
+	@Override
+	public String toString() {
+		return this.getNombre();
+	}
+	
 	public static QueryManager<Proveedor> getQueryManager(){
 		if(null == manager)
 			manager = new QueryManager<Proveedor>(Proveedor.class, Proveedor[].class, "proveedor/");

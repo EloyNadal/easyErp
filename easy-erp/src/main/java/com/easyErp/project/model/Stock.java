@@ -46,22 +46,6 @@ public class Stock {
 		this.cantidad = cantidad;
 	}
 	
-	public String getNombreTienda() {
-		return this.tienda.getNombre();
-	}
-	
-	public String getCiudadTienda() {
-		return this.tienda.getCiudad();
-	}
-	
-	public String getNombreProducto() {
-		return this.producto.getNombre();
-	}
-	
-	public String getReferenciaProducto() {
-		return this.producto.getReferencia();
-	}
-	
 	public Tienda getTienda() {
 		return tienda;
 	}

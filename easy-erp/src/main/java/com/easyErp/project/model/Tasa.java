@@ -35,6 +35,10 @@ public class Tasa {
 		this.ratio_tasa = ratio_tasa;
 	}
 	
+	public String toString() {
+		return this.getNombre();
+	}
+
 	public static QueryManager<Tasa> getQueryManager(){
 		if(null == manager)
 			manager = new QueryManager<Tasa>(Tasa.class, Tasa[].class, "tasa/");

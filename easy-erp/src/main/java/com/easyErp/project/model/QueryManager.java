@@ -66,7 +66,7 @@ public class QueryManager<T> {
 		}
 		return respuesta;
 	}
-	
+
 	public Respuesta<T> readQuery(RequestBody body, int metod) {
 		Request request = new Request.Builder()
 				.header("Authorization", token)
@@ -84,6 +84,56 @@ public class QueryManager<T> {
 			new EasyErpException(e.getMessage());
 		}
 		
+		return respuesta;
+	}
+	
+
+
+	public Respuesta<T> updateForId(Integer id, RequestBody body) {
+		Request request = new Request.Builder()
+				.header("Authorization", token)
+				.url(this.url + id)
+				.put(body)
+				.build();
+		
+		this.respuesta.clear();
+		
+		try {
+			Response response = client.newCall(request).execute();
+			respuesta.setSuccessful(response.code());
+			if (respuesta.isSuccessful()) {
+				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
+			} else 
+				EasyErpException.createExceptionFromErrorCode(response.code());
+		} catch (Exception e) {
+			new EasyErpException(e.getMessage());
+		}
+		return respuesta;
+	}
+	
+	public Respuesta<T> insertOne(RequestBody body) {
+		Request request = new Request.Builder()
+				.header("Authorization", token)
+				.url(this.url)
+				.post(body)
+				.build();
+		
+		this.respuesta.clear();
+		
+		try {
+			Response response = client.newCall(request).execute();
+			System.out.println(response.code());
+			System.out.println(response.toString());
+			respuesta.setSuccessful(response.code());
+			if (respuesta.isSuccessful()) {
+				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
+			} else 
+				EasyErpException.createExceptionFromErrorCode(response.code());
+		} catch (Exception e) {
+			new EasyErpException(e.getMessage());
+		}
 		return respuesta;
 	}
 	

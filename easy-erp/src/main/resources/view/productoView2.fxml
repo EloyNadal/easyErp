@@ -2,10 +2,11 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -14,8 +15,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.ProductoController2">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.ProductoController2">
    <children>
       <ImageView fx:id="imagen" fitHeight="133.0" fitWidth="266.0" layoutX="62.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
       <GridPane hgap="5.0" layoutX="331.0" layoutY="48.0" vgap="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="20.0">
@@ -57,13 +59,15 @@
             <JFXTextField fx:id="txtTasa" GridPane.columnIndex="3" GridPane.rowIndex="4" />
             <JFXTextField fx:id="txtStockMin" GridPane.columnIndex="3" GridPane.rowIndex="5" />
             <JFXCheckBox fx:id="chkActivo" prefHeight="30.0" prefWidth="112.0" text="Activo" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+            <JFXComboBox fx:id="cmbCategorias" prefHeight="32.0" prefWidth="147.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXComboBox fx:id="cmbTasas" prefHeight="32.0" prefWidth="147.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <HBox fx:id="boxBotones" layoutX="14.0" layoutY="281.0" prefHeight="46.0" prefWidth="760.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="270.0">
          <children>
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="btnAlmacen" maxWidth="600.0" onMouseClicked="#crearTablaProducto" prefHeight="47.0" prefWidth="205.0" ripplerFill="BLACK" style="-fx-background-color: lightgray; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Almacen">
+                  <JFXButton fx:id="btnAlmacen" maxWidth="600.0" onMouseClicked="#crearTablaProducto" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #80cbc4; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Almacen">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -73,7 +77,7 @@
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="btnTiendas" maxWidth="600.0" onMouseClicked="#otrasTiendas" prefHeight="47.0" prefWidth="205.0" style="-fx-background-color: darkgray; -fx-background-radius: 0pt; -fx-border-radius: 0pt;" text="Otras Tiendas">
+                  <JFXButton fx:id="btnTiendas" maxWidth="600.0" onMouseClicked="#otrasTiendas" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #e0e0e0; -fx-background-radius: 0pt; -fx-border-radius: 0pt;" text="Otras Tiendas">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -83,7 +87,7 @@
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="btnCompras" maxWidth="600.0" onMouseClicked="#historicoCompras" prefHeight="47.0" prefWidth="205.0" style="-fx-background-color: darkgray; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Historico Compras" VBox.vgrow="ALWAYS">
+                  <JFXButton fx:id="btnCompras" maxWidth="600.0" onMouseClicked="#historicoCompras" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #e0e0e0; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Historico Compras" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -93,7 +97,7 @@
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="btnVentas" maxWidth="600.0" onMouseClicked="#historicoVentas" prefHeight="47.0" prefWidth="205.0" style="-fx-background-color: darkgray; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Historico Ventas" VBox.vgrow="ALWAYS">
+                  <JFXButton fx:id="btnVentas" maxWidth="600.0" onMouseClicked="#historicoVentas" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #e0e0e0; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Historico Ventas" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -103,7 +107,6 @@
             </VBox>
          </children>
       </HBox>
-      <TableView fx:id="table" layoutX="20.0" layoutY="337.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="325.0" />
       <GridPane layoutX="514.0" layoutY="150.0" prefHeight="74.0" prefWidth="257.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="175.0">
         <columnConstraints>
           <ColumnConstraints minWidth="10.0" prefWidth="70.0" />
@@ -111,16 +114,24 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Proveedor" />
-            <Label text="Stock Inicial" GridPane.rowIndex="1" />
+            <Label fx:id="lblResultado" text="Guardado" textFill="#54934c" visible="false" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
             <JFXTextField fx:id="txtProveedor" GridPane.columnIndex="1" />
-            <JFXTextField fx:id="txtStockInicial" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="cmbProveedores" prefHeight="32.0" prefWidth="188.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <JFXButton fx:id="btnEditar" layoutX="280.0" layoutY="553.0" onMouseClicked="#editarProducto" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: lightblue;" text="EDITAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
-      <JFXButton fx:id="btnGuardar" layoutX="290.0" layoutY="563.0" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: lightGREEN;" text="GUARDAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="110.0" />
+      <JFXButton fx:id="btnEditar" layoutX="280.0" layoutY="553.0" onMouseClicked="#editarProducto" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="EDITAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
+      <JFXButton fx:id="btnGuardar" layoutX="612.0" layoutY="530.0" onMouseClicked="#guardarProducto" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="GUARDAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="108.0" />
+      <JFXDatePicker fx:id="dateHasta" layoutX="198.0" layoutY="532.0" promptText="Hasta" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="198.0" />
+      <JFXDatePicker fx:id="dateDesde" layoutX="438.0" layoutY="541.0" promptText="Des de" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="20.0" />
+      <JFXButton fx:id="btnBuscar" layoutX="300.0" layoutY="573.0" onMouseClicked="#filtroDate" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="Buscar" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="380.0" />
+      <HBox fx:id="hbxTotales" layoutX="26.0" layoutY="482.0" prefHeight="10.0" prefWidth="200.0" style="-fx-background-color: #e0e0e0;" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
    </children>
 </AnchorPane>
