@@ -87,27 +87,6 @@ public class QueryManager<T> {
 		return respuesta;
 	}
 	
-
-	public Respuesta<T> readQuery(RequestBody body, int metod) {
-		Request request = new Request.Builder()
-				.header("Authorization", token)
-				.url(this.url + metod)
-				.post(body)
-				.build();
-		
-		this.respuesta.clear();
-		try {
-			Response response = client.newCall(request).execute();
-			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
-			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
-		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
-		}
-		
-		return respuesta;
-	}
-	
 	public Respuesta<T> insertOne(Respuesta<T> respuesta){
 		this.respuesta.clear();
 //		RequestBody req = new Form.Builder().setType(MultipartBody.FORM).addFormDataPart("user_name", email)
