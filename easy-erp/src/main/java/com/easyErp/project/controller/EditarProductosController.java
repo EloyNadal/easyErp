@@ -251,7 +251,22 @@ public class EditarProductosController{
 			}
 		});
 
-	}	
+	}
+	
+	@FXML
+	private void filtrar() {
+		
+		ArrayList<Producto> copiaProductos = new ArrayList<Producto>(this.productos);
+		String filtro;
+		filtro = txtNombre.getText();
+		if(checkNotEmpty(filtro));
+		
+	}
+	
+	private boolean checkNotEmpty(String string) {
+		if(string.trim().isEmpty())return false;
+		return true;
+	}
 	
 	public void newProducto() {
 		AppManager.getInstance().getAppMain().verProductos(null);

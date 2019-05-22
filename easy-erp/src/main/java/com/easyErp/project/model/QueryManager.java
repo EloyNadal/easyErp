@@ -137,14 +137,6 @@ public class QueryManager<T> {
 		return respuesta;
 	}
 	
-	public Respuesta<T> insertOne(Respuesta<T> respuesta){
-		this.respuesta.clear();
-//		RequestBody req = new Form.Builder().setType(MultipartBody.FORM).addFormDataPart("user_name", email)
-//				.addFormDataPart("password", password).build();
-		
-		return respuesta;
-	}
-	
 	public static boolean login(String email, String password) {
 		RequestBody req = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("user_name", email)
 				.addFormDataPart("password", password).build();
