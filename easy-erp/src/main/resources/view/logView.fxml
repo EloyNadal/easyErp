@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -19,7 +19,7 @@
                         <CheckBox fx:id="chbDebug" mnemonicParsing="false" text="Debug" />
                      </children>
                   </HBox>
-                  <Label fx:id="txtLog" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" wrapText="true" />
+                  <TextArea fx:id="txtLog" editable="false" maxWidth="1.7976931348623157E308" wrapText="true" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </children>

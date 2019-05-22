@@ -7,7 +7,7 @@ public class GrupoUsuario {
 	private String nombre;
 	private char permiso;
 	
-	protected GrupoUsuario() {
+	public GrupoUsuario() {
 		
 	}
 	

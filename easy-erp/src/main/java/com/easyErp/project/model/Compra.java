@@ -16,7 +16,7 @@ public class Compra {
     private String updated_at;
     private List<CompraLinea> compra_linea;
     
-	protected Compra() {
+	public Compra() {
 	}
 
 	public Integer getId() {

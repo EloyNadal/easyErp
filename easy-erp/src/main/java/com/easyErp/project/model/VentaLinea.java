@@ -9,7 +9,7 @@ public class VentaLinea {
 	private Integer tasa_id;
 	private Double cantidad;
 	
-	protected VentaLinea() {
+	public VentaLinea() {
 		
 	}
 

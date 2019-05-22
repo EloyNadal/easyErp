@@ -6,7 +6,7 @@ public class Cliente extends Persona{
 	private Integer id;
 	private Integer grupo_cliente_id;
 
-	protected Cliente() {
+	public Cliente() {
 
 	}
 

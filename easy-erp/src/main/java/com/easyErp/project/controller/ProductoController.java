@@ -1,17 +1,13 @@
 package com.easyErp.project.controller;
 
-import com.easyErp.project.log.EasyErpException;
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.QueryManager;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class ProductoController {
 	

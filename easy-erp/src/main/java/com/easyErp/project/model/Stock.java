@@ -8,7 +8,7 @@ public class Stock {
 	private Integer producto_id;
 	private Double cantidad;
 	
-	private Stock() {
+	public Stock() {
 		
 	}
 

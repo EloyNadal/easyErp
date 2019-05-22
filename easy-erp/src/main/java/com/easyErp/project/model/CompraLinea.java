@@ -10,7 +10,7 @@ public class CompraLinea {
     private Integer tasa_id;
     private Double cantidad;
     
-	protected CompraLinea() {
+	public CompraLinea() {
 	}
 
 	public Integer getId() {

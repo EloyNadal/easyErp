@@ -17,7 +17,7 @@ public class Venta {
 	private Locale updated_at;
 	private List<VentaLinea> venta_linea;
 	
-	protected Venta() {
+	public Venta() {
 		
 	}
 

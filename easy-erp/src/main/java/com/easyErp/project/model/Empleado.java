@@ -7,7 +7,7 @@ public class Empleado extends Persona {
 	private Integer tienda_id;
 
 	
-	protected Empleado() {
+	public Empleado() {
 		
 	}
 

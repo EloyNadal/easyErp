@@ -2,13 +2,11 @@ package com.easyErp.project.controller;
 
 import com.easyErp.project.log.SystemLog;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
+import javafx.scene.control.TextArea;
 
-public class LogController extends Application {
+public class LogController implements Runnable{
 
 	@FXML
 	CheckBox chbErrores;
@@ -17,14 +15,10 @@ public class LogController extends Application {
 	@FXML
 	CheckBox chbConexiones;
 	@FXML
-	Label txtLog;
-
-	private static Boolean active = false;
-
+	TextArea txtLog;
+	
 	@FXML
 	public void initialize() {
-		setActive(true);
-		chbErrores.setSelected(true);
 		chbErrores.setOnMouseClicked(event -> {
 			SystemLog.setErrores(chbErrores.isSelected());
 
@@ -39,29 +33,14 @@ public class LogController extends Application {
 		});
 	}
 
-	private void addText(String lines, Label label) {
-
-		label.setText(label.getText() + lines);
-
-	}
-
-	public static boolean isActive() {
-		synchronized (LogController.active) {
-			return active;
-		}
-	}
-
-	public static void setActive(boolean active) {
-		synchronized (LogController.active) {
-			LogController.active = active;
-		}
-	}
-
 	@Override
-	public void start(Stage arg0) throws Exception {
-		while (isActive()) {
-			addText(SystemLog.viewLog(), txtLog);
+	public void run() {
+		chbErrores.setSelected(true);
+		while (true) {
+			if (!SystemLog.isEmpty()) {
+				System.out.println("funciona");
+				txtLog.setText(txtLog.getText() + SystemLog.viewLog());
+			}
 		}
 	}
-
 }

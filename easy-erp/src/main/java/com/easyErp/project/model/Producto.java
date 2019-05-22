@@ -186,10 +186,10 @@ public class Producto {
 		return manager;
 	}
 
-	@Override
-	public String toString() {
-		return this.getNombre();
-	}
-	
+//	@Override
+//	public String toString() {
+//		return this.getNombre();
+//	}
+//	
 	
 }

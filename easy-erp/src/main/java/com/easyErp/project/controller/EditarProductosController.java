@@ -1,9 +1,7 @@
 package com.easyErp.project.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import com.easyErp.project.log.EasyErpException;
 import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Categoria;
 import com.easyErp.project.model.Producto;
@@ -14,31 +12,21 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventDispatchChain;
-import javafx.event.EventDispatcher;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+
 
 
 public class EditarProductosController{
@@ -68,18 +56,22 @@ public class EditarProductosController{
 
 	@FXML private JFXCheckBox chkActivo;
 	@FXML private JFXButton btnFiltrar;
+	@FXML private JFXButton btnQuitarFiltro;
+	
+	private ArrayList<Producto> productos;
 	
 	@FXML
-    private void initialize() throws IOException{
+    private void initialize(){
 		
 		QueryManager<Producto> queryManager = Producto.getQueryManager();
-		ArrayList<Producto> productos = queryManager.readAll().getObjectsArray();
+		this.productos = queryManager.readAll().getObjectsArray();
 		
 		QueryManager<Categoria> queryManagerCategoria = Categoria.getQueryManager();
 		ArrayList<Categoria> categorias = queryManagerCategoria.readAll().getObjectsArray();
-		
+		categorias.add(0, null);
 		QueryManager<Tasa> queryManagerTasa = Tasa.getQueryManager();
 		ArrayList<Tasa> tasas = queryManagerTasa.readAll().getObjectsArray();
+		tasas.add(0, null);
 		
 		txtNombre.setText("Prueba");
 		txtReferencia.setText("Prueba");
@@ -138,7 +130,6 @@ public class EditarProductosController{
 		this.activo.setCellFactory(new ColumnButton<Producto, Boolean>( "activo", new Image(getClass().getResourceAsStream("/image/ok.png"))) {
 			@Override
 			public void buttonAction(Producto producto) {
-				//Caixer.getInstance().getMenuController().movimentsUsuari(operacio.getUsuari());
 			}
 		});
 		
@@ -262,5 +253,22 @@ public class EditarProductosController{
 
 	}
 	
+	@FXML
+	private void filtrar() {
+		
+		ArrayList<Producto> copiaProductos = new ArrayList<Producto>(this.productos);
+		String filtro;
+		filtro = txtNombre.getText();
+		if(checkNotEmpty(filtro));
+		
+	}
 	
+	private boolean checkNotEmpty(String string) {
+		if(string.trim().isEmpty())return false;
+		return true;
+	}
+	
+	public void newProducto() {
+		AppManager.getInstance().getAppMain().verProductos(null);
+	}
 }

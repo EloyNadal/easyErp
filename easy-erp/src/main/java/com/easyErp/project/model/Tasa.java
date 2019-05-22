@@ -7,7 +7,7 @@ public class Tasa {
 	private String nombre;
 	private Double ratio_tasa;
 	
-	protected Tasa() {
+	public Tasa() {
 		
 	}
 

@@ -7,6 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class LoginController{
@@ -19,7 +22,9 @@ public class LoginController{
 	Button btnOk;
 	@FXML
 	Button btnCancel;
-
+	@FXML
+	AnchorPane screen;
+	
 	@FXML
 	public void login() {
 		QueryManager.login(txtUser.getText(), txtPwd.getText());
@@ -33,5 +38,16 @@ public class LoginController{
 			System.exit(0);
 	}
 
-
+	@FXML
+	public void initialize() {
+		screen.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if(AppMainController.isKeyPressed(event, KeyCode.ENTER))
+				login();
+		});	
+		screen.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if(AppMainController.isKeyPressed(event, KeyCode.CONTROL))
+				System.out.println(event.getCode().toString());
+					
+		});	
+	}
 }

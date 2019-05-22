@@ -8,12 +8,12 @@ import java.util.Map.Entry;
 
 public class SystemLog {
 	
-	private static boolean errores = true;
+	private static boolean errores = false;
 	private static boolean conexiones = false;
 	private static boolean debug = false;
 	private static Map<Date, String> registre = initializeLog();
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		
+	private static Boolean empty = true;
 	public SystemLog() {
 		
 	}
@@ -49,12 +49,14 @@ public class SystemLog {
 		synchronized (registre) {
 			registre.put(new Date(), message);
 		}
+		setEmpty(false);
 	}
 	
 	public static void print (Date date, String message) {
 		synchronized (registre) {
 			registre.put(date, message);
 		}
+		setEmpty(false);
 	}
 	
 	private static Map<Date, String>initializeLog() {
@@ -68,8 +70,18 @@ public class SystemLog {
 				informe += sdf.format(entrada.getKey()) + ": " + entrada.getValue() + System.lineSeparator();
 			}
 			registre.clear();
+			setEmpty(true);
 		}
 		return informe;
 	}
 	
+	public static boolean isEmpty() {
+		synchronized(SystemLog.empty) {
+			return SystemLog.empty;
+		}
+	}
+	
+	private static void setEmpty(boolean empty) {
+		SystemLog.empty = empty;
+	}
 }

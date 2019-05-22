@@ -7,7 +7,7 @@ public class GrupoClientes {
 	private String nombre;
 	private Float ratio_descuento;
 	
-	protected GrupoClientes() {
+	public GrupoClientes() {
 		
 	}
 	
