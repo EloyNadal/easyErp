@@ -16,7 +16,7 @@ public class VentaLinea {
 	private Producto producto;
 	private Venta venta;
 	
-	protected VentaLinea() {
+	public VentaLinea() {
 
 		
 	}

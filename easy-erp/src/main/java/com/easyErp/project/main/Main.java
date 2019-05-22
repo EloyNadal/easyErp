@@ -1,19 +1,15 @@
 package com.easyErp.project.main;
 
-import java.beans.EventHandler;
-
 import com.easyErp.project.controller.AppMainController;
 import com.easyErp.project.model.AppManager;
 
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 public class Main extends Application {
