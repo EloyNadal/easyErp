@@ -40,6 +40,11 @@ public class Categoria {
 		this.categoria_id = categoria_id;
 	}
 	
+	@Override
+	public String toString() {
+		return this.getNombre();
+	}
+	
 	public static QueryManager<Categoria> getQueryManager() {
 		if (null == manager)
 			manager = new QueryManager<Categoria>(Categoria.class, Categoria[].class, "categoria/");

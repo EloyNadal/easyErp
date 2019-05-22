@@ -28,6 +28,7 @@ public class Producto {
 	private List<Stock> stocks; 
 	private List<Compra> compras;
 	private List<Venta> ventas;
+	private Proveedor proveedor;
 	
 	private static QueryManager<Producto> manager;
 	
@@ -222,7 +223,15 @@ public class Producto {
 		}
 		return 0.000;
 	}
-	
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
 
 	public static QueryManager<Producto> getQueryManager(){
 		if(null == manager)

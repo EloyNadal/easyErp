@@ -16,6 +16,8 @@ public class VentaLinea {
 	private Producto producto;
 	private Venta venta;
 	
+	private static QueryManager<VentaLinea> manager;
+	
 	public VentaLinea() {
 
 		
@@ -69,5 +71,42 @@ public class VentaLinea {
 		this.cantidad = cantidad;
 	}
 	
+	public Integer getTienda_id() {
+		return tienda_id;
+	}
+
+	public Tienda getTienda() {
+		return tienda;
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public Venta getVenta() {
+		return venta;
+	}
+
+	public void setTienda_id(Integer tienda_id) {
+		this.tienda_id = tienda_id;
+	}
+
+	public void setTienda(Tienda tienda) {
+		this.tienda = tienda;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	public void setVenta(Venta venta) {
+		this.venta = venta;
+	}
+
+	public static QueryManager<VentaLinea> getQueryManager(){
+		if(null == manager)
+			manager = new QueryManager<VentaLinea>(VentaLinea.class, VentaLinea[].class, "ventalinea/");
+		return manager;
+	}
 	
 }

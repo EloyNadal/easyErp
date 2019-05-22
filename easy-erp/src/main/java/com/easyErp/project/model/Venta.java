@@ -13,8 +13,8 @@ public class Venta {
 	private Double precio_sin_tasas;
 	private Double total_tasas;
 	private Double precio_total;
-	private Locale created_at;
-	private Locale updated_at;
+	private String created_at;
+	private String updated_at;
 	private List<VentaLinea> venta_linea;
 	
 	public Venta() {
@@ -77,19 +77,19 @@ public class Venta {
 		this.precio_total = precio_total;
 	}
 
-	public Locale getCreated_at() {
+	public String getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(Locale created_at) {
+	public void setCreated_at(String created_at) {
 		this.created_at = created_at;
 	}
 
-	public Locale getUpdated_at() {
+	public String getUpdated_at() {
 		return updated_at;
 	}
 
-	public void setUpdated_at(Locale updated_at) {
+	public void setUpdated_at(String updated_at) {
 		this.updated_at = updated_at;
 	}
 	
