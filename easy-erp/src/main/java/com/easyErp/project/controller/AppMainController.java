@@ -7,7 +7,6 @@ import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.QueryManager;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,12 +15,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class AppMainController {
 
-	private Stage logView;
 	@FXML
 	MenuItem menuClientes;
 	@FXML
@@ -36,7 +33,7 @@ public class AppMainController {
 	MenuItem menuLog;
 	@FXML
 	MenuItem menuEditProductos;
-	LogController logController; 
+
 	@FXML
 	public void verClientes() {
 		loadScene("/view/inicio.fxml");
@@ -107,12 +104,7 @@ public class AppMainController {
 		}
 	}
 
-	public void mostrarLog() {
-		if (!logView.isShowing()) {
-			logView.show();
-		}
-
-	}
+	
 
 	@FXML
 	public void initialize() {
@@ -131,12 +123,6 @@ public class AppMainController {
 						System.exit(0);
 				});
 				log.showAndWait();
-				FXMLLoader myLoader2 = new FXMLLoader(getClass().getResource("/view/logView.fxml"));
-				AnchorPane scene2 = myLoader2.load();
-				logController = myLoader2.getController();
-				logView = new Stage();
-				logView.setTitle("Log");
-				logView.setScene(new Scene(scene2));
 				AppManager.getInstance().setAppMain(this);
 			} catch (IOException e) {
 				new EasyErpException(e.getMessage());
