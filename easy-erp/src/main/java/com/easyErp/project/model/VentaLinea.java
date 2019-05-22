@@ -2,14 +2,22 @@ package com.easyErp.project.model;
 
 public class VentaLinea {
 	
+	
 	private Integer id;
+	private Integer tienda_id;
 	private Integer venta_id;
 	private Integer producto_id;
 	private Double precio;
 	private Integer tasa_id;
 	private Double cantidad;
 	
-	public VentaLinea() {
+
+	private Tienda tienda;
+	private Producto producto;
+	private Venta venta;
+	
+	protected VentaLinea() {
+
 		
 	}
 

@@ -49,12 +49,12 @@ public class AppMainController {
 
 	public void verProductos(Producto producto) {
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/productoView.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/productoView2.fxml"));
 		Node vista;
 		try {
 			vista = loader.load();
 			if (producto != null) {
-				ProductoController controller = loader.getController();
+				ProductoController2 controller = loader.getController();
 				controller.cargarProducto(producto);
 			}
 

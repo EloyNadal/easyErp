@@ -7,6 +7,8 @@ public class Stock {
 	private Integer tienda_id;
 	private Integer producto_id;
 	private Double cantidad;
+	private Tienda tienda;
+	private Producto producto;
 	
 	public Stock() {
 		
@@ -44,6 +46,38 @@ public class Stock {
 		this.cantidad = cantidad;
 	}
 	
+	public String getNombreTienda() {
+		return this.tienda.getNombre();
+	}
+	
+	public String getCiudadTienda() {
+		return this.tienda.getCiudad();
+	}
+	
+	public String getNombreProducto() {
+		return this.producto.getNombre();
+	}
+	
+	public String getReferenciaProducto() {
+		return this.producto.getReferencia();
+	}
+	
+	public Tienda getTienda() {
+		return tienda;
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setTienda(Tienda tienda) {
+		this.tienda = tienda;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
 	public static QueryManager<Stock> getQueryManager(){
 		if(null == manager)
 			manager = new QueryManager<Stock>(Stock.class, Stock[].class, "stock/");
