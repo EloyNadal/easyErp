@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -131,6 +132,25 @@ public class QueryManager<T> {
 				AppManager.createExceptionFromErrorCode(response.code());
 		} catch (Exception e) {
 			AppManager.printError(e.getMessage());
+		}
+		return respuesta;
+	}
+	
+	public Respuesta<T> readWithDate(Headers headers) {
+		
+		
+		Request request = new Request.Builder()
+				.header("Authorization", token)
+				.headers(headers)
+				.url(this.url).build();
+		this.respuesta.clear();
+		try {
+			Response response = client.newCall(request).execute();
+			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
+			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
+		} catch (Exception e) {
+			new EasyErpException(e.getMessage());
 		}
 		return respuesta;
 	}
