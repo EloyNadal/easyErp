@@ -3,13 +3,11 @@ package com.easyErp.project.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.easyErp.project.log.EasyErpException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -46,9 +44,9 @@ public class QueryManager<T> {
 				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
 				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
 			} else 
-				EasyErpException.createExceptionFromErrorCode(response.code());
+				AppManager.createExceptionFromErrorCode(response.code());
 		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 		}
 		return respuesta;
 	}
@@ -62,7 +60,7 @@ public class QueryManager<T> {
 			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
 			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
 		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 		}
 		return respuesta;
 	}
@@ -81,7 +79,7 @@ public class QueryManager<T> {
 			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
 			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
 		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 		}
 		
 		return respuesta;
@@ -105,9 +103,9 @@ public class QueryManager<T> {
 				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
 				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
 			} else 
-				EasyErpException.createExceptionFromErrorCode(response.code());
+				AppManager.createExceptionFromErrorCode(response.code());
 		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 		}
 		return respuesta;
 	}
@@ -130,9 +128,9 @@ public class QueryManager<T> {
 				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
 				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
 			} else 
-				EasyErpException.createExceptionFromErrorCode(response.code());
+				AppManager.createExceptionFromErrorCode(response.code());
 		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 		}
 		return respuesta;
 	}
@@ -147,7 +145,7 @@ public class QueryManager<T> {
 			token = gson.fromJson(json.get("data"), Usuario.class).getApiToken();
 			if(response.isSuccessful()) AppManager.setLogged(true);
 		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 			return false;
 		}
 		return true;

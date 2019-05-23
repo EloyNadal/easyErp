@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.LogController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.log.LogController">
    <children>
-      <HBox prefHeight="500.0" prefWidth="400.0">
+      <HBox alignment="CENTER" minHeight="30.0" prefHeight="30.0" prefWidth="400.0" spacing="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox prefHeight="500.0" prefWidth="910.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <HBox alignment="CENTER" spacing="30.0">
-                     <children>
-                        <CheckBox fx:id="chbConexiones" mnemonicParsing="false" text="Conexiones" />
-                        <CheckBox fx:id="chbErrores" mnemonicParsing="false" text="Errores" />
-                        <CheckBox fx:id="chbDebug" mnemonicParsing="false" text="Debug" />
-                     </children>
-                  </HBox>
-                  <TextArea fx:id="txtLog" editable="false" maxWidth="1.7976931348623157E308" wrapText="true" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
+            <CheckBox fx:id="chbConexiones" mnemonicParsing="false" text="Conexiones" />
+            <CheckBox fx:id="chbDebug" mnemonicParsing="false" text="Debug" />
+            <CheckBox fx:id="chbErrores" mnemonicParsing="false" selected="true" text="Errores" />
          </children>
       </HBox>
+      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <content>
+          <AnchorPane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <TextArea fx:id="txtLog" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="470.0" prefWidth="400.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import com.easyErp.project.log.EasyErpException;
 import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Categoria;
 import com.easyErp.project.model.Producto;
@@ -433,7 +432,7 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			//System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
 		} else {
-			new EasyErpException("No existen ventas de este producto");
+			AppManager.printError("No existen ventas de este producto");
 		}		
 	}
 	
@@ -508,7 +507,7 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			//System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
 		} else {
-			new EasyErpException("No existen ventas de este producto");
+			AppManager.printError("No existen ventas de este producto");
 		}
 	}
 	
@@ -537,7 +536,7 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 				this.table.setItems(FXCollections.observableArrayList(array));
 				anadirTotalesVenta(new ArrayList<VentaLinea>(array), table);
 			} else {
-				new EasyErpException("No existen ventas de este producto");
+				AppManager.printError("No existen ventas de este producto");
 			}
 				
 		}

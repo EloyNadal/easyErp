@@ -2,7 +2,6 @@ package com.easyErp.project.controller;
 
 import java.io.IOException;
 
-import com.easyErp.project.log.EasyErpException;
 import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.QueryManager;
@@ -62,7 +61,7 @@ public class AppMainController {
 			AnchorPane.setRightAnchor(vista, 0.0);
 
 		} catch (IOException e) {
-			new EasyErpException("Error al cargar producto");
+			AppManager.printError("Error al cargar producto");
 		}
 
 	}
@@ -98,7 +97,7 @@ public class AppMainController {
 			AnchorPane.setRightAnchor(node, 0.0);
 
 		} catch (IOException e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 		}
 	}
 
@@ -123,7 +122,7 @@ public class AppMainController {
 				log.showAndWait();
 				AppManager.getInstance().setAppMain(this);
 			} catch (IOException e) {
-				new EasyErpException(e.getMessage());
+				AppManager.printError(e.getMessage());
 			}
 			if (!AppManager.isLogged())
 				AppManager.showError("No se ha podido realizar el login");
@@ -133,7 +132,7 @@ public class AppMainController {
 	// TODO eliminar
 	@FXML
 	public void lanzarExcepcion() {
-		new EasyErpException("Prueba de error");
+		AppManager.printError("Prueba de error");
 	}
 
 	// TODO eliminar

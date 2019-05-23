@@ -40,7 +40,10 @@
                                     <Font size="25.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtTotal" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="40.0" prefWidth="583.0" />
+                              <TextField fx:id="txtTotal" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="40.0" prefWidth="583.0" text="0.00€">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font></TextField>
                            </children>
                         </HBox>
                      </children>
@@ -57,6 +60,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
@@ -120,9 +124,24 @@
                                     <Font size="25.0" />
                                  </font>
                               </JFXButton>
+                              <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#insertarNumero" ripplerFill="#50ced7" text="-" GridPane.rowIndex="4">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#50ced7" text="." GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#50ced7" text="\%" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </JFXButton>
                            </children>
                         </GridPane>
-                        <TextField fx:id="txtLineaTeclado" alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="211.0">
+                        <TextField fx:id="txtLineaTeclado" alignment="CENTER_RIGHT" editable="false" prefHeight="40.0" prefWidth="211.0">
                            <VBox.margin>
                               <Insets top="2.0" />
                            </VBox.margin></TextField>
@@ -146,9 +165,9 @@
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Efectivo" />
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Factura" GridPane.rowIndex="2" />
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Tarjeta" GridPane.columnIndex="1" />
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Dividir ticket" GridPane.rowIndex="1" />
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Cliente" GridPane.rowIndex="1" />
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Total" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Eliminar línea" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#eliminarLinea" ripplerFill="#228327" text="Eliminar línea" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>

@@ -1,87 +1,121 @@
 package com.easyErp.project.log;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Map.Entry;
+import java.util.LinkedList;
+
+import com.easyErp.project.log.SystemLog.LogType;
 
 public class SystemLog {
 	
-	private static boolean errores = false;
-	private static boolean conexiones = false;
-	private static boolean debug = false;
-	private static Map<Date, String> registre = initializeLog();
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	private static Boolean empty = true;
-	public SystemLog() {
-		
-	}
-	
-	public static boolean isErrores() {
-		return errores;
-	}
+	private boolean errores = false;
+	private boolean conexiones = false;
+	private boolean debug = false;
+	private LinkedList<LogMessage> registre = initializeLog();
+	private static SystemLog sysLog = new SystemLog();
 
-	public static void setErrores(boolean errores) {
-		SystemLog.print("cambio errores");
-		SystemLog.errores = errores;
-	}
+	enum LogType {
+		ERROR("#FF0000"), INFO("#7CFC00"), CONNECTION("#0000FF");
+		private String color;
 
-	public static boolean isConexiones() {
-		return conexiones;
-	}
-
-	public static void setConexiones(boolean conexiones) {
-		SystemLog.print("cambio conexiones");
-		SystemLog.conexiones = conexiones;
-	}
-
-	public static boolean isDebug() {
-		return debug;
-	}
-
-	public static void setDebug(boolean debug) {
-		SystemLog.print("cambio Debug");
-		SystemLog.debug = debug;
-	}
-
-	public static void print(String message) {
-		synchronized (registre) {
-			registre.put(new Date(), message);
+		LogType(String c) {
+			color = c;
 		}
-		setEmpty(false);
-	}
-	
-	public static void print (Date date, String message) {
-		synchronized (registre) {
-			registre.put(date, message);
+
+		String getColor() {
+			return color;
 		}
-		setEmpty(false);
 	}
-	
-	private static Map<Date, String>initializeLog() {
-		return new TreeMap<Date, String>();
+
+	private SystemLog() {
 	}
-	
-	public static String viewLog() {
-		String informe = "";
-		synchronized (registre) {
-			for (Entry<Date, String> entrada : registre.entrySet()) {
-				informe += sdf.format(entrada.getKey()) + ": " + entrada.getValue() + System.lineSeparator();
+
+	public static SystemLog getInstance() {
+		return sysLog;
+	}
+
+	public boolean isErroresActive() {
+		return this.errores;
+	}
+
+	public void setErrores(boolean errores) {
+		this.errores = errores;
+	}
+
+	public boolean isConexionesActive() {
+		return this.conexiones;
+	}
+
+	public void setConexiones(boolean conexiones) {
+		this.conexiones = conexiones;
+	}
+
+	public boolean isDebugActive() {
+		return this.debug;
+	}
+
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
+
+	public void print(String message) {
+		if (isDebugActive())
+			synchronized (this.registre) {
+				registre.addFirst(new LogMessage(LogType.INFO, new Date(), message));
 			}
-			registre.clear();
-			setEmpty(true);
+	}
+
+	public void printConnection(String message) {
+		if (isConexionesActive())
+			synchronized (this.registre) {
+				registre.addFirst(new LogMessage(LogType.CONNECTION, new Date(), message));
+			}
+	}
+
+	public void printError(Date date, String message) {
+		if (isErroresActive())
+			synchronized (this.registre) {
+				registre.addFirst(new LogMessage(LogType.CONNECTION, date, message));
+			}
+	}
+
+	private LinkedList<LogMessage> initializeLog() {
+		return new LinkedList<LogMessage>();
+	}
+
+	public LogMessage getMessage() {
+		synchronized (this.registre) {
+			return registre.removeLast();
 		}
-		return informe;
 	}
-	
-	public static boolean isEmpty() {
-		synchronized(SystemLog.empty) {
-			return SystemLog.empty;
+
+	public boolean isEmpty() {
+		synchronized (this.registre) {
+			return registre.size() == 0;
 		}
 	}
-	
-	private static void setEmpty(boolean empty) {
-		SystemLog.empty = empty;
+}
+
+class LogMessage {
+	private LogType type;
+	private Date date;
+	private String message;
+
+	public LogMessage(LogType type, Date date, String message) {
+		this.type = type;
+		this.date = date;
+		this.message = message;
 	}
+
+	public LogType getType() {
+		return type;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
 }

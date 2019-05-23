@@ -3,7 +3,6 @@ package com.easyErp.project.main;
 import java.io.IOException;
 
 import com.easyErp.project.controller.AppMainController;
-import com.easyErp.project.log.EasyErpException;
 import com.easyErp.project.model.AppManager;
 
 import javafx.application.Application;
@@ -17,7 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class Main extends Application {
-	
+
 	private Stage logView;
 
 	@Override
@@ -35,18 +34,24 @@ public class Main extends Application {
 		AnchorPane scene2;
 		try {
 			scene2 = myLoader.load();
-
+			AnchorPane.setTopAnchor(scene2, 0.0);
+			AnchorPane.setBottomAnchor(scene2, 0.0);
+			AnchorPane.setLeftAnchor(scene2, 0.0);
+			AnchorPane.setRightAnchor(scene2, 0.0);
 			this.logView = new Stage();
 			this.logView.setTitle("Log");
 			this.logView.setScene(new Scene(scene2));
-			
+			this.logView.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+				event.consume();
+				logView.hide();
+			});
 		} catch (IOException e) {
-			new EasyErpException(e.getMessage());
+			AppManager.printError(e.getMessage());
 		}
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (AppMainController.isKeyPressed(event, KeyCode.F11)) {
 				if (!logView.isShowing())
-					logView.show();
+				logView.show();
 			}
 
 		});

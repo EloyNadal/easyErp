@@ -7,15 +7,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bson.internal.Base64;
 
-import com.easyErp.project.log.EasyErpException;
-
 
 public class Encrypt {
 	
 	private static final String ALGORITHM = "AES";
 	private static final byte[] SALT = "eAsYeRpCeRn0vIGV".getBytes();
 
-    static String getEncrypted(String plainText) throws EasyErpException {
+    static String getEncrypted(String plainText) {
     	
         if (plainText == null) {
             return null;
@@ -28,11 +26,12 @@ public class Encrypt {
             byte[] encodedValue = cipher.doFinal(plainText.getBytes());
             return Base64.encode(encodedValue);
         } catch (Exception e) {
-           throw new EasyErpException("Error al encriptar");
+        	AppManager.printError("Error al encriptar");
         }
+        return null;
     }
 
-    public static String getDecrypted(String encodedText) throws EasyErpException {
+    public static String getDecrypted(String encodedText){
 
         if (encodedText == null) {
             return null;
@@ -46,8 +45,9 @@ public class Encrypt {
             byte[] decValue = cipher.doFinal(decodedValue);
             return new String(decValue);
         } catch (Exception e) {
-        	throw new EasyErpException("Error al desencriptar");
+        	AppManager.printError("Error al desencriptar");
         }
+        return null;
         
     }
 
