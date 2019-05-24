@@ -162,11 +162,11 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Efectivo" />
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Efectivo" onAction="#pagarEfectivo"/>
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Factura" GridPane.rowIndex="2" />
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Tarjeta" GridPane.columnIndex="1" />
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Cliente" GridPane.rowIndex="1" />
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Total" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Tarjeta" GridPane.columnIndex="1" onAction="#pagarTarjeta"/>
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Cliente" GridPane.rowIndex="1" onAction="#insertarCliente"/>
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Total" GridPane.columnIndex="1" GridPane.rowIndex="2" onAction="#cerrarVenta"/>
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#eliminarLinea" ripplerFill="#228327" text="Eliminar línea" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>

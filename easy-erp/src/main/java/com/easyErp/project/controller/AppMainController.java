@@ -19,19 +19,19 @@ import javafx.stage.Stage;
 public class AppMainController {
 
 	@FXML
-	MenuItem menuClientes;
+	private MenuItem menuClientes;
 	@FXML
-	MenuItem menuProductos;
+	private MenuItem menuProductos;
 	@FXML
-	MenuItem menuProveedores;
+	private MenuItem menuProveedores;
 	@FXML
-	MenuItem menuTPV;
+	private MenuItem menuTPV;
 	@FXML
-	AnchorPane mainWindow;
+	private AnchorPane mainWindow;
 	@FXML
-	MenuItem menuLog;
+	private MenuItem menuLog;
 	@FXML
-	MenuItem menuEditProductos;
+	private MenuItem menuEditProductos;
 
 	@FXML
 	public void verClientes() {
@@ -50,9 +50,11 @@ public class AppMainController {
 		try {
 			vista = loader.load();
 			ProductoController2 controller = loader.getController();
-			controller.cargarProducto(producto);
-			
-			this.mainWindow.getChildren().clear();
+			controller.cargarProducto(producto, vista);
+			for(Node node:this.mainWindow.getChildren()) {
+				node.setVisible(false);
+			}
+//			this.mainWindow.getChildren().clear();
 			this.mainWindow.getChildren().add(vista);
 			
 			AnchorPane.setTopAnchor(vista,0.0);
@@ -66,6 +68,13 @@ public class AppMainController {
 
 	}
 
+	public void volver(Node oldNode) {
+		this.mainWindow.getChildren().remove(oldNode);
+		for(Node node:this.mainWindow.getChildren()) {
+			node.setVisible(true);
+		}
+	}
+	
 	@FXML
 	public void cargarTPV() {
 		loadScene("/view/TPVView.fxml");
@@ -82,16 +91,13 @@ public class AppMainController {
 
 	@FXML
 	public void editarProductos() {
-		AppManager.print("carga vista");
 		loadScene("/view/editarProductosView.fxml");
-		AppManager.print("cargaada");
 	}
 
 	public void loadScene(String location) {
 		try {
 			AppManager.print("Antes del nodo");
 			Node node = FXMLLoader.load(getClass().getResource(location));
-			AppManager.print("despues del nodo");
 			mainWindow.getChildren().clear();
 			mainWindow.getChildren().add(node);
 

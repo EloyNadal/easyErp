@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class QueryManager<T> {
-	
+
 	private static String token;
 	private static String baseUrl = AppManager.getBaseUrl();
 	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -29,6 +29,7 @@ public class QueryManager<T> {
 	private Class<T[]> objectClassArray;
 	private static OkHttpClient client = new OkHttpClient();
 	private Respuesta<T> respuesta;
+
 	protected QueryManager(Class<T> objectClass, Class<T[]> objectClassArray, String url) {
 		this.url = baseUrl + url;
 		this.objectClassArray = objectClassArray;
@@ -38,14 +39,18 @@ public class QueryManager<T> {
 
 	public Respuesta<T> getByPk(String endPoint) {
 		Request request = new Request.Builder().header("Authorization", token).url(this.url + endPoint).build();
+		AppManager.printConnection(request.toString());
 		this.respuesta.clear();
 		try {
+			System.out.println(request.toString());
 			Response response = client.newCall(request).execute();
 			respuesta.setSuccessful(response.code());
+			AppManager.printConnection(response.toString());
 			if (respuesta.isSuccessful()) {
 				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+				AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
 				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
-			} else 
+			} else
 				AppManager.createExceptionFromErrorCode(response.code());
 		} catch (Exception e) {
 			AppManager.printError(e.getMessage());
@@ -55,10 +60,13 @@ public class QueryManager<T> {
 
 	public Respuesta<T> readAll() {
 		Request request = new Request.Builder().header("Authorization", token).url(this.url).build();
+		AppManager.printConnection(request.toString());
 		this.respuesta.clear();
 		try {
 			Response response = client.newCall(request).execute();
+			AppManager.printConnection(response.toString());
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+			AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
 			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
 			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
 		} catch (Exception e) {
@@ -68,115 +76,122 @@ public class QueryManager<T> {
 	}
 
 	public Respuesta<T> readQuery(RequestBody body, int metod) {
-		Request request = new Request.Builder()
-				.header("Authorization", token)
-				.url(this.url + metod)
-				.post(body)
-				.build();
-		
+		Request request = new Request.Builder().header("Authorization", token).url(this.url + metod).post(body).build();
+		AppManager.printConnection(request.toString());
 		this.respuesta.clear();
 		try {
 			Response response = client.newCall(request).execute();
+			AppManager.printConnection(response.toString());
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+			AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
 			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
 			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
 		} catch (Exception e) {
 			AppManager.printError(e.getMessage());
 		}
-		
+
 		return respuesta;
 	}
-	
-
 
 	public Respuesta<T> updateForId(Integer id, RequestBody body) {
-		Request request = new Request.Builder()
-				.header("Authorization", token)
-				.url(this.url + id)
-				.put(body)
-				.build();
-		
+		Request request = new Request.Builder().header("Authorization", token).url(this.url + id).put(body).build();
+		AppManager.printConnection(request.toString());
 		this.respuesta.clear();
-		
+
 		try {
 			Response response = client.newCall(request).execute();
+			AppManager.printConnection(response.toString());
 			respuesta.setSuccessful(response.code());
 			if (respuesta.isSuccessful()) {
 				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+				AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
 				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
-			} else 
+			} else
 				AppManager.createExceptionFromErrorCode(response.code());
 		} catch (Exception e) {
 			AppManager.printError(e.getMessage());
-		}
-		return respuesta;
-	}
-	
-	public Respuesta<T> insertOne(RequestBody body) {
-		Request request = new Request.Builder()
-				.header("Authorization", token)
-				.url(this.url)
-				.post(body)
-				.build();
-		
-		this.respuesta.clear();
-		
-		try {
-			Response response = client.newCall(request).execute();
-			System.out.println(response.code());
-			System.out.println(response.toString());
-			respuesta.setSuccessful(response.code());
-			if (respuesta.isSuccessful()) {
-				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
-			} else 
-				AppManager.createExceptionFromErrorCode(response.code());
-		} catch (Exception e) {
-			AppManager.printError(e.getMessage());
-		}
-		return respuesta;
-	}
-	
-	public Respuesta<T> readWithDate(Headers headers) {
-		
-		Request request = new Request.Builder()
-				.header("Authorization", token)
-				.headers(headers)
-				.url(this.url).build();
-		
-		this.respuesta.clear();
-		System.out.println(headers.get("desde"));
-		try {
-			Response response = client.newCall(request).execute();
-			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
-			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			
 		}
 		return respuesta;
 	}
 
+	public Respuesta<T> insertOne(RequestBody body) {
+		Request request = new Request.Builder().header("Authorization", token).url(this.url).post(body).build();
+		AppManager.printConnection(request.toString());
+		this.respuesta.clear();
+
+		try {
+			Response response = client.newCall(request).execute();
+			AppManager.printConnection(response.toString());
+			respuesta.setSuccessful(response.code());
+			if (respuesta.isSuccessful()) {
+				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+				AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
+				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
+			} else
+				AppManager.createExceptionFromErrorCode(response.code());
+		} catch (Exception e) {
+			AppManager.printError(e.getMessage());
+		}
+		return respuesta;
+	}
+	
+public Respuesta<T> insertOne(String json) {
+		
+		Request request = new Request.Builder().header("Authorization", token).url(this.url)
+				.post(RequestBody.create(JSON, json)).build();
+		AppManager.printConnection(json);
+		this.respuesta.clear();
+
+		try {
+			Response response = client.newCall(request).execute();
+			AppManager.printConnection(response.toString());
+			respuesta.setSuccessful(response.code());
+			if (respuesta.isSuccessful()) {
+				JsonObject jason = parser.parse(response.body().string()).getAsJsonObject();
+				AppManager.printConnection(Encrypt.getDecrypted(jason.get("data").getAsString()));
+				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(jason.get("data").getAsString()), objectClass));
+			} else
+				AppManager.createExceptionFromErrorCode(response.code());
+		} catch (Exception e) {
+			AppManager.printError(e.getMessage());
+		}
+		return respuesta;
+	}
+
+
+public Respuesta<T> readWithDate(Headers headers) {
+	Request request = new Request.Builder().header("Authorization", token).headers(headers).url(this.url).build();
+	AppManager.printConnection(request.toString());
+	this.respuesta.clear();
+	try {
+		Response response = client.newCall(request).execute();
+		AppManager.printConnection(response.toString());
+		JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+		T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
+		AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
+		respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
+	} catch (Exception e) {
+		AppManager.printError(e.getMessage());
+	}
+	return respuesta;
+}
 
 	public static Boolean uploadFile(File file, String id) {
 		try {
-			
+
 			String url = baseUrl + "upimage";
 			RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
 					.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image/png"), file))
 					.addFormDataPart("id", id).build();
 
-			Request request = new Request.Builder()
-					.url(url)
-					.post(requestBody)
-					.build();
-			
+			Request request = new Request.Builder().url(url).post(requestBody).build();
+
 			Response response = client.newCall(request).execute();
-			
+
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-			
-			if (response.isSuccessful()) return true;
+
+			if (response.isSuccessful())
+				return true;
 
 		} catch (Exception e) {
 			AppManager.print(e.getMessage());
@@ -184,8 +199,6 @@ public class QueryManager<T> {
 		return false;
 	}
 
-
-	
 	public static boolean login(String email, String password) {
 		RequestBody req = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("user_name", email)
 				.addFormDataPart("password", password).build();
@@ -193,15 +206,16 @@ public class QueryManager<T> {
 		try {
 			Response response = client.newCall(request).execute();
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-			token = gson.fromJson(json.get("data"), Usuario.class).getApiToken();
-			System.out.println(token);
-			if(response.isSuccessful()) AppManager.setLogged(true);
+			Usuario user = gson.fromJson(json.get("data"), Usuario.class);
+			token = user.getApiToken();
+			AppManager.setSessionUser(user.getId());
+			if (response.isSuccessful())
+				AppManager.setLogged(true);
 		} catch (Exception e) {
 			AppManager.printError(e.getMessage());
 			return false;
 		}
 		return true;
 	}
-	
-	
+
 }

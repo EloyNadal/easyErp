@@ -54,12 +54,12 @@
                   <JFXCheckBox fx:id="chkActivo" nodeOrientation="RIGHT_TO_LEFT" text="Activo" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                   <JFXTextField fx:id="txtNombre" prefHeight="25.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                   <JFXTextField fx:id="txtEan" GridPane.columnIndex="3" />
-                  <JFXTextField fx:id="txtPrecioMin" alignment="BASELINE_CENTER" promptText="0.00€" GridPane.columnIndex="5" />
-                  <JFXTextField fx:id="txtPrecioMax" alignment="BOTTOM_CENTER" prefHeight="25.0" prefWidth="100.0" promptText="0.00€" GridPane.columnIndex="7" />
+                  <JFXTextField fx:id="txtPrecioMin" alignment="BASELINE_CENTER" text="0.00" GridPane.columnIndex="5" />
+                  <JFXTextField fx:id="txtPrecioMax" alignment="BOTTOM_CENTER" prefHeight="25.0" prefWidth="100.0" text="0.00" GridPane.columnIndex="7" />
                   <Label text="A:" GridPane.columnIndex="6" />
                   <JFXComboBox fx:id="cmbIva" prefHeight="25.0" prefWidth="133.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <JFXButton fx:id="btnFiltrar" onMouseClicked="#filtrar" prefHeight="25.0" prefWidth="100.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightgreen;" text="Filtrar" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                  <JFXButton fx:id="btnQuitarFiltro" prefHeight="25.0" prefWidth="100.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightgreen;" text="Quitar Filtros" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                  <JFXButton fx:id="btnFiltrar" onAction="#filtrar" onMouseClicked="#filtrar" prefHeight="25.0" prefWidth="100.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightgreen;" text="Filtrar" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                  <JFXButton fx:id="btnQuitarFiltro" onAction="#quitarFiltros" prefHeight="25.0" prefWidth="100.0" ripplerFill="#0c0c0c" style="-fx-background-color: lightgreen;" text="Quitar Filtros" GridPane.columnIndex="7" GridPane.rowIndex="2" />
                </children>
             </GridPane>
 				<HBox spacing="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">

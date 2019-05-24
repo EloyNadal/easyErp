@@ -18,10 +18,10 @@ import com.easyErp.project.log.SystemLog;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
 public class AppManager {
-//	192.168.2.251
 	private static boolean logged = false;
 	private static String baseUrl;
 	private static int idTienda;
@@ -32,11 +32,11 @@ public class AppManager {
 	public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	private static String[] ERRORES = { "Problema de conexion con el servidor", "Elemento no encontrado",
 			"Faltan campos por rellenar" };
-
+	
+	private static int sessionUserId;
 	private AppManager() {
 		inicializarVariables();
 		sysLog = SystemLog.getInstance();
-//		baseUrl = "http://localhost:8000/";
 	}
 
 	public void setAppMain(AppMainController main) {
@@ -59,6 +59,14 @@ public class AppManager {
 		return idTienda;
 	}
 
+	public static int getSessionUserId() {
+		return sessionUserId;
+	}
+
+	public static void setSessionUser(int sessionUserId) {
+		AppManager.sessionUserId = sessionUserId;
+	}
+	
 	public static void printError(String message) {
 		Date date = new Date();
 		sysLog.printError(date, message);
@@ -162,6 +170,16 @@ public class AppManager {
 		return false;
 	}
 
+	public static String showMessageForStringResult(String title, String message) {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setGraphic(null);
+		dialog.setContentText(null);
+		dialog.setHeaderText(message);
+		dialog.setTitle(title);
+		dialog.showAndWait();
+		return dialog.getResult();
+	}
+	
 	public void setStage(Stage stage) {
 		AppManager.print("aqui stage");
 		this.stage = stage;

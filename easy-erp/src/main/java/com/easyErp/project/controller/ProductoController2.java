@@ -48,7 +48,6 @@ import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.RequestBody;
 
-
 public class ProductoController2 {
 
 	Producto producto;
@@ -119,9 +118,8 @@ public class ProductoController2 {
 	private Label lblResultado;
 	@FXML
 	private HBox hbxTotales;
-	
+	private Node node;
 	private TableView<VentaLinea> table;
-	private TableView<Stock> tableStock;
 	private boolean searchTotales;
 
 	//
@@ -132,9 +130,9 @@ public class ProductoController2 {
 	private HiloPeticiones<Categoria> peticionCategorias;
 	private HiloPeticiones<Tasa> peticionTasas;
 	private HiloPeticiones<Proveedor> peticionProveedores;
-	
+
 	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	
+
 	private ArrayList<VentaLinea> ventas;
 
 	@FXML
@@ -166,8 +164,8 @@ public class ProductoController2 {
 
 	}
 
-	public void cargarProducto(Producto producto) {
-
+	public void cargarProducto(Producto producto, Node node) {
+		this.node = node;
 		if (producto == null) {
 			crearProducto();
 			return;
@@ -199,17 +197,16 @@ public class ProductoController2 {
 
 		if (producto.getImagen() != null && !producto.getImagen().isEmpty()) {
 			try {
-				
-				Image image = new Image(producto.getImagen());			
+
+				Image image = new Image(producto.getImagen());
 				this.imagen.setImage(image);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				AppManager.printError(e.getMessage());
 			}
-		}else {
+		} else {
 			this.imagen.setImage(new Image(getClass().getResourceAsStream("/image/anadirImagen.jpg")));
 		}
 
-		
 		if (producto.getProveedor() != null) {
 			txtProveedor.setText(producto.getProveedor().getNombre());
 		}
@@ -220,15 +217,13 @@ public class ProductoController2 {
 		clearTable();
 		TableView<Stock> table = new TableView<Stock>();
 		table.setId("tabla");
-		
-		
-		
+
 		nodosVisibles(new Node[] { this.lineAlmacen });
 		colorNodos(this.btnAlmacen);
 
 		if (this.producto == null)
 			return;
-		
+
 		RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString())
 				.add("tienda_id", String.valueOf(AppManager.getIdTienda())).build();
 
@@ -298,7 +293,6 @@ public class ProductoController2 {
 		TableColumn<Stock, Boolean> verTienda = new TableColumn<Stock, Boolean>("Info");
 
 		table.getColumns().addAll(colTienda, colCiudad, colStock, verTienda);
-		
 
 		colTienda.setMinWidth(90);
 		colTienda.setMaxWidth(400);
@@ -306,7 +300,7 @@ public class ProductoController2 {
 
 		colCiudad.setMinWidth(90);
 		colCiudad.setMaxWidth(400);
-		
+
 		colCiudad.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getTienda().getCiudad()));
 
 		colStock.setMinWidth(90);
@@ -331,105 +325,102 @@ public class ProductoController2 {
 				// AppManager.getInstance().getAppMain().verProductos(producto);
 			}
 		});
-		
+
 		propidadesTabla(table, stocks);
 		anadirTotales(stocks, table);
 	}
-	
-	//TODO 
+
+	// TODO
 	public void anadirTotales(ArrayList<Stock> array, TableView<Stock> table) {
-		
+
 		hbxTotales.getChildren().clear();
 		Double totalCantidad = 0.00;
 		for (Stock stock : array) {
 			totalCantidad += stock.getCantidad();
 		}
-		
+
 		Label label;
 		for (int i = 0; i < table.getColumns().size(); i++) {
 			if (i == 0) {
 				label = new Label("Total");
-			}else if (table.getColumns().get(i).getText() == "Stock") {
+			} else if (table.getColumns().get(i).getText() == "Stock") {
 				label = new Label(totalCantidad.toString());
 				label.setAlignment(Pos.CENTER);
-			}
-			else {
+			} else {
 				label = new Label(" ");
 			}
-			
+
 			hbxTotales.getChildren().add(label);
 			label.setMinWidth(table.getColumns().get(i).getMinWidth());
 			label.setMaxWidth(table.getColumns().get(i).getMaxWidth());
 			HBox.setHgrow(label, Priority.ALWAYS);
 			hbxTotales.setVisible(true);
-		}		
+		}
 	}
-	
+
 	public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea> table) {
-		
+
 		hbxTotales.getChildren().clear();
 		Double totalCantidad = 0.00;
 		Double totalPrecio = 0.00;
 		for (VentaLinea venta : array) {
 			totalCantidad += venta.getCantidad();
-			totalPrecio += (venta.getPrecio() * venta.getCantidad()); 
+			totalPrecio += (venta.getPrecio() * venta.getCantidad());
 		}
-		
+
 		Label label;
 		for (int i = 0; i < table.getColumns().size(); i++) {
 			if (i == 0) {
 				label = new Label("Total");
-			}else if (table.getColumns().get(i).getText() == "Cantidad") {
+			} else if (table.getColumns().get(i).getText() == "Cantidad") {
 				label = new Label(totalCantidad.toString());
 				label.setAlignment(Pos.CENTER);
-			}else if(table.getColumns().get(i).getText() == "Total") {
+			} else if (table.getColumns().get(i).getText() == "Total") {
 				label = new Label(totalPrecio.toString());
 				label.setAlignment(Pos.CENTER);
 			}
-			
+
 			else {
 				label = new Label(" ");
 			}
-			
+
 			hbxTotales.getChildren().add(label);
 			label.setMinWidth(table.getColumns().get(i).getMinWidth());
 			label.setMaxWidth(table.getColumns().get(i).getMaxWidth());
 			HBox.setHgrow(label, Priority.ALWAYS);
 			hbxTotales.setVisible(true);
-		}		
+		}
 	}
 
 	public void historicoCompras() {
 		clearTable();
 		nodosVisibles(new Node[] { this.lineCompras, this.dateDesde, this.dateHasta, this.btnBuscar });
 		colorNodos(this.btnCompras);
-		
+
 		if (this.producto == null)
 			return;
-		
-		Headers headers = new Headers.Builder()
-		.add("producto_id", this.producto.getId().toString())
-		.build();		
+
+		Headers headers = new Headers.Builder().add("producto_id", this.producto.getId().toString()).build();
 
 		this.ventas = queryManagerVentas.readWithDate(headers).getObjectsArray();
-		
+
 		if (ventas != null) {
-			
+
 			this.searchTotales = true;
-			
+
 			this.table = new TableView<VentaLinea>();
 			table.setId("tabla");
 
 			TableColumn<VentaLinea, String> colNombreTienda = new TableColumn<VentaLinea, String>("Nombre");
 			TableColumn<VentaLinea, Double> colCantidad = new TableColumn<VentaLinea, Double>("Cantidad");
 			TableColumn<VentaLinea, Double> colTotal = new TableColumn<VentaLinea, Double>("Precio");
-			
+
 			table.getColumns().addAll(colNombreTienda, colCantidad, colTotal);
 
 			colNombreTienda.setMinWidth(90);
 			colNombreTienda.setMaxWidth(400);
-			colNombreTienda.setCellValueFactory(
-					(param) -> new SimpleStringProperty(param.getValue().getTienda().getNombre()));
+			colNombreTienda
+					.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getTienda().getNombre()));
 
 			colCantidad.setMinWidth(90);
 			colCantidad.setMaxWidth(400);
@@ -438,18 +429,18 @@ public class ProductoController2 {
 			colTotal.setMinWidth(90);
 			colTotal.setMaxWidth(400);
 			colTotal.setCellValueFactory(new PropertyValueFactory<VentaLinea, Double>("precio"));
-			
+
 			propidadesTabla(table, ventas);
 			anadirTotalesVenta(ventas, table);
-			//ejemplo de usar la fecha
-			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			//System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
+			// ejemplo de usar la fecha
+			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd
+			// HH:mm:ss");
+			// System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
 		} else {
 			AppManager.printError("No existen ventas de este producto");
-		}		
+		}
 	}
-	
-	
+
 	public void historicoVentas() {
 		clearTable();
 		nodosVisibles(new Node[] { this.lineVentas, this.dateDesde, this.dateHasta, this.btnBuscar });
@@ -457,20 +448,20 @@ public class ProductoController2 {
 
 		if (this.producto == null)
 			return;
-			
+
 		RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString())
-					.add("tienda_id", String.valueOf(AppManager.getIdTienda())).build();
+				.add("tienda_id", String.valueOf(AppManager.getIdTienda())).build();
 
 		this.ventas = queryManagerVentas.readQuery(formBody, 0).getObjectsArray();
 
 		if (ventas != null) {
-			
+
 			this.searchTotales = false;
-			
+
 			ObservableList<VentaLinea> obsVentas = FXCollections.observableArrayList(ventas);
-			
+
 			this.table = new TableView<VentaLinea>();
-			
+
 			table.setId("tabla");
 
 			TableColumn<VentaLinea, String> colNombre = new TableColumn<VentaLinea, String>("Nombre");
@@ -496,9 +487,7 @@ public class ProductoController2 {
 
 			colTotal.setMinWidth(40);
 			colTotal.setMaxWidth(300);
-			colTotal.setCellValueFactory((param) -> new SimpleStringProperty(
-					(param.getValue().getPrecio())
-					+ "€") );
+			colTotal.setCellValueFactory((param) -> new SimpleStringProperty((param.getValue().getPrecio()) + "€"));
 
 			colFecha.setMinWidth(90);
 			colFecha.setMaxWidth(400);
@@ -511,53 +500,53 @@ public class ProductoController2 {
 							return new SimpleStringProperty(param.getValue().getVenta().getCreated_at());
 						}
 					});
-			
+
 			propidadesTabla(table, ventas);
 			anadirTotalesVenta(ventas, table);
-			//ejemplo de usar la fecha
-			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			//System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
+			// ejemplo de usar la fecha
+			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd
+			// HH:mm:ss");
+			// System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
 		} else {
 			AppManager.printError("No existen ventas de este producto");
 		}
 	}
-	
+
 	public void filtroDate() {
-		
+
 		ObservableList<VentaLinea> array = null;
-		
-		
+
 		LocalDate desde = dateDesde.getValue();
 		LocalDate hasta = dateHasta.getValue();
-		
+
 		if (this.table != null) {
-		
+
 			if (this.searchTotales) {
-				
-				if (desde == null) desde = LocalDate.parse("1900-01-01");
-				if (hasta == null) hasta = LocalDate.parse("2999-12-31");
-				
-				Headers headers = new Headers.Builder()
-						.add("producto_id", this.producto.getId().toString())
-						.add("desde", desde.toString())
-						.add("hasta", hasta.toString())
-						.build();
-				
+
+				if (desde == null)
+					desde = LocalDate.parse("1900-01-01");
+				if (hasta == null)
+					hasta = LocalDate.parse("2999-12-31");
+
+				Headers headers = new Headers.Builder().add("producto_id", this.producto.getId().toString())
+						.add("desde", desde.toString()).add("hasta", hasta.toString()).build();
+
 				array = FXCollections.observableArrayList(queryManagerVentas.readWithDate(headers).getObjectsArray());
-			}
-			else {
+			} else {
 				array = FXCollections.observableArrayList(this.ventas);
 			}
-			
-			if (array.size()>0) {
-				
+
+			if (array.size() > 0) {
+
 				if (!searchTotales) {
-					
+
 					for (VentaLinea ventaLinea : FXCollections.observableArrayList(this.ventas)) {
-						if (hasta != null && LocalDate.parse(ventaLinea.getVenta().getCreated_at(),formatter).isAfter(hasta)) {
+						if (hasta != null
+								&& LocalDate.parse(ventaLinea.getVenta().getCreated_at(), formatter).isAfter(hasta)) {
 							array.remove(ventaLinea);
 						}
-						if (desde != null && LocalDate.parse(ventaLinea.getVenta().getCreated_at(),formatter).isBefore(desde)) {
+						if (desde != null
+								&& LocalDate.parse(ventaLinea.getVenta().getCreated_at(), formatter).isBefore(desde)) {
 							array.remove(ventaLinea);
 						}
 					}
@@ -566,7 +555,7 @@ public class ProductoController2 {
 				this.table.getItems().clear();
 				this.table.setItems(FXCollections.observableArrayList(array));
 				anadirTotalesVenta(new ArrayList<VentaLinea>(array), table);
-				
+
 			} else {
 				AppManager.printError("No existen ventas de este producto");
 			}
@@ -612,9 +601,9 @@ public class ProductoController2 {
 	 * Funciones del boton editar/canelar
 	 */
 	public void editarProducto() {
-		
+
 		if (btnEditar.getText().equals("EDITAR")) {
-			
+
 			lblResultado.setVisible(false);
 			if (this.producto == null)
 				return;
@@ -622,19 +611,20 @@ public class ProductoController2 {
 			this.btnGuardar.setVisible(true);
 			this.btnEditar.setText("CANCELAR");
 			this.btnEditar.setStyle("-fx-background-color: #ef9a9a");
-			
+
 			initComboBox();
 			changeEditableFields(true);
 
 		} else {
-			//cancelar
+			// cancelar
 			if (this.producto == null) {
-				
-					AppManager.getInstance().getAppMain().editarProductos();
-					return;
-				
-			}
 
+				AppManager.getInstance().getAppMain().volver(this.node);
+				return;
+
+			}
+			//TODO metodo cerrar ventana
+//			AppManager.getInstance().getAppMain().volver(this.node);
 			this.btnGuardar.setVisible(false);
 			this.btnEditar.setText("EDITAR");
 			this.btnEditar.setStyle("-fx-background-color: #80cbc4");
@@ -657,51 +647,50 @@ public class ProductoController2 {
 		lblResultado.setTextFill(Paint.valueOf("#54934c"));
 		if (this.producto != null) {
 			producto = queryManagerProducto.updateForId(this.producto.getId(), formBody).getObject();
-			if (producto != null) lblResultado.setText("Producto actualizado!");
+			if (producto != null)
+				lblResultado.setText("Producto actualizado!");
 		} else {
 			producto = queryManagerProducto.insertOne(formBody).getObject();
-			if (producto != null) lblResultado.setText("Producto guardado!");
+			if (producto != null)
+				lblResultado.setText("Producto guardado!");
 		}
 
 		if (producto != null) {
 			this.producto = queryManagerProducto.getByPk(producto.getId().toString()).getObject();
 			editarProducto();
-		}
-		else {
+		} else {
 			lblResultado.setTextFill(Paint.valueOf("#ce2020"));
 			lblResultado.setText("Error en la operacion!");
 		}
 		lblResultado.setVisible(true);
 	}
-	
+
 	public RequestBody construirBodyProducto() {
-		
+
 		RequestBody formBody;
 		if (cmbProveedores.getValue().getId() != null) {
 			formBody = new FormBody.Builder().add("nombre", this.txtNombre.getText())
 					.add("ean13", this.txtEan.getText()).add("referencia", this.txtReferencia.getText())
 					.add("categoria_id", this.cmbCategorias.getValue().getId().toString())
-					.add("unidad_mesura", this.txtUnidadMesura.getText()).add("activo", chkActivo.isSelected() ? "1" : "0")
-					.add("stock_minimo", this.txtStockMin.getText()).add("atributo", txtAtributo.getText())
-					.add("atributo_valor", txtValorAtributo.getText()).add("fabricante", txtFabricante.getText())
-					.add("precio", this.txtPrecio.getText()).add("tasa_id", this.cmbTasas.getValue().getId().toString())
-					.add("proveedor_id", cmbProveedores.getValue().getId().toString())
-					.build();
-		}
-		else {
+					.add("unidad_mesura", this.txtUnidadMesura.getText())
+					.add("activo", chkActivo.isSelected() ? "1" : "0").add("stock_minimo", this.txtStockMin.getText())
+					.add("atributo", txtAtributo.getText()).add("atributo_valor", txtValorAtributo.getText())
+					.add("fabricante", txtFabricante.getText()).add("precio", this.txtPrecio.getText())
+					.add("tasa_id", this.cmbTasas.getValue().getId().toString())
+					.add("proveedor_id", cmbProveedores.getValue().getId().toString()).build();
+		} else {
 			formBody = new FormBody.Builder().add("nombre", this.txtNombre.getText())
 					.add("ean13", this.txtEan.getText()).add("referencia", this.txtReferencia.getText())
 					.add("categoria_id", this.cmbCategorias.getValue().getId().toString())
-					.add("unidad_mesura", this.txtUnidadMesura.getText()).add("activo", chkActivo.isSelected() ? "1" : "0")
-					.add("stock_minimo", this.txtStockMin.getText()).add("atributo", txtAtributo.getText())
-					.add("atributo_valor", txtValorAtributo.getText()).add("fabricante", txtFabricante.getText())
-					.add("precio", this.txtPrecio.getText()).add("tasa_id", this.cmbTasas.getValue().getId().toString())				
-					.build();
+					.add("unidad_mesura", this.txtUnidadMesura.getText())
+					.add("activo", chkActivo.isSelected() ? "1" : "0").add("stock_minimo", this.txtStockMin.getText())
+					.add("atributo", txtAtributo.getText()).add("atributo_valor", txtValorAtributo.getText())
+					.add("fabricante", txtFabricante.getText()).add("precio", this.txtPrecio.getText())
+					.add("tasa_id", this.cmbTasas.getValue().getId().toString()).build();
 		}
-		
+
 		return formBody;
 	}
-	
 
 	public boolean valida() {
 
@@ -737,30 +726,28 @@ public class ProductoController2 {
 		field.setUnFocusColor(Paint.valueOf("#4d4d4d"));
 		return true;
 	}
-	
+
 	public void colorNodos(JFXButton button) {
-		JFXButton[] buttons = {this.btnAlmacen, this.btnCompras, this.btnTiendas, this.btnVentas };
-		
+		JFXButton[] buttons = { this.btnAlmacen, this.btnCompras, this.btnTiendas, this.btnVentas };
+
 		for (JFXButton jfxButton : buttons) {
-			if(jfxButton.getId() == button.getId()) {
+			if (jfxButton.getId() == button.getId()) {
 				jfxButton.setStyle("-fx-background-color:  #80cbc4");
-			}
-			else {
+			} else {
 				jfxButton.setStyle("-fx-background-color:   #e0e0e0");
 			}
 		}
-		
+
 	}
 
 	/**
 	 * De una lista de nodos, deja visibles en pantalla los enviados por parametro
 	 * 
-	 * @param nodos
-	 *            que se dejaram visibles
+	 * @param nodos que se dejaram visibles
 	 */
 	public void nodosVisibles(Node[] nodo) {
 		Node[] nodoCambiantes = { this.lineAlmacen, this.lineCompras, this.lineTiendas, this.lineVentas, this.dateDesde,
-				this.dateHasta, this.btnBuscar, this.lblResultado, this.hbxTotales};
+				this.dateHasta, this.btnBuscar, this.lblResultado, this.hbxTotales };
 
 		if (nodo.length == 0) {
 			for (Node node : nodoCambiantes) {
@@ -792,30 +779,29 @@ public class ProductoController2 {
 			}
 		}
 	}
-	
+
 	public <T> void initComboBox(JFXComboBox<T> combo, Class<T> clase, ArrayList<T> array) {
-		
+
 		combo.setItems(FXCollections.observableArrayList(array));
 		combo.getSelectionModel().selectFirst();
-		
+
 		combo.setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
 			@Override
-			public ListCell<T> call(ListView<T> l){
+			public ListCell<T> call(ListView<T> l) {
 				return new ListCell<T>() {
 					@Override
 					protected void updateItem(T item, boolean empty) {
 						super.updateItem(item, empty);
-						if(item == null || empty) {
+						if (item == null || empty) {
 							setGraphic(null);
-						}
-						else {
+						} else {
 							setText(item.toString());
 						}
 					}
 				};
 			}
 		});
-		
+
 		combo.setConverter(new StringConverter<T>() {
 			@Override
 			public String toString(T object) {
@@ -825,6 +811,7 @@ public class ProductoController2 {
 					return object.toString();
 				}
 			}
+
 			@Override
 			public T fromString(String string) {
 				return null;
@@ -845,11 +832,11 @@ public class ProductoController2 {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		initComboBox(this.cmbCategorias, Categoria.class, peticionCategorias.getRespuesta());
 		initComboBox(this.cmbTasas, Tasa.class, peticionTasas.getRespuesta());
 		initComboBox(this.cmbProveedores, Proveedor.class, peticionProveedores.getRespuesta());
-		
+
 		if (this.producto != null) {
 			this.cmbCategorias.setValue(this.producto.getCategoria());
 			this.cmbTasas.setValue(this.producto.getTasa());
@@ -857,38 +844,34 @@ public class ProductoController2 {
 		}
 
 	}
-	
+
 	public void image() {
 		File file = openFileChooser("Seleccionar imagen", true);
-		
+
 		if (file != null && file.exists()) {
 			if (queryManagerProducto.uploadFile(file, this.producto.getId().toString())) {
 				System.out.println("guardado");
 				this.producto = (queryManagerProducto.getByPk(this.producto.getId().toString()).getObject());
 				atributosProducto();
-			}else{
+			} else {
 				System.out.println("error al guardar");
 			}
 		}
 	}
-	
-	public static File openFileChooser(String title, boolean open){
+
+	public static File openFileChooser(String title, boolean open) {
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(title);
-		fileChooser.setInitialDirectory(
-				new File(System.getProperty("user.home"))
-				);
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Todos", "*.*"),
-				new FileChooser.ExtensionFilter("JPEG", "*.jpg"),
-				new FileChooser.ExtensionFilter("PNG", "*.png")
-				);
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Todos", "*.*"),
+				new FileChooser.ExtensionFilter("JPEG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
 		File file;
-		if (open) file = fileChooser.showOpenDialog(AppManager.getInstance().getStage());
-		else file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
+		if (open)
+			file = fileChooser.showOpenDialog(AppManager.getInstance().getStage());
+		else
+			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
 		return file;
 	}
-	
 
 }

@@ -4,25 +4,23 @@ import java.util.ArrayList;
 
 import com.easyErp.project.model.QueryManager;
 
-public class HiloPeticiones<S> extends Thread{
+public class HiloPeticiones<S> extends Thread {
 
 	private QueryManager<S> queryManager;
 	private ArrayList<S> respuesta;
-	
-	public HiloPeticiones(QueryManager<S> queryManager){
+
+	public HiloPeticiones(QueryManager<S> queryManager) {
 		this.queryManager = queryManager;
 	}
-	
+
 	@Override
 	public void run() {
-		this.respuesta = queryManager.readAll().getObjectsArray();
-		this.respuesta.add(0, null);
+			this.respuesta = queryManager.readAll().getObjectsArray();
+			this.respuesta.add(0, null);
 	}
-	
-	
-	public ArrayList<S> getRespuesta(){
+
+	public ArrayList<S> getRespuesta() {
 		return this.respuesta;
 	}
-	
 
 }

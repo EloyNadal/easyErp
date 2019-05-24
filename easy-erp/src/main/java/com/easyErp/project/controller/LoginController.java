@@ -12,42 +12,42 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class LoginController{
+public class LoginController {
 
 	@FXML
-	TextField txtUser;
+	private TextField txtUser;
 	@FXML
-	PasswordField txtPwd;
+	private PasswordField txtPwd;
 	@FXML
-	Button btnOk;
+	private Button btnOk;
 	@FXML
-	Button btnCancel;
+	private Button btnCancel;
 	@FXML
-	AnchorPane screen;
+	private AnchorPane screen;
 	
 	@FXML
 	public void login() {
-		QueryManager.login(txtUser.getText(), txtPwd.getText());
-		Stage stage = (Stage) btnOk.getScene().getWindow();
+		QueryManager.login(this.txtUser.getText(), this.txtPwd.getText());
+		Stage stage = (Stage) this.btnOk.getScene().getWindow();
 		stage.close();
 	}
 
 	@FXML
-	public void onCancel() {
+	public void onCancelar() {
 		if (AppManager.showYesNoQuestion("Cerrar", "Deseas cerrar la aplicación?"))
 			System.exit(0);
 	}
 
 	@FXML
 	public void initialize() {
-		screen.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if(AppMainController.isKeyPressed(event, KeyCode.ENTER))
-				login();
-		});	
-		screen.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if(AppMainController.isKeyPressed(event, KeyCode.CONTROL))
-				System.out.println(event.getCode().toString());
-					
-		});	
+		screen.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+			if (AppMainController.isKeyPressed(event, KeyCode.ENTER))
+				login();			
+		});
+		screen.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+			if (AppMainController.isKeyPressed(event, KeyCode.ESCAPE))
+				onCancelar();			
+		});
+
 	}
 }

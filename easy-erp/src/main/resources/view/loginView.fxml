@@ -35,7 +35,7 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="30.0">
                <children>
                   <Button fx:id="btnOk" mnemonicParsing="false" onMouseClicked="#login" text="Entrar" />
-                  <Button fx:id="btnCancel" mnemonicParsing="false" onMouseClicked="#onCancel" text="Cerrar" />
+                  <Button fx:id="btnCancel" mnemonicParsing="false" onMouseClicked="#onCancelar" text="Cerrar" />
                </children>
             </VBox>
          </children>

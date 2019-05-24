@@ -4,8 +4,11 @@ import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 import com.easyErp.project.model.AppManager;
+import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.Producto;
+import com.easyErp.project.model.Venta;
 import com.easyErp.project.model.VentaLinea;
+import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -39,12 +42,9 @@ public class TPVController {
 	private LinkedList<Producto> productos;
 	private LinkedList<VentaLinea> lineas;
 	private double total = 0;
+	private Cliente cliente;
 	private static final DecimalFormat DF = new DecimalFormat("#0.00");
-
-	@FXML
-	private void borrar() {
-		txtLineaTeclado.setText("");
-	}
+	private String formaDePago;
 
 	@FXML
 	public void initialize() {
@@ -81,7 +81,8 @@ public class TPVController {
 				new Callback<TableColumn.CellDataFeatures<VentaLinea, String>, ObservableValue<String>>() {
 					@Override
 					public ObservableValue<String> call(TableColumn.CellDataFeatures<VentaLinea, String> linea) {
-						return new SimpleStringProperty(getNombreProductoFromId(linea.getValue().getProducto_id()));
+						return new SimpleStringProperty(
+								getProductoFromId(linea.getValue().getProducto_id()).getNombre());
 					}
 				});
 		colPrecio.setMinWidth(40);
@@ -102,10 +103,39 @@ public class TPVController {
 		this.tableVentaLinea.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
 
+	@FXML
+	private void pagarTarjeta() {
+		setFormaDePago("TARJETA");
+	}
+
+	@FXML
+	private void pagarEfectivo() {
+		setFormaDePago("EFECTIVO");
+	}
+
+	private void setFormaDePago(String formaPago) {
+		if (null == this.formaDePago)
+			this.formaDePago = formaPago;
+		else if (AppManager.showYesNoQuestion("Cambiar forma de pago",
+				"Ya se ha marcado una forma de pago, confirme modificación"))
+			this.formaDePago = formaPago;
+	}
+
+	@FXML
+	private void borrar() {
+		txtLineaTeclado.setText("");
+	}
+
 	private void buscarProducto() {
-		Producto producto = null;
 		String prodCode = txtLineaProducto.getText();
 		txtLineaProducto.setText("");
+		if (null != this.formaDePago)
+			if (!AppManager.showYesNoQuestion("Venta cobrada",
+					"Ya se ha establecido una forma de pago, desea añadir productos a la venta?"))
+				return;				
+			else
+				this.formaDePago = null;
+		Producto producto = null;
 		int cantidad;
 		cantidad = txtLineaTeclado.getText().equals("") ? 1 : Integer.parseInt(txtLineaTeclado.getText());
 		producto = comprobarProducto(producto, prodCode);
@@ -118,20 +148,20 @@ public class TPVController {
 			} catch (Exception e) {
 				AppManager.showError("Producto no encontrado");
 			}
-		} else if(null != producto){
+		} else if (null != producto) {
 			anadirEliminarUnidad(producto, cantidad);
-			
+
 		}
 		actualizarTabla();
 		borrar();
 
 	}
 
-	private String getNombreProductoFromId(Integer id) {
+	private Producto getProductoFromId(Integer id) {
 		int i = 0;
 		while (this.productos.get(i).getId() != id)
 			i++;
-		return this.productos.get(i).getNombre();
+		return this.productos.get(i);
 	}
 
 	private Producto comprobarProducto(Producto producto, String prodCode) {
@@ -154,11 +184,12 @@ public class TPVController {
 		int i = 0;
 		while (this.lineas.get(i).getProducto_id() != producto.getId())
 			i++;
-		lineas.get(i).setCantidad(lineas.get(i).getCantidad() + cantidad);
-		lineas.get(i).setPrecio(lineas.get(i).getPrecio() + producto.getPrecio() * cantidad);
-		if(lineas.get(i).getCantidad()<=0) eliminar(producto, lineas.get(i));
+		this.lineas.get(i).setCantidad(this.lineas.get(i).getCantidad() + cantidad);
+		this.lineas.get(i).setPrecio(this.lineas.get(i).getPrecio() + producto.getPrecio() * cantidad);
+		if (lineas.get(i).getCantidad() <= 0)
+			eliminar(producto, this.lineas.get(i));
 	}
-	
+
 	private void actualizarTabla() {
 		actualizarTotal();
 		this.tableVentaLinea.setItems(FXCollections.observableArrayList(lineas));
@@ -177,27 +208,87 @@ public class TPVController {
 	private void actualizarTotal() {
 		this.total = 0;
 		for (VentaLinea linea : lineas) {
-			total += linea.getPrecio();
+			this.total += linea.getPrecio();
 		}
 		txtTotal.setText(DF.format(total) + "€");
 	}
 
 	@FXML
 	private void insertarNumero(Event event) {
-		if(((JFXButton) event.getSource()).getText().equals("-"))txtLineaTeclado.setText("-");
-		else txtLineaTeclado.setText(txtLineaTeclado.getText() + ((JFXButton) event.getSource()).getText());
+		if (((JFXButton) event.getSource()).getText().equals("-"))
+			txtLineaTeclado.setText("-");
+		else
+			txtLineaTeclado.setText(txtLineaTeclado.getText() + ((JFXButton) event.getSource()).getText());
 	}
 
 	@FXML
 	private void eliminarLinea() {
-		if (lineas.size() > 0) {
-			lineas.removeLast();
-			productos.removeLast();
+		if (!this.lineas.isEmpty()) {
+			this.lineas.removeLast();
+			this.productos.removeLast();
 			actualizarTabla();
 		}
 	}
+
 	private void eliminar(Producto producto, VentaLinea linea) {
-		lineas.remove(linea);
-		productos.remove(producto);
+		this.lineas.remove(linea);
+		this.productos.remove(producto);
+	}
+
+	@FXML
+	private void insertarCliente() {
+		String codCliente = AppManager.showMessageForStringResult("Cliente",
+				"Introduzca numero de socio/DNI del Cliente");
+		if (null != codCliente) {
+			RequestBody request = new FormBody.Builder().add("dni", codCliente).add("codigo", codCliente).build();
+			try {
+				cliente = Cliente.getQueryManager().readQuery(request, 1).getObjectsArray().get(0);
+			} catch (Exception e) {
+				AppManager.showError("Cliente no encontrado");
+			}
+		}
+	}
+
+	private double calcularPrecioSinIva(VentaLinea linea) {
+		double precio = 0d;
+		precio = (linea.getPrecio() * 100) / (100 + 
+				getProductoFromId(linea.getProducto_id()).getTasa().getRatio_tasa() * 100);
+		return precio;
+	}
+
+	@FXML
+	private void cerrarVenta() {
+		if (this.lineas.isEmpty()) {
+			AppManager.showError("La venta está vacía");
+			return;
+		}
+		if (null == this.formaDePago) {
+			AppManager.showError("Debe seleccionar una forma de pago para cerrar la venta");
+			return;
+		}
+		Venta venta = new Venta();
+		venta.setCliente_id(null != cliente ? cliente.getId() : null);
+		venta.setTienda_id(AppManager.getIdTienda());
+		venta.setUsuario_id(AppManager.getSessionUserId());
+		venta.setVenta_linea(this.lineas);
+		double totalSinTasas = 0;
+		for (VentaLinea linea : this.lineas) {
+			totalSinTasas += calcularPrecioSinIva(linea);
+		}
+		venta.setPrecio_sin_tasas(totalSinTasas);
+		venta.setPrecio_total(this.total);
+		venta.setTotal_tasas(this.total - totalSinTasas);
+		Gson gson = new Gson();
+		String json = gson.toJson(venta);
+		Venta.getQueryManager().insertOne(json);
+		clear();
+	}
+
+	private void clear() {
+		this.productos.clear();;
+		this.lineas.clear();
+		this.cliente = null;
+		actualizarTabla();
+		this.formaDePago = null;
 	}
 }

@@ -62,19 +62,43 @@ public class EditarProductosController{
 	
 	@FXML
     private void initialize(){
-		AppManager.print("aqui");
+		
 		QueryManager<Producto> queryManager = Producto.getQueryManager();
 		this.productos = queryManager.readAll().getObjectsArray();
-		AppManager.print("aqui");
+		this.txtPrecioMax.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (!newValue) {
+					try {
+						Double.parseDouble(txtPrecioMax.getText());
+					} catch (Exception ex) {
+						txtPrecioMax.setText(txtPrecioMin.getText());
+					}
+					if(txtPrecioMax.getText().compareTo(txtPrecioMin.getText()) < 0){
+						AppManager.showError("El valor \"A\" debe ser superior o igual al valor \"de\"");
+						txtPrecioMax.setText(txtPrecioMin.getText());
+					}
+				}
+			}
+		});
+		this.txtPrecioMin.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (!newValue) {
+					try {
+						Double.parseDouble(txtPrecioMin.getText());
+					} catch (Exception ex) {
+						txtPrecioMin.setText("0.00");
+					}
+				}
+			}
+		});
 		QueryManager<Categoria> queryManagerCategoria = Categoria.getQueryManager();
 		ArrayList<Categoria> categorias = queryManagerCategoria.readAll().getObjectsArray();
 		categorias.add(0, null);
 		QueryManager<Tasa> queryManagerTasa = Tasa.getQueryManager();
 		ArrayList<Tasa> tasas = queryManagerTasa.readAll().getObjectsArray();
 		tasas.add(0, null);
-		
-		txtNombre.setText("Prueba");
-		txtReferencia.setText("Prueba");
 		
 		this.nombre.setMinWidth(90);
 		this.nombre.setMaxWidth(120);
@@ -152,8 +176,7 @@ public class EditarProductosController{
 		this.productosTable.setEditable(false);
 		this.productosTable.getSelectionModel().setCellSelectionEnabled(true);
 		this.productosTable.getItems().clear();
-		this.productosTable.setItems( FXCollections.observableArrayList(productos) );
-		this.productosTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		actualizarTabla(productos);
 		
 		//añade array a combobox
 		cmbCategoria.setItems(FXCollections.observableArrayList(categorias));
@@ -253,21 +276,70 @@ public class EditarProductosController{
 
 	}
 	
+	private void actualizarTabla(ArrayList<Producto> tabla) {
+		this.productosTable.getItems().clear();
+		this.productosTable.setItems(FXCollections.observableArrayList(tabla));
+		this.productosTable.refresh();
+	}
+	
 	@FXML
 	private void filtrar() {
-		
-		ArrayList<Producto> copiaProductos = new ArrayList<Producto>(this.productos);
-		String filtro;
-		filtro = txtNombre.getText();
-		if(checkNotEmpty(filtro));
-		
+		ArrayList<Producto> copiaProductos = new ArrayList<Producto>();
+		Producto producto = new Producto();
+		producto.setActivo(this.chkActivo.isSelected() ? 1 : 0);
+		producto.setCategoria_id(this.cmbCategoria.getValue() != null? this.cmbCategoria.getValue().getId():null);
+		producto.setReferencia(checkNotEmpty(this.txtReferencia.getText()) ? this.txtReferencia.getText() : "");
+		producto.setEan13(checkNotEmpty(this.txtEan.getText()) ? this.txtEan.getText() : "");
+		producto.setNombre(checkNotEmpty(this.txtNombre.getText()) ? this.txtNombre.getText() : "");
+		producto.setTasa_id(this.cmbIva.getValue() != null? this.cmbIva.getValue().getId(): null);
+		double precio_min = Double.parseDouble(this.txtPrecioMin.getText());
+		double precio_max = Double.parseDouble(this.txtPrecioMax.getText());
+		for (Producto p : this.productos) {
+			if (!checkProductos(producto, p, precio_min, precio_max))
+				copiaProductos.add(p);
+		}
+		actualizarTabla(copiaProductos);
+
 	}
 	
-	private boolean checkNotEmpty(String string) {
-		if(string.trim().isEmpty())return false;
+	@FXML
+	private void quitarFiltros() {
+		this.chkActivo.setSelected(false);
+		this.cmbCategoria.getSelectionModel().selectFirst();
+		this.txtReferencia.setText("");
+		this.txtEan.setText("");
+		this.txtNombre.setText("");
+		this.cmbIva.getSelectionModel().selectFirst();
+		this.txtPrecioMin.setText("0.00");
+		this.txtPrecioMax.setText("0.00");
+		actualizarTabla(this.productos);
+	}
+	
+	private boolean checkProductos(Producto producto, Producto p, double min, double max) {
+		if (producto.getCategoria_id() != null && producto.getCategoria_id() != p.getCategoria_id())
+			return false;
+		if (p.getEan13() != "" && !p.getEan13().contains(producto.getEan13()))
+			return false;
+		if (p.getNombre() != "" && !p.getNombre().contains(producto.getNombre()))
+			return false;
+		if (p.getReferencia() != "" && !p.getReferencia().contains(producto.getReferencia()))
+			return false;
+		if (producto.getTasa_id() != null && producto.getTasa_id() != p.getTasa_id())
+			return false;
+		if (producto.isActivo() != p.isActivo())
+			return false;
+		if (p.getPrecio() < min || max != 0 && p.getPrecio() > max )
+			return false;
 		return true;
 	}
-	
+
+	private boolean checkNotEmpty(String string) {
+		if (string.equals("")) {
+			return false;
+		}
+		return true;
+	}
+
 	public void newProducto() {
 		AppManager.getInstance().getAppMain().verProductos(null);
 	}
