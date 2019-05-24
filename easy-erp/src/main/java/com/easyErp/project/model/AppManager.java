@@ -18,6 +18,7 @@ import com.easyErp.project.log.SystemLog;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 
 public class AppManager {
 //	192.168.2.251
@@ -26,6 +27,7 @@ public class AppManager {
 	private static int idTienda;
 	private static AppManager manager = new AppManager();
 	private AppMainController main;
+	private Stage stage;
 	private static SystemLog sysLog;
 	public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	private static String[] ERRORES = { "Problema de conexion con el servidor", "Elemento no encontrado",
@@ -158,6 +160,15 @@ public class AppManager {
 		if (result.get() == ButtonType.OK)
 			return true;
 		return false;
+	}
+
+	public void setStage(Stage stage) {
+		AppManager.print("aqui stage");
+		this.stage = stage;
+	}
+	
+	public Stage getStage() {
+		return this.stage; 
 	}
 }
 

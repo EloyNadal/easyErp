@@ -1,5 +1,6 @@
 package com.easyErp.project.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,7 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class QueryManager<T> {
-
+	
 	private static String token;
 	private static String baseUrl = AppManager.getBaseUrl();
 	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -138,22 +139,52 @@ public class QueryManager<T> {
 	
 	public Respuesta<T> readWithDate(Headers headers) {
 		
-		
 		Request request = new Request.Builder()
 				.header("Authorization", token)
 				.headers(headers)
 				.url(this.url).build();
+		
 		this.respuesta.clear();
+		System.out.println(headers.get("desde"));
 		try {
 			Response response = client.newCall(request).execute();
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
 			T[] array = gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClassArray);
 			respuesta.setObjectsArray(new ArrayList<T>(Arrays.asList(array)));
 		} catch (Exception e) {
-			new EasyErpException(e.getMessage());
+			System.out.println(e.getMessage());
+			
 		}
 		return respuesta;
 	}
+
+
+	public static Boolean uploadFile(File file, String id) {
+		try {
+			
+			String url = baseUrl + "upimage";
+			RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+					.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image/png"), file))
+					.addFormDataPart("id", id).build();
+
+			Request request = new Request.Builder()
+					.url(url)
+					.post(requestBody)
+					.build();
+			
+			Response response = client.newCall(request).execute();
+			
+			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+			
+			if (response.isSuccessful()) return true;
+
+		} catch (Exception e) {
+			AppManager.print(e.getMessage());
+		}
+		return false;
+	}
+
+
 	
 	public static boolean login(String email, String password) {
 		RequestBody req = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("user_name", email)
@@ -163,6 +194,7 @@ public class QueryManager<T> {
 			Response response = client.newCall(request).execute();
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
 			token = gson.fromJson(json.get("data"), Usuario.class).getApiToken();
+			System.out.println(token);
 			if(response.isSuccessful()) AppManager.setLogged(true);
 		} catch (Exception e) {
 			AppManager.printError(e.getMessage());
@@ -170,4 +202,6 @@ public class QueryManager<T> {
 		}
 		return true;
 	}
+	
+	
 }

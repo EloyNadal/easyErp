@@ -24,6 +24,7 @@ public class Main extends Application {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AppMain.fxml"));
 		VBox root = (VBox) loader.load();
+		AppManager.getInstance().setStage(primaryStage);
 
 		Scene scene = new Scene(root, 800, 600);
 		primaryStage.setScene(scene);

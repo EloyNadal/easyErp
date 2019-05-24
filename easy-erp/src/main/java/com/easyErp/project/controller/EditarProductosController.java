@@ -62,10 +62,10 @@ public class EditarProductosController{
 	
 	@FXML
     private void initialize(){
-		
+		AppManager.print("aqui");
 		QueryManager<Producto> queryManager = Producto.getQueryManager();
 		this.productos = queryManager.readAll().getObjectsArray();
-		
+		AppManager.print("aqui");
 		QueryManager<Categoria> queryManagerCategoria = Categoria.getQueryManager();
 		ArrayList<Categoria> categorias = queryManagerCategoria.readAll().getObjectsArray();
 		categorias.add(0, null);

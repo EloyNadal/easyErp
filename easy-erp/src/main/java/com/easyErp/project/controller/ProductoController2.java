@@ -1,5 +1,6 @@
 package com.easyErp.project.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,9 +41,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import okhttp3.FormBody;
+import okhttp3.Headers;
 import okhttp3.RequestBody;
 
 
@@ -119,6 +122,7 @@ public class ProductoController2 {
 	
 	private TableView<VentaLinea> table;
 	private TableView<Stock> tableStock;
+	private boolean searchTotales;
 
 	//
 	private QueryManager<Stock> queryManagerStocks = Stock.getQueryManager();
@@ -129,7 +133,7 @@ public class ProductoController2 {
 	private HiloPeticiones<Tasa> peticionTasas;
 	private HiloPeticiones<Proveedor> peticionProveedores;
 	
-	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
 	private ArrayList<VentaLinea> ventas;
 
@@ -193,11 +197,22 @@ public class ProductoController2 {
 		this.txtPrecio.setText(producto.getPrecio().toString());
 		this.txtTasa.setText(producto.getTasaNombre());
 
-		if (producto.getImagen() != null && !producto.getImagen().isEmpty())
-			this.imagen.setImage(new Image(producto.getImagen()));
+		if (producto.getImagen() != null && !producto.getImagen().isEmpty()) {
+			try {
+				
+				Image image = new Image(producto.getImagen());			
+				this.imagen.setImage(image);
+			}catch (Exception e) {
+				AppManager.printError(e.getMessage());
+			}
+		}else {
+			this.imagen.setImage(new Image(getClass().getResourceAsStream("/image/anadirImagen.jpg")));
+		}
 
-		if (producto.getProveedor() != null)
+		
+		if (producto.getProveedor() != null) {
 			txtProveedor.setText(producto.getProveedor().getNombre());
+		}
 	}
 
 	public void crearTablaProducto() {
@@ -350,7 +365,7 @@ public class ProductoController2 {
 		}		
 	}
 	
-public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea> table) {
+	public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea> table) {
 		
 		hbxTotales.getChildren().clear();
 		Double totalCantidad = 0.00;
@@ -392,22 +407,22 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 		if (this.producto == null)
 			return;
 		
-		RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString())
-				.build();
-		
-		ArrayList<VentaLinea> ventas = queryManagerVentas.readQuery(formBody, 0).getObjectsArray();
+		Headers headers = new Headers.Builder()
+		.add("producto_id", this.producto.getId().toString())
+		.build();		
+
+		this.ventas = queryManagerVentas.readWithDate(headers).getObjectsArray();
 		
 		if (ventas != null) {
 			
+			this.searchTotales = true;
 			
-
 			this.table = new TableView<VentaLinea>();
-			
 			table.setId("tabla");
 
 			TableColumn<VentaLinea, String> colNombreTienda = new TableColumn<VentaLinea, String>("Nombre");
 			TableColumn<VentaLinea, Double> colCantidad = new TableColumn<VentaLinea, Double>("Cantidad");
-			TableColumn<VentaLinea, String> colTotal = new TableColumn<VentaLinea, String>("Total");
+			TableColumn<VentaLinea, Double> colTotal = new TableColumn<VentaLinea, Double>("Precio");
 			
 			table.getColumns().addAll(colNombreTienda, colCantidad, colTotal);
 
@@ -422,9 +437,7 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 
 			colTotal.setMinWidth(90);
 			colTotal.setMaxWidth(400);
-			colTotal.setCellValueFactory((param) -> new SimpleStringProperty(
-					(param.getValue().getPrecio() * param.getValue().getCantidad())
-					+ "") );
+			colTotal.setCellValueFactory(new PropertyValueFactory<VentaLinea, Double>("precio"));
 			
 			propidadesTabla(table, ventas);
 			anadirTotalesVenta(ventas, table);
@@ -437,7 +450,6 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 	}
 	
 	
-
 	public void historicoVentas() {
 		clearTable();
 		nodosVisibles(new Node[] { this.lineVentas, this.dateDesde, this.dateHasta, this.btnBuscar });
@@ -445,16 +457,15 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 
 		if (this.producto == null)
 			return;
-		
-		if (this.ventas == null) {
 			
-			RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString())
+		RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString())
 					.add("tienda_id", String.valueOf(AppManager.getIdTienda())).build();
 
-			this.ventas = queryManagerVentas.readQuery(formBody, 0).getObjectsArray();
-		}
+		this.ventas = queryManagerVentas.readQuery(formBody, 0).getObjectsArray();
 
 		if (ventas != null) {
+			
+			this.searchTotales = false;
 			
 			ObservableList<VentaLinea> obsVentas = FXCollections.observableArrayList(ventas);
 			
@@ -486,8 +497,8 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 			colTotal.setMinWidth(40);
 			colTotal.setMaxWidth(300);
 			colTotal.setCellValueFactory((param) -> new SimpleStringProperty(
-					(param.getValue().getPrecio() * param.getValue().getCantidad())
-					+ "") );
+					(param.getValue().getPrecio())
+					+ "€") );
 
 			colFecha.setMinWidth(90);
 			colFecha.setMaxWidth(400);
@@ -513,32 +524,52 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 	
 	public void filtroDate() {
 		
+		ObservableList<VentaLinea> array = null;
+		
+		
+		LocalDate desde = dateDesde.getValue();
+		LocalDate hasta = dateHasta.getValue();
+		
 		if (this.table != null) {
-			//TODO: necesito recibir el array completo para iterar siempre sobre él
-			//ahora mismo lo recibe de la tabla y no se reponen los datos
-
-			ObservableList<VentaLinea> array = FXCollections.observableArrayList(this.ventas); 
-			
-			LocalDate desde = dateDesde.getValue();
-			LocalDate hasta = dateHasta.getValue();
+		
+			if (this.searchTotales) {
+				
+				if (desde == null) desde = LocalDate.parse("1900-01-01");
+				if (hasta == null) hasta = LocalDate.parse("2999-12-31");
+				
+				Headers headers = new Headers.Builder()
+						.add("producto_id", this.producto.getId().toString())
+						.add("desde", desde.toString())
+						.add("hasta", hasta.toString())
+						.build();
+				
+				array = FXCollections.observableArrayList(queryManagerVentas.readWithDate(headers).getObjectsArray());
+			}
+			else {
+				array = FXCollections.observableArrayList(this.ventas);
+			}
 			
 			if (array.size()>0) {
-				for (VentaLinea ventaLinea : FXCollections.observableArrayList(this.ventas)) {
-					if (hasta != null && LocalDate.parse(ventaLinea.getVenta().getCreated_at(),formatter).isAfter(hasta)) {
-						array.remove(ventaLinea);
-					}
-					if (desde != null && LocalDate.parse(ventaLinea.getVenta().getCreated_at(),formatter).isBefore(desde)) {
-						array.remove(ventaLinea);
+				
+				if (!searchTotales) {
+					
+					for (VentaLinea ventaLinea : FXCollections.observableArrayList(this.ventas)) {
+						if (hasta != null && LocalDate.parse(ventaLinea.getVenta().getCreated_at(),formatter).isAfter(hasta)) {
+							array.remove(ventaLinea);
+						}
+						if (desde != null && LocalDate.parse(ventaLinea.getVenta().getCreated_at(),formatter).isBefore(desde)) {
+							array.remove(ventaLinea);
+						}
 					}
 				}
-				
+
 				this.table.getItems().clear();
 				this.table.setItems(FXCollections.observableArrayList(array));
 				anadirTotalesVenta(new ArrayList<VentaLinea>(array), table);
+				
 			} else {
 				AppManager.printError("No existen ventas de este producto");
 			}
-				
 		}
 	}
 
@@ -574,6 +605,7 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 		txtCategoria.setVisible(!edit);
 		txtTasa.setVisible(!edit);
 		txtProveedor.setVisible(!edit);
+		this.imagen.setDisable(!edit);
 	}
 
 	/**
@@ -597,12 +629,10 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 		} else {
 			//cancelar
 			if (this.producto == null) {
-				try {
+				
 					AppManager.getInstance().getAppMain().editarProductos();
 					return;
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				
 			}
 
 			this.btnGuardar.setVisible(false);
@@ -827,5 +857,38 @@ public void anadirTotalesVenta(ArrayList<VentaLinea> array, TableView<VentaLinea
 		}
 
 	}
+	
+	public void image() {
+		File file = openFileChooser("Seleccionar imagen", true);
+		
+		if (file != null && file.exists()) {
+			if (queryManagerProducto.uploadFile(file, this.producto.getId().toString())) {
+				System.out.println("guardado");
+				this.producto = (queryManagerProducto.getByPk(this.producto.getId().toString()).getObject());
+				atributosProducto();
+			}else{
+				System.out.println("error al guardar");
+			}
+		}
+	}
+	
+	public static File openFileChooser(String title, boolean open){
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle(title);
+		fileChooser.setInitialDirectory(
+				new File(System.getProperty("user.home"))
+				);
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Todos", "*.*"),
+				new FileChooser.ExtensionFilter("JPEG", "*.jpg"),
+				new FileChooser.ExtensionFilter("PNG", "*.png")
+				);
+		File file;
+		if (open) file = fileChooser.showOpenDialog(AppManager.getInstance().getStage());
+		else file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
+		return file;
+	}
+	
 
 }

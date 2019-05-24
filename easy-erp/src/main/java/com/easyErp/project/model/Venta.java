@@ -15,7 +15,10 @@ public class Venta {
 	private Double precio_total;
 	private String created_at;
 	private String updated_at;
+	
+	private Tienda tienda;
 	private List<VentaLinea> venta_linea;
+	
 	
 	public Venta() {
 		
@@ -99,6 +102,14 @@ public class Venta {
 
 	public void setVenta_linea(List<VentaLinea> venta_linea) {
 		this.venta_linea = venta_linea;
+	}
+
+	public Tienda getTienda() {
+		return tienda;
+	}
+
+	public void setTienda(Tienda tienda) {
+		this.tienda = tienda;
 	}
 
 	public static QueryManager<Venta> getQueryManager(){

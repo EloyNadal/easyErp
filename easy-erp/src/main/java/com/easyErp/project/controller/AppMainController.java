@@ -81,13 +81,17 @@ public class AppMainController {
 	}
 
 	@FXML
-	public void editarProductos() throws IOException {
+	public void editarProductos() {
+		AppManager.print("carga vista");
 		loadScene("/view/editarProductosView.fxml");
+		AppManager.print("cargaada");
 	}
 
 	public void loadScene(String location) {
 		try {
+			AppManager.print("Antes del nodo");
 			Node node = FXMLLoader.load(getClass().getResource(location));
+			AppManager.print("despues del nodo");
 			mainWindow.getChildren().clear();
 			mainWindow.getChildren().add(node);
 
