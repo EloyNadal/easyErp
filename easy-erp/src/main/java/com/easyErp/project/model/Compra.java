@@ -9,12 +9,14 @@ public class Compra {
 	private Integer id;
 	private Integer tienda_id;
 	private Integer proveedor_id;
-    private Double precio;
-    private Double iva;
+    private Double precio_sin_tasas;
+    private Double total_tasas;
     private Double precio_total;
     private String created_at;
     private String updated_at;
     private List<CompraLinea> compra_linea;
+    private String estado;
+    private Proveedor proveedor;
     
 	public Compra() {
 	}
@@ -31,12 +33,12 @@ public class Compra {
 		return proveedor_id;
 	}
 
-	public Double getPrecio() {
-		return precio;
+	public Double getPrecio_sin_tasas() { 
+		return precio_sin_tasas;
 	}
 
-	public Double getIva() {
-		return iva;
+	public Double getTotal_tasas() { 
+		return total_tasas;
 	}
 
 	public Double getPrecio_total() {
@@ -67,16 +69,34 @@ public class Compra {
 		this.proveedor_id = proveedor_id;
 	}
 
-	public void setPrecio(Double precio) {
-		this.precio = precio;
+	public void setPrecio_sin_tasas(Double precio_sin_tasas) { 
+		this.precio_sin_tasas = precio_sin_tasas;
 	}
 
-	public void setIva(Double iva) {
-		this.iva = iva;
+	public void setTotal_tasas(Double total_tasas) {
+		this.total_tasas = total_tasas;
 	}
 
 	public void setPrecio_total(Double precio_total) {
 		this.precio_total = precio_total;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+	
+	
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
 	}
 
 	public void setCreated_at(String created_at) {

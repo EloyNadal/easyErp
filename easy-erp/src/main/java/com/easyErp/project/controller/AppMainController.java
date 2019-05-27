@@ -35,12 +35,22 @@ public class AppMainController {
 	private MenuItem menuEditProductos;
 	@FXML
 	private MenuItem menuAddUser;
-	
+	@FXML
+	private MenuItem menuPedido;
+	@FXML
+	private MenuItem menuEstadoPedido;
 	
 	public void verClientes() {
 		loadScene("/view/inicio.fxml");
 	}
-
+	
+	public void pedido() {
+		loadScene("/view/pedidosView.fxml");
+	}
+	
+	public void estadoPedido() {
+		loadScene("/view/estadoPedidos.fxml");
+	}
 	
 	public void verProductos() {
 		loadScene("/view/productoView.fxml");

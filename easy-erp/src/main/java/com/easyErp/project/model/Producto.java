@@ -15,7 +15,7 @@ public class Producto {
 	private String unidad_mesura;
 	private Double precio;
 	private Integer tasa_id;
-	private Double stock_minimo;
+	private Integer stock_minimo;
 	private Integer activo;
 	private String fabricante;
 	private String imagen;
@@ -116,11 +116,11 @@ public class Producto {
 		this.tasa_id = tasa_id;
 	}
 
-	public Double getStock_minimo() {
+	public Integer getStock_minimo() {
 		return stock_minimo;
 	}
 
-	public void setStock_minimo(Double stock_minimo) {
+	public void setStock_minimo(Integer stock_minimo) {
 		this.stock_minimo = stock_minimo;
 	}
 

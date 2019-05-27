@@ -165,7 +165,7 @@ public class EditarProductosController implements BaseController {
 		// En este caso, como el valor que muestra es true o null, en caso de ser true
 		// muestra una imagen
 		this.activo.setCellFactory(new ColumnButton<Producto, Boolean>("activo",
-				new Image(getClass().getResourceAsStream("/image/ok.png"))) {
+				new Image(getClass().getResourceAsStream("/image/check.png"))) {
 			@Override
 			public void buttonAction(Producto producto) {
 			}
@@ -182,7 +182,7 @@ public class EditarProductosController implements BaseController {
 				});
 
 		this.ver.setCellFactory(new ColumnButton<Producto, Boolean>("ver",
-				new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
+				new Image(getClass().getResourceAsStream("/image/edit.png"))) {
 			@Override
 			public void buttonAction(Producto producto) {
 				AppManager.getInstance().getAppMain().verProductos(producto);

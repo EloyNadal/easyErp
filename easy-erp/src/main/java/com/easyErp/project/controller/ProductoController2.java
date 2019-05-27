@@ -118,6 +118,7 @@ public class ProductoController2 implements BaseController{
 	private Node node;
 	private TableView<VentaLinea> table;
 	private boolean searchTotales;
+	private File fileImagen;
 
 	//
 	private QueryManager<Stock> queryManagerStocks = Stock.getQueryManager();
@@ -179,15 +180,15 @@ public class ProductoController2 implements BaseController{
 
 	public void atributosProducto() {
 
-		this.txtValorAtributo.setText(producto.getAtributo_valor());
-		this.txtFabricante.setText(producto.getFabricante());
-		this.txtUnidadMesura.setText(producto.getUnidad_mesura());
-		this.txtStockMin.setText(producto.getStock_minimo().toString());
+		if(producto.getAtributo_valor() != null) this.txtValorAtributo.setText(producto.getAtributo_valor());
+		if(producto.getFabricante() != null) this.txtFabricante.setText(producto.getFabricante());
+		if(producto.getUnidad_mesura() != null) this.txtUnidadMesura.setText(producto.getUnidad_mesura());
+		if(producto.getStock_minimo() != null) this.txtStockMin.setText(producto.getStock_minimo().toString());
 		this.chkActivo.setSelected(producto.isActivo());
 		this.txtCategoria.setText(producto.getCategoriaNombre());
 		this.txtEan.setText(producto.getEan13());
 		this.txtReferencia.setText(producto.getReferencia());
-		this.txtAtributo.setText(producto.getAtributo());
+		if (producto.getAtributo() != null) this.txtAtributo.setText(producto.getAtributo());
 		this.txtNombre.setText(producto.getNombre());
 		this.txtPrecio.setText(producto.getPrecio().toString());
 		this.txtTasa.setText(producto.getTasaNombre());
@@ -626,6 +627,14 @@ public class ProductoController2 implements BaseController{
 		}
 
 		if (producto != null) {
+			if (this.fileImagen != null) {
+				if (queryManagerProducto.uploadFile(this.fileImagen, this.producto.getId().toString())) {
+					this.producto = (queryManagerProducto.getByPk(this.producto.getId().toString()).getObject());
+					atributosProducto();
+				} else {
+					AppManager.printError("imagen no guardada");
+				}
+			}
 			this.producto = queryManagerProducto.getByPk(producto.getId().toString()).getObject();
 			editarProducto();
 		} else {
@@ -757,13 +766,10 @@ public class ProductoController2 implements BaseController{
 		File file = openFileChooser("Seleccionar imagen", true);
 
 		if (file != null && file.exists()) {
-			if (queryManagerProducto.uploadFile(file, this.producto.getId().toString())) {
-				System.out.println("guardado");
-				this.producto = (queryManagerProducto.getByPk(this.producto.getId().toString()).getObject());
-				atributosProducto();
-			} else {
-				System.out.println("error al guardar");
-			}
+			
+			this.imagen.setImage(new Image("file:///" + file.getPath()));
+			this.fileImagen = file;
+
 		}
 	}
 

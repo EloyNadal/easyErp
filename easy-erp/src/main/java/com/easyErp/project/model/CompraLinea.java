@@ -8,7 +8,10 @@ public class CompraLinea {
     private Integer producto_id;
     private Double precio;
     private Integer tasa_id;
-    private Double cantidad;
+    private Integer cantidad;
+    private String productoNombre;
+    private String productoEan13;
+    
     
 	public CompraLinea() {
 	}
@@ -37,7 +40,7 @@ public class CompraLinea {
 		return tasa_id;
 	}
 
-	public Double getCantidad() {
+	public Integer getCantidad() {
 		return cantidad;
 	}
 
@@ -65,9 +68,27 @@ public class CompraLinea {
 		this.tasa_id = tasa_id;
 	}
 
-	public void setCantidad(Double cantidad) {
+	public void setCantidad(Integer cantidad) { 
 		this.cantidad = cantidad;
 	}
+
+	public String getProductoNombre() {
+		return productoNombre;
+	}
+
+	public String getProductoEan13() {
+		return productoEan13;
+	}
+
+	public void setProductoNombre(String productoNombre) {
+		this.productoNombre = productoNombre;
+	}
+
+	public void setProductoEan13(String productoEan13) {
+		this.productoEan13 = productoEan13;
+	}
+	
+	
 
 	
 }

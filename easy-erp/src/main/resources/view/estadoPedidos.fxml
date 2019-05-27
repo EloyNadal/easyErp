@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="paneEstadoPedidos" prefHeight="600.0" prefWidth="800.0" stylesheets="" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.EstadoPedidosController">
+   <center>
+		<AnchorPane>
+			<children>
+            <GridPane hgap="10.0" vgap="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="52.0" />
+                <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="30.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="30.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXComboBox fx:id="cmbEstados" prefHeight="25.0" prefWidth="135.0" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </JFXComboBox>
+                  <Label text="Estado">
+                     <font>
+                        <Font size="17.0" />
+                     </font></Label>
+                  <JFXButton fx:id="btnFiltrar" onMouseClicked="#filtrar" prefHeight="30.0" prefWidth="80.0" ripplerFill="#0c0c0c" style="-fx-background-color: #80cbc4;" text="FILTRAR" GridPane.columnIndex="5" />
+                  <JFXDatePicker fx:id="dateDesde" promptText="Desde" GridPane.columnIndex="2" />
+                  <JFXDatePicker fx:id="dateHasta" promptText="Hasta" GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
+				<HBox spacing="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+					<padding>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</padding>
+				</HBox>
+            <Label layoutX="49.0" layoutY="20.0" text="Estado pedidos" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Pagination fx:id="paginacion" layoutX="149.0" layoutY="603.0" prefHeight="79.0" prefWidth="757.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0" />
+            <HBox layoutX="691.0" layoutY="538.0" prefHeight="41.0" prefWidth="91.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+               <children>
+                  <JFXButton fx:id="btnGuardar" onMouseClicked="#guardarEstado" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="GUARDAR" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+			</children>
+         <BorderPane.margin>
+            <Insets left="1.0" right="1.0" />
+         </BorderPane.margin>
+		</AnchorPane>
+   </center>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</BorderPane>
