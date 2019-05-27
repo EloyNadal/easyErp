@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 
 public class UserController extends Stage implements BaseController {
 
+	public static final int MIN_PWD_SIZE = 4;
 	@FXML
 	GridPane parent;
 	@FXML
@@ -35,6 +37,9 @@ public class UserController extends Stage implements BaseController {
 	private JFXButton btnGuardar;
 	@FXML
 	private JFXButton btnCancelar;
+	@FXML
+	private Label lblError;
+
 	private HiloPeticiones<Empleado> peticionEmpleado;
 	private HiloPeticiones<GrupoUsuario> peticionGrupoUsuario;
 
@@ -49,7 +54,7 @@ public class UserController extends Stage implements BaseController {
 		addOkFilter(pane);
 		addCancelFilter(pane);
 		initComboBox();
-		
+
 		this.txtNombre.focusedProperty().addListener(new ClearListenerJFXText(this.txtNombre));
 		this.txtPwd.focusedProperty().addListener(new ClearListenerJFXPWD(this.txtPwd));
 		this.txtConfirmPwd.focusedProperty().addListener(new ClearListenerJFXPWD(this.txtConfirmPwd));
@@ -79,39 +84,50 @@ public class UserController extends Stage implements BaseController {
 	}
 
 	private boolean checkPassword() {
-		if (this.txtPwd.getText().length() < 4) {
-			AppManager.showError("La contraseña debe tener una longitud mínima de 4 caracteres");
+		if (this.txtPwd.getText().length() < MIN_PWD_SIZE) {
+			lblError.setText("La contraseña debe tener una longitud mínima de 4 caracteres");
+			lblError.setVisible(true);
 			return false;
 		}
 		if (this.txtPwd.getText().equals(this.txtConfirmPwd.getText()))
 			return true;
 		txtPwd.setUnFocusColor(Paint.valueOf("#ce2020"));
 		txtConfirmPwd.setUnFocusColor(Paint.valueOf("#ce2020"));
-		AppManager.showError("Las contraseñas deben coincidir");
+		lblError.setText("Las contraseñas deben coincidir");
+		lblError.setVisible(true);
 		return false;
 	}
 
 	@FXML
 	@Override
 	public void onOk() {
-		if (!validation())
+		if (!validation()) {
+			lblError.setText("Campos necesarios por rellenar");
+			lblError.setVisible(true);
 			return;
+		}
+
 		Usuario user = new Usuario();
 		user.setGrupo_usuario_id(cmbGrupoUsuario.getValue().getId());
-		user.setEmpleado_id(4);
+		user.setEmpleado_id(cmbEmpleado.getValue().getId());
 		user.setPassword(txtPwd.getText());
 		user.setUser_name(txtNombre.getText());
 		Usuario.getQueryManager().insertOne(user);
-		AppManager.showInfo("Usuario agregado correctamente");
-		clear();
+		if (Usuario.getQueryManager().insertOne(user).isSuccessful()) {
+			AppManager.showInfo("Usuario agregado correctamente");
+			onCancelar();
+		} else {
+			lblError.setText("Error al insertar");
+			lblError.setVisible(true);
+		}
 	}
 
 	@FXML
 	@Override
 	public void onCancelar() {
-		this.close();
+		((Stage) txtNombre.getScene().getWindow()).close();
 	}
-	
+
 	public void clear() {
 		txtNombre.setText("");
 		txtPwd.setText("");

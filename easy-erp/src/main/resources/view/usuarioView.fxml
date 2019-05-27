@@ -9,8 +9,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.UserController">
+<AnchorPane fx:id="pane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.UserController">
    <children>
       <GridPane fx:id="parent" alignment="CENTER_RIGHT" hgap="5.0" layoutX="331.0" layoutY="48.0" prefHeight="230.0" prefWidth="252.0" vgap="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
         <columnConstraints>
@@ -23,6 +24,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
@@ -35,9 +37,14 @@
             <JFXPasswordField fx:id="txtPwd" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <JFXPasswordField fx:id="txtConfirmPwd" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Empleado" GridPane.rowIndex="2" />
-            <JFXButton fx:id="btnGuardar" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="GUARDAR" onAction="#onOk" GridPane.rowIndex="5" />
-            <JFXButton fx:id="btnCancelar" alignment="CENTER" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="CANCELAR" onAction="#onCancelar" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <JFXButton fx:id="btnGuardar" onAction="#onOk" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="GUARDAR" GridPane.rowIndex="6" />
+            <JFXButton fx:id="btnCancelar" alignment="CENTER" onAction="#onCancelar" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="CANCELAR" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Confirmar Password" GridPane.rowIndex="4" />
+            <Label fx:id="lblError" alignment="CENTER" text="Error al crear usuario" textFill="#f80707" visible="false" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
    </children>

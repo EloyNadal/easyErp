@@ -112,6 +112,9 @@ public class Main extends Application {
 						System.exit(0);
 				});
 				login.showAndWait();
+				if (!AppManager.isLogged() && AppManager.showYesNoQuestion("Cerrar",
+						"No se ha efectuado el login\nDeseas cerrar la aplicacion?"))
+					System.exit(0);
 			} catch (IOException e) {
 				AppManager.printError("Error al cargar el login");
 			}

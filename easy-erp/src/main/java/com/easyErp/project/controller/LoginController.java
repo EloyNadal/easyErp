@@ -1,6 +1,5 @@
 package com.easyErp.project.controller;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.QueryManager;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -27,8 +26,8 @@ public class LoginController extends Stage implements BaseController {
 	@FXML
 	public void login() {
 		QueryManager.login(this.txtUser.getText(), this.txtPwd.getText());
-		if (AppManager.isLogged())
-			onCancelar();
+		onCancelar();
+
 	}
 
 	@FXML
