@@ -586,7 +586,7 @@ public class ProductoController2 implements BaseController{
 			this.btnGuardar.setVisible(true);
 			this.btnEditar.setText("CANCELAR");
 			this.btnEditar.setStyle("-fx-background-color: #ef9a9a");
-
+			
 			initComboBox();
 			changeEditableFields(true);
 
@@ -616,7 +616,7 @@ public class ProductoController2 implements BaseController{
 
 		Producto producto = null;
 		lblResultado.setTextFill(Paint.valueOf("#54934c"));
-		if (this.producto != null) {
+		if (this.producto != null) {			
 			producto = queryManagerProducto.updateForId(this.producto.getId(), formBody).getObject();
 			if (producto != null)
 				lblResultado.setText("Producto actualizado!");
@@ -628,8 +628,8 @@ public class ProductoController2 implements BaseController{
 
 		if (producto != null) {
 			if (this.fileImagen != null) {
-				if (queryManagerProducto.uploadFile(this.fileImagen, this.producto.getId().toString())) {
-					this.producto = (queryManagerProducto.getByPk(this.producto.getId().toString()).getObject());
+				if (queryManagerProducto.uploadFile(this.fileImagen, producto.getId().toString())) {
+					this.producto = (queryManagerProducto.getByPk(producto.getId().toString()).getObject());
 					atributosProducto();
 				} else {
 					AppManager.printError("imagen no guardada");
@@ -645,9 +645,9 @@ public class ProductoController2 implements BaseController{
 	}
 
 	public RequestBody construirBodyProducto() {
-
-		RequestBody formBody;
-		if (cmbProveedores.getValue().getId() != null) {
+		
+		RequestBody formBody = null;
+		if (cmbProveedores.getValue() != null) {
 			formBody = new FormBody.Builder().add("nombre", this.txtNombre.getText())
 					.add("ean13", this.txtEan.getText()).add("referencia", this.txtReferencia.getText())
 					.add("categoria_id", this.cmbCategorias.getValue().getId().toString())
@@ -662,12 +662,12 @@ public class ProductoController2 implements BaseController{
 					.add("ean13", this.txtEan.getText()).add("referencia", this.txtReferencia.getText())
 					.add("categoria_id", this.cmbCategorias.getValue().getId().toString())
 					.add("unidad_mesura", this.txtUnidadMesura.getText())
-					.add("activo", chkActivo.isSelected() ? "1" : "0").add("stock_minimo", this.txtStockMin.getText())
+					.add("activo", chkActivo.isSelected() ? "1" : "0")
+					.add("stock_minimo", this.txtStockMin.getText())
 					.add("atributo", txtAtributo.getText()).add("atributo_valor", txtValorAtributo.getText())
 					.add("fabricante", txtFabricante.getText()).add("precio", this.txtPrecio.getText())
 					.add("tasa_id", this.cmbTasas.getValue().getId().toString()).build();
 		}
-
 		return formBody;
 	}
 
@@ -750,14 +750,23 @@ public class ProductoController2 implements BaseController{
 			e.printStackTrace();
 		}
 
-		initComboBox(this.cmbCategorias, Categoria.class, peticionCategorias.getRespuesta());
-		initComboBox(this.cmbTasas, Tasa.class, peticionTasas.getRespuesta());
-		initComboBox(this.cmbProveedores, Proveedor.class, peticionProveedores.getRespuesta());
+		if(!(this.cmbCategorias.getItems().size() > 0)) {
+			initComboBox(this.cmbCategorias, Categoria.class, peticionCategorias.getRespuesta());
+		}
+		
+		if(!(this.cmbTasas.getItems().size() > 0)) {
+			initComboBox(this.cmbTasas, Tasa.class, peticionTasas.getRespuesta());
+		}
+		if(!(this.cmbProveedores.getItems().size() > 0)) {
+			initComboBox(this.cmbProveedores, Proveedor.class, peticionProveedores.getRespuesta());
+		}
 
 		if (this.producto != null) {
-			this.cmbCategorias.setValue(this.producto.getCategoria());
-			this.cmbTasas.setValue(this.producto.getTasa());
-			this.cmbProveedores.setValue(this.producto.getProveedor());
+			this.cmbCategorias.getSelectionModel().select(this.producto.getCategoria().getId());
+			this.cmbTasas.getSelectionModel().select(this.producto.getTasa().getId());
+			if(this.producto.getProveedor() != null) {
+				this.cmbProveedores.getSelectionModel().select(this.producto.getProveedor().getId());
+			}
 		}
 
 	}
