@@ -2,7 +2,10 @@ package com.easyErp.project.controller;
 
 import java.util.ArrayList;
 
+import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.QueryManager;
+
+import javafx.scene.Scene;
 
 public class HiloPeticiones<S> extends Thread {
 
@@ -16,7 +19,6 @@ public class HiloPeticiones<S> extends Thread {
 	@Override
 	public void run() {
 			this.respuesta = queryManager.readAll().getObjectsArray();
-			this.respuesta.add(0, null);
 	}
 
 	public ArrayList<S> getRespuesta() {

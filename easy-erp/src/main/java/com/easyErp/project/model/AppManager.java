@@ -15,6 +15,7 @@ import java.util.Optional;
 import com.easyErp.project.controller.AppMainController;
 import com.easyErp.project.log.SystemLog;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -32,13 +33,20 @@ public class AppManager {
 	public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	private static String[] ERRORES = { "Problema de conexion con el servidor", "Elemento no encontrado",
 			"Faltan campos por rellenar" };
-	
-	private static int sessionUserId;
+	private Scene scene;
+	private static Integer sessionUserId;
+
 	private AppManager() {
 		inicializarVariables();
 		sysLog = SystemLog.getInstance();
 	}
-
+	
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+	public Scene getScene() {
+		return scene;
+	}
 	public void setAppMain(AppMainController main) {
 		this.main = main;
 	}
@@ -59,14 +67,42 @@ public class AppManager {
 		return idTienda;
 	}
 
-	public static int getSessionUserId() {
+	public static Integer getSessionUserId() {
 		return sessionUserId;
 	}
 
 	public static void setSessionUser(int sessionUserId) {
 		AppManager.sessionUserId = sessionUserId;
 	}
-	
+
+	private static void inicializarVariables() {
+		Map<String, String> variables = new HashMap<String, String>();
+		BufferedReader lector = null;
+		try {
+			lector = new BufferedReader(new FileReader("./config.conf"));
+			String[] entrada;
+			String linea;
+			while ((linea = lector.readLine()) != null) {
+				entrada = linea.split(":");
+				variables.put(entrada[0], entrada[1]);
+			}
+		} catch (FileNotFoundException exc) {
+			printError(exc.getMessage());
+		} catch (IOException exc) {
+			printError(exc.getMessage());
+		} finally {
+			try {
+				lector.close();
+				AppManager.baseUrl = "http://" + variables.get("Url") + ":" + variables.get("port") + "/";
+				AppManager.idTienda = Integer.parseInt(variables.get("idTienda"));
+			} catch (Exception exc) {
+				printError("Error con el fichero de configuración");
+			}
+
+		}
+
+	}
+
 	public static void printError(String message) {
 		Date date = new Date();
 		sysLog.printError(date, message);
@@ -103,34 +139,9 @@ public class AppManager {
 	public static void printConnection(String message) {
 		sysLog.printConnection(message);
 	}
-	
+
 	public static void print(String message) {
 		sysLog.print(message);
-	}
-	private void inicializarVariables() {
-		Map<String, String> variables = new HashMap<String, String>();
-		BufferedReader lector = null;
-		try {
-			lector = new BufferedReader(new FileReader("./config.conf"));
-			String[] entrada;
-			String linea;
-			while ((linea = lector.readLine()) != null) {
-				entrada = linea.split(":");
-				variables.put(entrada[0], entrada[1]);
-			}
-		} catch (FileNotFoundException exc) {
-			printError(exc.getMessage());
-		} catch (IOException exc) {
-			printError(exc.getMessage());
-		} finally {
-			try {
-				lector.close();
-			} catch (IOException exc) {
-				printError(exc.getMessage());
-			}
-		}
-		baseUrl = "http://" + variables.get("Url") + ":" + variables.get("port") + "/";
-		idTienda = Integer.parseInt(variables.get("idTienda"));
 	}
 
 	public static void createExceptionFromErrorCode(int codigoError) {
@@ -179,14 +190,21 @@ public class AppManager {
 		dialog.showAndWait();
 		return dialog.getResult();
 	}
-	
+
 	public void setStage(Stage stage) {
-		AppManager.print("aqui stage");
 		this.stage = stage;
 	}
-	
-	public Stage getStage() {
-		return this.stage; 
-	}
-}
 
+	public Stage getStage() {
+		return this.stage;
+	}
+
+	public static void showInfo(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Información");
+		alert.setContentText(message);
+		alert.setHeaderText(null);
+		alert.showAndWait();
+	}
+
+}

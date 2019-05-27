@@ -33,6 +33,11 @@ public class GrupoUsuario {
 		this.permiso = permiso;
 	}
 
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
 	public static QueryManager<GrupoUsuario> getQueryManager() {
 		if (null == manager)
 			manager = new QueryManager<GrupoUsuario>(GrupoUsuario.class, GrupoUsuario[].class, "grupocliente/");

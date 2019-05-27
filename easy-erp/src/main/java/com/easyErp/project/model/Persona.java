@@ -1,10 +1,9 @@
 package com.easyErp.project.model;
 
-
 import java.util.Locale;
 
-public class Persona{
-	
+public class Persona {
+
 	private String nombre;
 	private String apellidos;
 	private String direccion;
@@ -16,12 +15,11 @@ public class Persona{
 	private String dni;
 	private Locale created_at;
 	private Locale updated_at;
-	
-	
+
 	public Persona() {
 
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -65,7 +63,7 @@ public class Persona{
 	public Locale getUpdated_at() {
 		return updated_at;
 	}
-	
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -103,14 +101,15 @@ public class Persona{
 	}
 
 	public void setCreated_at(Locale created_at) {
-		
-			this.created_at = created_at;
-		
+		this.created_at = created_at;
 	}
 
 	public void setUpdated_at(Locale updated_at) {
-		
-			this.updated_at = updated_at;	
+		this.updated_at = updated_at;
 	}
-
+	
+	@Override
+	public String toString() {
+		return nombre + " " + apellidos;
+	}
 }

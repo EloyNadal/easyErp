@@ -2,52 +2,55 @@ package com.easyErp.project.controller;
 
 import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.QueryManager;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class LoginController {
+public class LoginController extends Stage implements BaseController {
 
 	@FXML
-	private TextField txtUser;
+	private JFXTextField txtUser;
 	@FXML
-	private PasswordField txtPwd;
+	private JFXPasswordField txtPwd;
 	@FXML
 	private Button btnOk;
 	@FXML
-	private Button btnCancel;
+	private Button btnCancelar;
 	@FXML
 	private AnchorPane screen;
-	
+	private boolean opOk;
+
 	@FXML
 	public void login() {
 		QueryManager.login(this.txtUser.getText(), this.txtPwd.getText());
-		Stage stage = (Stage) this.btnOk.getScene().getWindow();
-		stage.close();
-	}
-
-	@FXML
-	public void onCancelar() {
-		if (AppManager.showYesNoQuestion("Cerrar", "Deseas cerrar la aplicación?"))
-			System.exit(0);
+		if (AppManager.isLogged())
+			onCancelar();
 	}
 
 	@FXML
 	public void initialize() {
-		screen.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-			if (AppMainController.isKeyPressed(event, KeyCode.ENTER))
-				login();			
-		});
-		screen.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-			if (AppMainController.isKeyPressed(event, KeyCode.ESCAPE))
-				onCancelar();			
-		});
 
+		addOkFilter(screen);
+		addCancelFilter(screen);
+
+	}
+
+	@FXML
+	@Override
+	public void onOk() {
+		opOk = checkField(txtPwd) && checkField(txtUser);
+		if (opOk)
+			login();
+	}
+
+	@FXML
+	@Override
+	public void onCancelar() {
+		Stage stage = (Stage) this.btnOk.getScene().getWindow();
+		stage.close();
 	}
 }

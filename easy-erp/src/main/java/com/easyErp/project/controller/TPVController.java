@@ -8,7 +8,6 @@ import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.Venta;
 import com.easyErp.project.model.VentaLinea;
-import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -21,13 +20,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
-public class TPVController {
+public class TPVController implements BaseController {
 	@FXML
 	JFXButton btnErase;
 	@FXML
@@ -38,6 +36,8 @@ public class TPVController {
 	TextField txtTotal;
 	@FXML
 	TableView<VentaLinea> tableVentaLinea;
+	@FXML 
+	AnchorPane parent;
 
 	private LinkedList<Producto> productos;
 	private LinkedList<VentaLinea> lineas;
@@ -48,11 +48,8 @@ public class TPVController {
 
 	@FXML
 	public void initialize() {
-		txtLineaProducto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (AppMainController.isKeyPressed(event, KeyCode.ENTER)) {
-				buscarProducto();
-			}
-		});
+		
+		addOkFilter(parent);
 		txtLineaProducto.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -69,7 +66,8 @@ public class TPVController {
 		TableColumn<VentaLinea, String> colNombre = new TableColumn<VentaLinea, String>("Producto");
 		TableColumn<VentaLinea, String> colPrecio = new TableColumn<VentaLinea, String>("Precio");
 
-		this.tableVentaLinea.getColumns().addAll(colCantidad, colNombre, colPrecio);
+		getTable(tableVentaLinea, new TableColumn[] {colCantidad, colNombre, colPrecio});
+		
 
 		colCantidad.setMinWidth(30);
 		colCantidad.setMaxWidth(400);
@@ -106,19 +104,17 @@ public class TPVController {
 	@FXML
 	private void pagarTarjeta() {
 		setFormaDePago("TARJETA");
+		cerrarVenta();
 	}
 
 	@FXML
 	private void pagarEfectivo() {
 		setFormaDePago("EFECTIVO");
+		cerrarVenta();
 	}
 
 	private void setFormaDePago(String formaPago) {
-		if (null == this.formaDePago)
-			this.formaDePago = formaPago;
-		else if (AppManager.showYesNoQuestion("Cambiar forma de pago",
-				"Ya se ha marcado una forma de pago, confirme modificación"))
-			this.formaDePago = formaPago;
+		this.formaDePago = formaPago;
 	}
 
 	@FXML
@@ -127,14 +123,9 @@ public class TPVController {
 	}
 
 	private void buscarProducto() {
+		if(txtLineaProducto.getText().equals("")) return;
 		String prodCode = txtLineaProducto.getText();
 		txtLineaProducto.setText("");
-		if (null != this.formaDePago)
-			if (!AppManager.showYesNoQuestion("Venta cobrada",
-					"Ya se ha establecido una forma de pago, desea añadir productos a la venta?"))
-				return;				
-			else
-				this.formaDePago = null;
 		Producto producto = null;
 		int cantidad;
 		cantidad = txtLineaTeclado.getText().equals("") ? 1 : Integer.parseInt(txtLineaTeclado.getText());
@@ -262,15 +253,13 @@ public class TPVController {
 			AppManager.showError("La venta está vacía");
 			return;
 		}
-		if (null == this.formaDePago) {
-			AppManager.showError("Debe seleccionar una forma de pago para cerrar la venta");
-			return;
-		}
 		Venta venta = new Venta();
 		venta.setCliente_id(null != cliente ? cliente.getId() : null);
 		venta.setTienda_id(AppManager.getIdTienda());
 		venta.setUsuario_id(AppManager.getSessionUserId());
 		venta.setVenta_linea(this.lineas);
+		venta.setEfectivo(formaDePago.equals("EFECTIVO")?1:0);
+		venta.setTarjeta(formaDePago.equals("TARJETA")?1:0);
 		double totalSinTasas = 0;
 		for (VentaLinea linea : this.lineas) {
 			totalSinTasas += calcularPrecioSinIva(linea);
@@ -278,9 +267,7 @@ public class TPVController {
 		venta.setPrecio_sin_tasas(totalSinTasas);
 		venta.setPrecio_total(this.total);
 		venta.setTotal_tasas(this.total - totalSinTasas);
-		Gson gson = new Gson();
-		String json = gson.toJson(venta);
-		Venta.getQueryManager().insertOne(json);
+		Venta.getQueryManager().insertOne(venta);
 		clear();
 	}
 
@@ -289,6 +276,19 @@ public class TPVController {
 		this.lineas.clear();
 		this.cliente = null;
 		actualizarTabla();
-		this.formaDePago = null;
+		
+	}
+	
+	@FXML
+	@Override
+	public void onOk() {
+		buscarProducto();
+	}
+	
+	
+	@Override
+	public void onCancelar() {
+		// TODO Auto-generated method stub
+		
 	}
 }

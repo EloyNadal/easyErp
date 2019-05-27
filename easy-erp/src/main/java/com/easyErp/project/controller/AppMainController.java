@@ -1,6 +1,7 @@
 package com.easyErp.project.controller;
 
 import java.io.IOException;
+import java.net.URL;
 
 import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Producto;
@@ -32,17 +33,28 @@ public class AppMainController {
 	private MenuItem menuLog;
 	@FXML
 	private MenuItem menuEditProductos;
-
 	@FXML
+	private MenuItem menuAddUser;
+	
+	
 	public void verClientes() {
 		loadScene("/view/inicio.fxml");
 	}
 
-	@FXML
+	
 	public void verProductos() {
 		loadScene("/view/productoView.fxml");
 	}
-
+	
+	public void addUser() {
+		try {
+			getNewWindow(getClass().getResource("/view/usuarioView.fxml"), "Añadir Usuario").show();
+		} catch (Exception e) {
+			AppManager.showError("Error al cargar la vista: usuarioView.fxml");
+		}
+		
+	}
+	
 	public void verProductos(Producto producto) {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/productoView2.fxml"));
@@ -54,7 +66,6 @@ public class AppMainController {
 			for(Node node:this.mainWindow.getChildren()) {
 				node.setVisible(false);
 			}
-//			this.mainWindow.getChildren().clear();
 			this.mainWindow.getChildren().add(vista);
 			
 			AnchorPane.setTopAnchor(vista,0.0);
@@ -62,7 +73,7 @@ public class AppMainController {
 			AnchorPane.setLeftAnchor(vista, 0.0);
 			AnchorPane.setRightAnchor(vista, 0.0);
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			AppManager.printError("Error al cargar producto");
 		}
 
@@ -75,7 +86,7 @@ public class AppMainController {
 		}
 	}
 	
-	@FXML
+	
 	public void cargarTPV() {
 		loadScene("/view/TPVView.fxml");
 	}
@@ -84,19 +95,18 @@ public class AppMainController {
 		return keyEvent.getCode() == key ? true : false;
 	}
 
-	@FXML
+	
 	public void verProveedores() {
 		loadScene("/view/proveedorView.fxml");
 	}
 
-	@FXML
+	
 	public void editarProductos() {
 		loadScene("/view/editarProductosView.fxml");
 	}
 
 	public void loadScene(String location) {
 		try {
-			AppManager.print("Antes del nodo");
 			Node node = FXMLLoader.load(getClass().getResource(location));
 			mainWindow.getChildren().clear();
 			mainWindow.getChildren().add(node);
@@ -111,32 +121,20 @@ public class AppMainController {
 		}
 	}
 
-	
+	public static Stage getNewWindow(URL location, String title) throws Exception {
+		FXMLLoader loader = new FXMLLoader(location);
+		AnchorPane scene;
+		scene = loader.load();
+		Stage stage = new Stage();
+		stage.setTitle(title);
+		stage.setResizable(false);
+		stage.setScene(new Scene(scene));
+		return stage; 
+	}
 
 	@FXML
 	public void initialize() {
-		while (!AppManager.isLogged()) {
-			FXMLLoader myLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
-			AnchorPane scene;
-			try {
-				scene = myLoader.load();
-				Stage log = new Stage();
-				log.setTitle("Login");
-				log.setResizable(false);
-				log.setScene(new Scene(scene));
-				log.setOnCloseRequest(event -> {
-					if (AppManager.showYesNoQuestion("Cerrar",
-							"No se ha efectuado el login\nDeseas cerrar la aplicacion?"))
-						System.exit(0);
-				});
-				log.showAndWait();
-				AppManager.getInstance().setAppMain(this);
-			} catch (IOException e) {
-				AppManager.printError(e.getMessage());
-			}
-			if (!AppManager.isLogged())
-				AppManager.showError("No se ha podido realizar el login");
-		}
+		AppManager.getInstance().setAppMain(this);
 	}
 
 	// TODO eliminar

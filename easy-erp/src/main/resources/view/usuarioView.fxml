@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.UserController">
+   <children>
+      <GridPane fx:id="parent" alignment="CENTER_RIGHT" hgap="5.0" layoutX="331.0" layoutY="48.0" prefHeight="230.0" prefWidth="252.0" vgap="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="113.0" minWidth="10.0" prefWidth="113.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="143.0" minWidth="10.0" prefWidth="119.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Nombre usuario" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Grupo usuario" GridPane.rowIndex="1" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Password" GridPane.rowIndex="3" />
+            <JFXTextField fx:id="txtNombre" GridPane.columnIndex="1" />
+            <JFXComboBox fx:id="cmbGrupoUsuario" prefHeight="32.0" prefWidth="147.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="cmbEmpleado" prefHeight="32.0" prefWidth="147.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXPasswordField fx:id="txtPwd" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <JFXPasswordField fx:id="txtConfirmPwd" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Empleado" GridPane.rowIndex="2" />
+            <JFXButton fx:id="btnGuardar" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="GUARDAR" onAction="#onOk" GridPane.rowIndex="5" />
+            <JFXButton fx:id="btnCancelar" alignment="CENTER" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="CANCELAR" onAction="#onCancelar" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Confirmar Password" GridPane.rowIndex="4" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

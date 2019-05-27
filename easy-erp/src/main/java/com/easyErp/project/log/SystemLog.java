@@ -7,14 +7,15 @@ import com.easyErp.project.log.SystemLog.LogType;
 
 public class SystemLog {
 	
-	private boolean errores = false;
-	private boolean conexiones = false;
-	private boolean debug = false;
+	private boolean errores = true;
+	private boolean conexiones = true;
+	private boolean debug = true;
 	private LinkedList<LogMessage> registre = initializeLog();
 	private static SystemLog sysLog = new SystemLog();
-
+	private LogPro log;
+	
 	enum LogType {
-		ERROR("#FF0000"), INFO("#7CFC00"), CONNECTION("#0000FF");
+		ERROR("#FF0000"), INFO("#006400"), CONNECTION("#00008B");
 		private String color;
 
 		LogType(String c) {
@@ -25,8 +26,9 @@ public class SystemLog {
 			return color;
 		}
 	}
-
+	
 	private SystemLog() {
+		log = LogPro.getInstance();
 	}
 
 	public static SystemLog getInstance() {
@@ -60,6 +62,8 @@ public class SystemLog {
 	public void print(String message) {
 		if (isDebugActive())
 			synchronized (this.registre) {
+//				if(log.isShowing())
+				log.addMessage(new LogMessage(LogType.INFO, new Date(), message));
 				registre.addFirst(new LogMessage(LogType.INFO, new Date(), message));
 			}
 	}
@@ -67,6 +71,8 @@ public class SystemLog {
 	public void printConnection(String message) {
 		if (isConexionesActive())
 			synchronized (this.registre) {
+//				if(log.isShowing())
+				log.addMessage(new LogMessage(LogType.CONNECTION, new Date(), message));
 				registre.addFirst(new LogMessage(LogType.CONNECTION, new Date(), message));
 			}
 	}
@@ -74,7 +80,9 @@ public class SystemLog {
 	public void printError(Date date, String message) {
 		if (isErroresActive())
 			synchronized (this.registre) {
-				registre.addFirst(new LogMessage(LogType.CONNECTION, date, message));
+//				if(log.isShowing())
+				log.addMessage(new LogMessage(LogType.ERROR, new Date(), message));
+				registre.addFirst(new LogMessage(LogType.ERROR, date, message));
 			}
 	}
 
@@ -90,7 +98,7 @@ public class SystemLog {
 
 	public boolean isEmpty() {
 		synchronized (this.registre) {
-			return registre.size() == 0;
+			return registre.isEmpty();
 		}
 	}
 }

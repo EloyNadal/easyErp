@@ -1,10 +1,10 @@
 package com.easyErp.project.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Categoria;
@@ -29,8 +29,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,12 +41,11 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.RequestBody;
 
-public class ProductoController2 {
+public class ProductoController2 implements BaseController{
 
 	Producto producto;
 
@@ -212,12 +209,12 @@ public class ProductoController2 {
 		}
 	}
 
+
 	public void crearTablaProducto() {
 
 		clearTable();
-		TableView<Stock> table = new TableView<Stock>();
+		TableView<Stock> table = new TableView<Stock>();;
 		table.setId("tabla");
-
 		nodosVisibles(new Node[] { this.lineAlmacen });
 		colorNodos(this.btnAlmacen);
 
@@ -232,24 +229,11 @@ public class ProductoController2 {
 		TableColumn<Stock, String> colReferencia = new TableColumn<Stock, String>("Referencia");
 		TableColumn<Stock, String> colNombre = new TableColumn<Stock, String>("Nombre");
 		TableColumn<Stock, Double> colStock = new TableColumn<Stock, Double>("Stock");
-
-		table.getColumns().addAll(colReferencia, colNombre, colStock);
+		
+		
 
 		colReferencia.setMinWidth(90);
 		colReferencia.setMaxWidth(400);
-
-		// metodo original
-		/*
-		 * colReferencia.setCellValueFactory(new
-		 * Callback<TableColumn.CellDataFeatures<Stock, String>,
-		 * ObservableValue<String>>() {
-		 * 
-		 * @Override public ObservableValue<String>
-		 * call(TableColumn.CellDataFeatures<Stock, String> param) { return new
-		 * SimpleStringProperty(param.getValue().getProducto().getReferencia()); } });
-		 */
-
-		// metodo lambda
 		colReferencia.setCellValueFactory(
 				(param) -> new SimpleStringProperty(param.getValue().getProducto().getReferencia()));
 
@@ -266,8 +250,10 @@ public class ProductoController2 {
 		colStock.setMinWidth(90);
 		colStock.setMaxWidth(400);
 		colStock.setCellValueFactory(new PropertyValueFactory<Stock, Double>("cantidad"));
-
-		propidadesTabla(table, stocks);
+		
+		getTable(table, new TableColumn[]{colReferencia, colNombre, colStock});
+		
+		propiedadesTabla(table, stocks);
 		anadirTotales(stocks, table);
 	}
 
@@ -293,7 +279,6 @@ public class ProductoController2 {
 		TableColumn<Stock, Boolean> verTienda = new TableColumn<Stock, Boolean>("Info");
 
 		table.getColumns().addAll(colTienda, colCiudad, colStock, verTienda);
-
 		colTienda.setMinWidth(90);
 		colTienda.setMaxWidth(400);
 		colTienda.setCellValueFactory((param) -> new SimpleStringProperty(param.getValue().getTienda().getNombre()));
@@ -326,7 +311,7 @@ public class ProductoController2 {
 			}
 		});
 
-		propidadesTabla(table, stocks);
+		propiedadesTabla(table, stocks);
 		anadirTotales(stocks, table);
 	}
 
@@ -414,7 +399,7 @@ public class ProductoController2 {
 			TableColumn<VentaLinea, String> colNombreTienda = new TableColumn<VentaLinea, String>("Nombre");
 			TableColumn<VentaLinea, Double> colCantidad = new TableColumn<VentaLinea, Double>("Cantidad");
 			TableColumn<VentaLinea, Double> colTotal = new TableColumn<VentaLinea, Double>("Precio");
-
+			
 			table.getColumns().addAll(colNombreTienda, colCantidad, colTotal);
 
 			colNombreTienda.setMinWidth(90);
@@ -430,12 +415,8 @@ public class ProductoController2 {
 			colTotal.setMaxWidth(400);
 			colTotal.setCellValueFactory(new PropertyValueFactory<VentaLinea, Double>("precio"));
 
-			propidadesTabla(table, ventas);
+			propiedadesTabla(table, ventas);
 			anadirTotalesVenta(ventas, table);
-			// ejemplo de usar la fecha
-			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd
-			// HH:mm:ss");
-			// System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
 		} else {
 			AppManager.printError("No existen ventas de este producto");
 		}
@@ -457,9 +438,6 @@ public class ProductoController2 {
 		if (ventas != null) {
 
 			this.searchTotales = false;
-
-			ObservableList<VentaLinea> obsVentas = FXCollections.observableArrayList(ventas);
-
 			this.table = new TableView<VentaLinea>();
 
 			table.setId("tabla");
@@ -501,17 +479,13 @@ public class ProductoController2 {
 						}
 					});
 
-			propidadesTabla(table, ventas);
+			propiedadesTabla(table, ventas);
 			anadirTotalesVenta(ventas, table);
-			// ejemplo de usar la fecha
-			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd
-			// HH:mm:ss");
-			// System.out.println(LocalDateTime.parse(ventas.get(0).getVenta().getCreated_at(),formatter));
 		} else {
 			AppManager.printError("No existen ventas de este producto");
 		}
 	}
-
+	
 	public void filtroDate() {
 
 		ObservableList<VentaLinea> array = null;
@@ -553,7 +527,7 @@ public class ProductoController2 {
 				}
 
 				this.table.getItems().clear();
-				this.table.setItems(FXCollections.observableArrayList(array));
+				this.table.setItems(array);
 				anadirTotalesVenta(new ArrayList<VentaLinea>(array), table);
 
 			} else {
@@ -562,7 +536,7 @@ public class ProductoController2 {
 		}
 	}
 
-	private <S> void propidadesTabla(TableView<S> table, ArrayList<S> array) {
+	private <S> void propiedadesTabla(TableView<S> table, ArrayList<S> array) {
 
 		this.pane.getChildren().add(table);
 		AnchorPane.setBottomAnchor(table, 100d);
@@ -635,15 +609,11 @@ public class ProductoController2 {
 
 	public void guardarProducto() {
 
-		valida();
-		if (!campoObligatrio(this.cmbCategorias))
-			return;
-		if (!campoObligatrio(this.cmbTasas))
-			return;
-
+		if(!valida()) return;
+		
 		RequestBody formBody = construirBodyProducto();
 
-		Producto producto;
+		Producto producto = null;
 		lblResultado.setTextFill(Paint.valueOf("#54934c"));
 		if (this.producto != null) {
 			producto = queryManagerProducto.updateForId(this.producto.getId(), formBody).getObject();
@@ -693,40 +663,17 @@ public class ProductoController2 {
 	}
 
 	public boolean valida() {
-
-		boolean valida = campoObligatrio(this.txtNombre);
-		valida = campoObligatrio(this.txtEan);
-		valida = campoObligatrio(this.txtReferencia);
-		valida = campoObligatrio(this.txtUnidadMesura);
-		valida = campoObligatrio(this.txtStockMin);
-		valida = campoObligatrio(this.txtPrecio);
-
+		boolean valida = checkField(this.txtNombre);
+		valida = checkField(this.txtEan) && valida ;
+		valida = checkField(this.txtReferencia) && valida;
+		valida = checkField(this.txtUnidadMesura) && valida;
+		valida = checkField(this.txtStockMin) && valida;
+		valida = checkField(this.txtPrecio) && valida;
+		valida = checkField(this.cmbCategorias) && valida;
+		valida = checkField(this.cmbTasas) && valida;
 		return valida;
 	}
-
-	public boolean campoObligatrio(JFXTextField field) {
-//TODO color
-		if (field.getText().isEmpty()) {
-			field.getStylesheets().add("-fx-prompt-text-fill: red");
-			field.setUnFocusColor(Paint.valueOf("#ce2020"));
-			field.setPromptText("Campo Obligatorio");
-			return false;
-		}
-		field.setUnFocusColor(Paint.valueOf("#4d4d4d"));
-		return true;
-	}
-
-	public <S> boolean campoObligatrio(JFXComboBox<S> field) {
-
-		if (field.getValue() == null) {
-			field.setUnFocusColor(Paint.valueOf("#ce2020"));
-			field.setPromptText("Campo Obligatorio");
-			return false;
-		}
-		field.setUnFocusColor(Paint.valueOf("#4d4d4d"));
-		return true;
-	}
-
+	
 	public void colorNodos(JFXButton button) {
 		JFXButton[] buttons = { this.btnAlmacen, this.btnCompras, this.btnTiendas, this.btnVentas };
 
@@ -778,45 +725,6 @@ public class ProductoController2 {
 				this.pane.getChildren().remove(i);
 			}
 		}
-	}
-
-	public <T> void initComboBox(JFXComboBox<T> combo, Class<T> clase, ArrayList<T> array) {
-
-		combo.setItems(FXCollections.observableArrayList(array));
-		combo.getSelectionModel().selectFirst();
-
-		combo.setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
-			@Override
-			public ListCell<T> call(ListView<T> l) {
-				return new ListCell<T>() {
-					@Override
-					protected void updateItem(T item, boolean empty) {
-						super.updateItem(item, empty);
-						if (item == null || empty) {
-							setGraphic(null);
-						} else {
-							setText(item.toString());
-						}
-					}
-				};
-			}
-		});
-
-		combo.setConverter(new StringConverter<T>() {
-			@Override
-			public String toString(T object) {
-				if (object == null) {
-					return null;
-				} else {
-					return object.toString();
-				}
-			}
-
-			@Override
-			public T fromString(String string) {
-				return null;
-			}
-		});
 	}
 
 	/**
@@ -872,6 +780,16 @@ public class ProductoController2 {
 		else
 			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
 		return file;
+	}
+
+	@Override
+	public void onOk() {
+		
+	}
+
+	@Override
+	public void onCancelar() {
+		
 	}
 
 }

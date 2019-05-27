@@ -1,7 +1,6 @@
 package com.easyErp.project.model;
 
 import java.util.List;
-import java.util.Locale;
 
 public class Venta {
 
@@ -13,6 +12,8 @@ public class Venta {
 	private Double precio_sin_tasas;
 	private Double total_tasas;
 	private Double precio_total;
+	private Integer efectivo;
+	private Integer tarjeta;
 	private String created_at;
 	private String updated_at;
 	
@@ -110,6 +111,22 @@ public class Venta {
 
 	public void setTienda(Tienda tienda) {
 		this.tienda = tienda;
+	}
+
+	public Integer getEfectivo() {
+		return efectivo;
+	}
+
+	public void setEfectivo(Integer efectivo) {
+		this.efectivo = efectivo;
+	}
+
+	public Integer getTarjeta() {
+		return tarjeta;
+	}
+
+	public void setTarjeta(Integer tarjeta) {
+		this.tarjeta = tarjeta;
 	}
 
 	public static QueryManager<Venta> getQueryManager(){

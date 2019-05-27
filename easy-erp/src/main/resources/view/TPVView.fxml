@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.TPVController">
+<AnchorPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.TPVController">
    <children>
       <VBox prefHeight="575.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -166,7 +166,6 @@
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Factura" GridPane.rowIndex="2" />
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Tarjeta" GridPane.columnIndex="1" onAction="#pagarTarjeta"/>
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Cliente" GridPane.rowIndex="1" onAction="#insertarCliente"/>
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Total" GridPane.columnIndex="1" GridPane.rowIndex="2" onAction="#cerrarVenta"/>
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#eliminarLinea" ripplerFill="#228327" text="Eliminar línea" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>

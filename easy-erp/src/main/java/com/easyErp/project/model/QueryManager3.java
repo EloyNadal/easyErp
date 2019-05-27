@@ -1,10 +1,7 @@
 package com.easyErp.project.model;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,7 +16,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class QueryManager<T> {
+public class QueryManager3<T> {
 
 	private static String token;
 	private static String baseUrl = AppManager.getBaseUrl();
@@ -31,13 +28,12 @@ public class QueryManager<T> {
 	private Class<T[]> objectClassArray;
 	private static OkHttpClient client = new OkHttpClient();
 	private Respuesta<T> respuesta;
-	
-	protected QueryManager(Class<T> objectClass, Class<T[]> objectClassArray, String url) {
+
+	protected QueryManager3(Class<T> objectClass, Class<T[]> objectClassArray, String url) {
 		this.url = baseUrl + url;
 		this.objectClassArray = objectClassArray;
 		this.objectClass = objectClass;
 		this.respuesta = new Respuesta<T>();
-		Logger.getLogger(OkHttpClient.class.getName()).setLevel(Level.FINE);
 	}
 
 	public Respuesta<T> getByPk(String endPoint) {
@@ -138,12 +134,11 @@ public class QueryManager<T> {
 		return respuesta;
 	}
 
-	public Respuesta<T> insertOne(T object) {
-		String json = gson.toJson(object);
+	public Respuesta<T> insertOne(String json) {
+		
 		Request request = new Request.Builder().header("Authorization", token).url(this.url)
 				.post(RequestBody.create(JSON, json)).build();
 		AppManager.printConnection(json);
-		System.out.println(json);
 		this.respuesta.clear();
 
 		try {
@@ -179,29 +174,12 @@ public class QueryManager<T> {
 		return respuesta;
 	}
 
-	public Boolean uploadFile(File file, String id) {
-		try {
-			String url = baseUrl + "upimage";
-			RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-					.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image/png"), file))
-					.addFormDataPart("id", id).build();
-			Request request = new Request.Builder().url(url).post(requestBody).build();
-			Response response = client.newCall(request).execute();
-			if (response.isSuccessful())
-				return true;
-		} catch (Exception e) {
-			AppManager.print(e.getMessage());
-		}
-		return false;
-	}
-
 	public static boolean login(String email, String password) {
 		RequestBody req = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("user_name", email)
 				.addFormDataPart("password", password).build();
 		Request request = new Request.Builder().url(baseUrl + "login").post(req).build();
-		Response response = null;
 		try {
-			response = client.newCall(request).execute();
+			Response response = client.newCall(request).execute();
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
 			Usuario user = gson.fromJson(json.get("data"), Usuario.class);
 			token = user.getApiToken();
@@ -209,11 +187,9 @@ public class QueryManager<T> {
 			if (response.isSuccessful())
 				AppManager.setLogged(true);
 		} catch (Exception e) {
-			if (null == response)
-				AppManager.showError("No hay respuesta del servidor, compruebe conexion");
+			AppManager.printError(e.getMessage());
 			return false;
 		}
 		return true;
 	}
-
 }

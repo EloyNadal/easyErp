@@ -8,7 +8,20 @@ public class Usuario {
 	private String user_name;
 	private Integer grupo_usuario_id;
 	private String api_token;
+	private String password;
 	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
 	public Integer getGrupo_usuario_id() {
 		return grupo_usuario_id;
 	}

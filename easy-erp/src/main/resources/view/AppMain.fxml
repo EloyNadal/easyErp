@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox  prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.AppMainController">
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.AppMainController">
    <children>
       <MenuBar VBox.vgrow="NEVER">
          <menus>
@@ -31,7 +31,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Empleados">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem fx:id="menuAddUser" mnemonicParsing="false" onAction="#addUser" text="Añadir Usuario" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Productos">
@@ -53,11 +53,6 @@
                   <MenuItem mnemonicParsing="false" text="Unspecified Action" />
                   <MenuItem mnemonicParsing="false" text="Unspecified Action" />
                   <MenuItem mnemonicParsing="false" text="Close" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Log">
-               <items>
-                  <MenuItem fx:id="menuLog" mnemonicParsing="false" text="Mostrar" />
                </items>
             </Menu>
          </menus>

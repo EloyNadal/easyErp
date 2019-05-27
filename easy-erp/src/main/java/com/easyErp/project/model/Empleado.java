@@ -3,20 +3,19 @@ package com.easyErp.project.model;
 public class Empleado extends Persona {
 
 	private static QueryManager<Empleado> manager;
-	private Integer id_empleado;
+	private Integer id;
 	private Integer tienda_id;
-
 	
 	public Empleado() {
 		
 	}
 
-	public Integer getId_empleado() {
-		return id_empleado;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setId_empleado(Integer id_empleado) {
-		this.id_empleado = id_empleado;
+	public void setId_empleado(Integer id) {
+		this.id = id;
 	}
 
 	
