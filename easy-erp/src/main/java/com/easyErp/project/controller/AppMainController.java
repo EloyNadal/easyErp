@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import com.easyErp.project.model.AppManager;
+import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.QueryManager;
 
@@ -41,7 +42,7 @@ public class AppMainController {
 	private MenuItem menuEstadoPedido;
 	
 	public void verClientes() {
-		loadScene("/view/inicio.fxml");
+		loadScene("/view/editarClientesView.fxml");
 	}
 	
 	public void pedido() {
@@ -65,7 +66,7 @@ public class AppMainController {
 		
 	}
 	
-	public void verProductos(Producto producto) {
+	public void verProducto(Producto producto) {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/productoView2.fxml"));
 		Node vista;
@@ -89,6 +90,29 @@ public class AppMainController {
 
 	}
 
+	public void verCliente(Cliente cliente) {
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/clienteView.fxml"));
+		Node vista;
+		try {
+			vista = loader.load();
+			ClienteController2 controller = loader.getController();
+			controller.cargarCliente(cliente, vista);
+			for(Node node:this.mainWindow.getChildren()) {
+				node.setVisible(false);
+			}
+			this.mainWindow.getChildren().add(vista);
+			
+			AnchorPane.setTopAnchor(vista,0.0);
+			AnchorPane.setBottomAnchor(vista,0.0);
+			AnchorPane.setLeftAnchor(vista, 0.0);
+			AnchorPane.setRightAnchor(vista, 0.0);
+
+		} catch (Exception e) {
+			AppManager.printError("Error al cargar cliente");
+		}
+
+	}
 	public void volver(Node oldNode) {
 		this.mainWindow.getChildren().remove(oldNode);
 		for(Node node:this.mainWindow.getChildren()) {

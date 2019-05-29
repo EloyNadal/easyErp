@@ -17,6 +17,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,28 +30,7 @@ public class EditarProductosController implements BaseController {
 
 	@FXML
 	private BorderPane vistaFormProductos;
-	@FXML
-	private TableView<Producto> productosTable;
-	@FXML
-	private TableColumn<Producto, Number> id;
-	@FXML
-	private TableColumn<Producto, String> nombre;
-	@FXML
-	private TableColumn<Producto, String> categoria;
-	@FXML
-	private TableColumn<Producto, String> ean13;
-	@FXML
-	private TableColumn<Producto, String> referencia;
-	@FXML
-	private TableColumn<Producto, String> atributoValor;
-	@FXML
-	private TableColumn<Producto, Double> precio;
-	@FXML
-	private TableColumn<Producto, String> iva;
-	@FXML
-	private TableColumn<Producto, Boolean> activo;
-	@FXML
-	private TableColumn<Producto, Boolean> ver;
+	private TableView<Producto> productosTable = crearTabla();
 	@FXML
 	private JFXComboBox<Categoria> cmbCategoria;
 	@FXML
@@ -70,14 +51,16 @@ public class EditarProductosController implements BaseController {
 	private JFXButton btnFiltrar;
 	@FXML
 	private JFXButton btnQuitarFiltro;
-
+	@FXML
+	private Pagination paginacion;
+	
 	private ArrayList<Producto> productos;
+	private ArrayList<Producto> productosFiltrados;
+	
+	private final static int FILASPORPAGINA = 12;
 
 	@FXML
 	private void initialize() {
-
-		QueryManager<Producto> queryManager = Producto.getQueryManager();
-		this.productos = queryManager.readAll().getObjectsArray();
 		this.txtPrecioMax.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -108,48 +91,88 @@ public class EditarProductosController implements BaseController {
 					txtPrecioMin.setText("");
 			}
 		});
+		QueryManager<Producto> queryManager = Producto.getQueryManager();
+		this.productos = queryManager.readAll().getObjectsArray();
 		QueryManager<Categoria> queryManagerCategoria = Categoria.getQueryManager();
 		ArrayList<Categoria> categorias = queryManagerCategoria.readAll().getObjectsArray();
 		QueryManager<Tasa> queryManagerTasa = Tasa.getQueryManager();
 		ArrayList<Tasa> tasas = queryManagerTasa.readAll().getObjectsArray();
 
-		this.nombre.setMinWidth(90);
-		this.nombre.setMaxWidth(120);
-		this.nombre.setCellValueFactory(new PropertyValueFactory<Producto, String>("nombre"));
+		initComboBox(cmbCategoria, Categoria.class, categorias);
+		initComboBox(cmbIva, Tasa.class, tasas);
 
-		this.categoria.setMinWidth(80);
-		this.categoria.setMaxWidth(120);
-		this.categoria.setCellValueFactory(new PropertyValueFactory<Producto, String>("CategoriaNombre"));
+		this.paginacion.setPageCount((int) Math.ceil((double) this.productos.size() / (double) FILASPORPAGINA));
+		this.paginacion.setPageFactory(this::crearPagina);
+	}
 
-		this.referencia.setMinWidth(90);
-		this.referencia.setMaxWidth(120);
-		this.referencia.setCellValueFactory(new PropertyValueFactory<Producto, String>("referencia"));
+	private Node crearPagina(int paginaIndice) {
 
-		this.ean13.setMinWidth(90);
-		this.ean13.setMaxWidth(120);
-		this.ean13.setCellValueFactory(new PropertyValueFactory<Producto, String>("ean13"));
+		int desdeIndice = paginaIndice * FILASPORPAGINA;
+		int hastaIndice = Math.min(desdeIndice + FILASPORPAGINA, this.productos.size());
+		productosTable.setItems(FXCollections.observableArrayList(this.productos.subList(desdeIndice, hastaIndice)));
+		productosTable.setEditable(true);
+		return productosTable;
+	}
 
-		this.atributoValor.setMinWidth(80);
-		this.atributoValor.setMaxWidth(120);
-		this.atributoValor.setCellValueFactory(new PropertyValueFactory<Producto, String>("atributo_valor"));
+	private Node recargarPagina(int paginaIndice) {
 
-		this.iva.setMinWidth(50);
-		this.iva.setMaxWidth(90);
-		this.iva.setCellValueFactory(new PropertyValueFactory<Producto, String>("tasaNombre"));
+		int desdeIndice = paginaIndice * FILASPORPAGINA;
+		int hastaIndice = Math.min(desdeIndice + FILASPORPAGINA, productosFiltrados.size());
+		productosTable.setItems(FXCollections.observableArrayList(productosFiltrados.subList(desdeIndice, hastaIndice)));
+		return productosTable;
+	}
 
-		this.id.setMinWidth(40);
-		this.id.setMaxWidth(50);
-		this.id.setCellValueFactory(new PropertyValueFactory<Producto, Number>("id"));
+	private TableView<Producto> crearTabla() {
+		
+		TableView<Producto> tabla = new TableView<Producto>();
+		TableColumn<Producto, Number> id = new TableColumn<Producto, Number>("ID");
+		TableColumn<Producto, String> nombre = new TableColumn<Producto, String>("Nombre");
+		TableColumn<Producto, String> categoria = new TableColumn<Producto, String>("Categoria");
+		TableColumn<Producto, String> ean13 = new TableColumn<Producto, String>("Ean13");
+		TableColumn<Producto, String> referencia = new TableColumn<Producto, String>("Referencia");
+		TableColumn<Producto, String> atributoValor = new TableColumn<Producto, String>("Atributo");
+		TableColumn<Producto, Double> precio = new TableColumn<Producto, Double>("Precio");
+		TableColumn<Producto, String> iva = new TableColumn<Producto, String>("IVA");
+		TableColumn<Producto, Boolean> activo = new TableColumn<Producto, Boolean>("Activo");
+		TableColumn<Producto, Boolean> ver = new TableColumn<Producto, Boolean>("Ver");
+		
+		nombre.setMinWidth(90);
+		nombre.setMaxWidth(120);
+		nombre.setCellValueFactory(new PropertyValueFactory<Producto, String>("nombre"));
 
-		this.precio.setMinWidth(50);
-		this.precio.setMaxWidth(90);
-		this.precio.setCellValueFactory(new PropertyValueFactory<Producto, Double>("precio"));
+		categoria.setMinWidth(80);
+		categoria.setMaxWidth(120);
+		categoria.setCellValueFactory(new PropertyValueFactory<Producto, String>("CategoriaNombre"));
 
-		this.activo.setMinWidth(40);
-		this.activo.setMaxWidth(80);
+		referencia.setMinWidth(90);
+		referencia.setMaxWidth(120);
+		referencia.setCellValueFactory(new PropertyValueFactory<Producto, String>("referencia"));
+
+		ean13.setMinWidth(90);
+		ean13.setMaxWidth(120);
+		ean13.setCellValueFactory(new PropertyValueFactory<Producto, String>("ean13"));
+
+		atributoValor.setMinWidth(80);
+		atributoValor.setMaxWidth(120);
+		atributoValor.setCellValueFactory(new PropertyValueFactory<Producto, String>("atributo_valor"));
+
+		iva.setMinWidth(50);
+		iva.setMaxWidth(90);
+		iva.setCellValueFactory(new PropertyValueFactory<Producto, String>("tasaNombre"));
+
+		id.setMinWidth(40);
+		id.setMaxWidth(50);
+		id.setCellValueFactory(new PropertyValueFactory<Producto, Number>("id"));
+
+		precio.setMinWidth(50);
+		precio.setMaxWidth(90);
+		precio.setCellValueFactory(new PropertyValueFactory<Producto, Double>("precio"));
+
+		activo.setMinWidth(40);
+		activo.setMaxWidth(80);
 
 		// muestra un valor segun condicion
-		this.activo.setCellValueFactory(
+		activo.setCellValueFactory(
 				new Callback<TableColumn.CellDataFeatures<Producto, Boolean>, ObservableValue<Boolean>>() {
 					@Override
 					public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Producto, Boolean> producto) {
@@ -164,16 +187,16 @@ public class EditarProductosController implements BaseController {
 
 		// En este caso, como el valor que muestra es true o null, en caso de ser true
 		// muestra una imagen
-		this.activo.setCellFactory(new ColumnButton<Producto, Boolean>("activo",
-				new Image(getClass().getResourceAsStream("/image/check.png"))) {
+		activo.setCellFactory(new ColumnButton<Producto, Boolean>("activo",
+				new Image(getClass().getResourceAsStream("/image/ok.png"))) {
 			@Override
 			public void buttonAction(Producto producto) {
 			}
 		});
 
-		this.ver.setMinWidth(40);
-		this.ver.setMaxWidth(80);
-		this.ver.setCellValueFactory(
+		ver.setMinWidth(40);
+		ver.setMaxWidth(80);
+		ver.setCellValueFactory(
 				new Callback<TableColumn.CellDataFeatures<Producto, Boolean>, ObservableValue<Boolean>>() {
 					@Override
 					public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Producto, Boolean> button) {
@@ -181,31 +204,31 @@ public class EditarProductosController implements BaseController {
 					}
 				});
 
-		this.ver.setCellFactory(new ColumnButton<Producto, Boolean>("ver",
-				new Image(getClass().getResourceAsStream("/image/edit.png"))) {
+		ver.setCellFactory(new ColumnButton<Producto, Boolean>("ver",
+				new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
 			@Override
 			public void buttonAction(Producto producto) {
-				AppManager.getInstance().getAppMain().verProductos(producto);
+				AppManager.getInstance().getAppMain().verProducto(producto);
 			}
 		});
-
-		this.productosTable.setEditable(false);
-		this.productosTable.getSelectionModel().setCellSelectionEnabled(true);
-		this.productosTable.getItems().clear();
-		actualizarTabla(productos);
-
-		initComboBox(cmbCategoria, Categoria.class, categorias);
-		initComboBox(cmbIva, Tasa.class, tasas);
+		tabla.getColumns().addAll(id, nombre, categoria, ean13, referencia, atributoValor, precio, iva, activo, ver);
+		tabla.setEditable(false);
+		tabla.getSelectionModel().getSelectedItem();
+		tabla.getSelectionModel().setCellSelectionEnabled(true);
+		tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		return tabla;
 	}
 
-	private void actualizarTabla(ArrayList<Producto> tabla) {
-		this.productosTable.getItems().clear();
-		this.productosTable.setItems(FXCollections.observableArrayList(tabla));
-		this.productosTable.refresh();
-	}
+	
 
 	@FXML
 	private void filtrar() {
+		this.productosFiltrados = filtrarProductos();
+		this.paginacion.setPageCount((int) Math.ceil(((double)this.productosFiltrados.size()/(double)FILASPORPAGINA)));
+    	this.paginacion.setPageFactory(this::recargarPagina);
+	}
+	
+	private ArrayList<Producto> filtrarProductos(){
 		ArrayList<Producto> copiaProductos = new ArrayList<Producto>();
 		Producto producto = new Producto();
 		producto.setActivo(this.chkActivo.isSelected() ? 1 : 0);
@@ -220,17 +243,16 @@ public class EditarProductosController implements BaseController {
 			if (checkProductos(producto, p, precio_min, precio_max))
 				copiaProductos.add(p);
 		}
-		actualizarTabla(copiaProductos);
+		return copiaProductos;
 	}
-
 	private boolean checkProductos(Producto producto, Producto p, double min, double max) {
 		if (producto.getCategoria_id() != null && producto.getCategoria_id() != p.getCategoria_id())
 			return false;
-		if (p.getEan13() != "" && !p.getEan13().contains(producto.getEan13()))
+		if (!p.getEan13().toLowerCase().contains(producto.getEan13().toLowerCase()))
 			return false;
-		if (p.getNombre() != "" && !p.getNombre().contains(producto.getNombre()))
+		if (!p.getNombre().toLowerCase().contains(producto.getNombre().toLowerCase()))
 			return false;
-		if (p.getReferencia() != "" && !p.getReferencia().contains(producto.getReferencia()))
+		if (!p.getReferencia().toLowerCase().contains(producto.getReferencia().toLowerCase()))
 			return false;
 		if (producto.getTasa_id() != null && producto.getTasa_id() != p.getTasa_id())
 			return false;
@@ -249,7 +271,7 @@ public class EditarProductosController implements BaseController {
 	}
 
 	public void newProducto() {
-		AppManager.getInstance().getAppMain().verProductos(null);
+		AppManager.getInstance().getAppMain().verProducto(null);
 	}
 
 	@Override
@@ -268,6 +290,7 @@ public class EditarProductosController implements BaseController {
 		this.cmbIva.getSelectionModel().selectFirst();
 		this.txtPrecioMin.setText("0.00");
 		this.txtPrecioMax.setText("0.00");
-		actualizarTabla(this.productos);
+		this.paginacion.setPageCount((int) Math.ceil((double) this.productos.size() / (double) FILASPORPAGINA));
+		this.paginacion.setPageFactory(this::crearPagina);
 	}
 }

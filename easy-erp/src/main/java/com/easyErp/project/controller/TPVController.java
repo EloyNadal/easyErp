@@ -43,7 +43,7 @@ public class TPVController implements BaseController {
 	private LinkedList<VentaLinea> lineas;
 	private double total = 0;
 	private Cliente cliente;
-	private static final DecimalFormat DF = new DecimalFormat("#0.00");
+	public static final DecimalFormat DF = new DecimalFormat("#0.00");
 	private String formaDePago;
 
 	@FXML
@@ -231,7 +231,7 @@ public class TPVController implements BaseController {
 		String codCliente = AppManager.showMessageForStringResult("Cliente",
 				"Introduzca numero de socio/DNI del Cliente");
 		if (null != codCliente) {
-			RequestBody request = new FormBody.Builder().add("dni", codCliente).add("codigo", codCliente).build();
+			RequestBody request = new FormBody.Builder().add("codigo", codCliente).add("codigo", codCliente).build();
 			try {
 				cliente = Cliente.getQueryManager().readQuery(request, 1).getObjectsArray().get(0);
 			} catch (Exception e) {

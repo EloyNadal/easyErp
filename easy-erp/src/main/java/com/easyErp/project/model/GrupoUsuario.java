@@ -40,7 +40,7 @@ public class GrupoUsuario {
 	
 	public static QueryManager<GrupoUsuario> getQueryManager() {
 		if (null == manager)
-			manager = new QueryManager<GrupoUsuario>(GrupoUsuario.class, GrupoUsuario[].class, "grupocliente/");
+			manager = new QueryManager<GrupoUsuario>(GrupoUsuario.class, GrupoUsuario[].class, "grupousuario/");
 		return manager;
 
 	}

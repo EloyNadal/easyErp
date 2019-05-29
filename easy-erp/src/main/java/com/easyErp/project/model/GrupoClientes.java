@@ -30,6 +30,10 @@ public class GrupoClientes {
 		this.ratio_descuento = ratio_descuento;
 	}
 	
+	@Override
+	public String toString() {
+		return nombre;
+	}
 	public static QueryManager<GrupoClientes> getQueryManager() {
 		if (null == manager)
 			manager = new QueryManager<GrupoClientes>(GrupoClientes.class, GrupoClientes[].class, "grupocliente/");

@@ -97,6 +97,7 @@ public class QueryManager<T> {
 	}
 
 	public Respuesta<T> updateForId(Integer id, RequestBody body) {
+		
 		Request request = new Request.Builder().header("Authorization", token).url(this.url + id).put(body).build();
 		AppManager.printConnection(request.toString());
 		this.respuesta.clear();
@@ -116,7 +117,29 @@ public class QueryManager<T> {
 		}
 		return respuesta;
 	}
+	public Respuesta<T> updateForId(Integer id, T object) {
+		String jason = gson.toJson(object);
+		Request request = new Request.Builder().header("Authorization", token).url(this.url + id).
+				put(RequestBody.create(JSON, jason)).build();
+		AppManager.printConnection(request.toString());
+		this.respuesta.clear();
 
+		try {
+			Response response = client.newCall(request).execute();
+			AppManager.printConnection(response.toString());
+			respuesta.setSuccessful(response.code());
+			if (respuesta.isSuccessful()) {
+				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
+				AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
+				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
+			} else
+				AppManager.createExceptionFromErrorCode(response.code());
+		} catch (Exception e) {
+			AppManager.printError(e.getMessage());
+		}
+		return respuesta;
+	}
+	
 	public Respuesta<T> insertOne(RequestBody body) {
 		Request request = new Request.Builder().header("Authorization", token).url(this.url).post(body).build();
 		AppManager.printConnection(request.toString());

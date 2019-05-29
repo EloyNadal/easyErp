@@ -58,7 +58,7 @@ public class EstadoPedidosController {
     private TableView<Compra> tabla = crearTabla();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
-    private final static int filasPorPagina = 9;
+    private final static int FILASPORPAGINA = 9;
          
     public TableView<Compra> crearTabla(){
     	
@@ -101,7 +101,7 @@ public class EstadoPedidosController {
 				new Callback<TableColumn.CellDataFeatures<Compra, Double>, ObservableValue<Double>>() { 
 					@Override
 					public ObservableValue<Double> call(TableColumn.CellDataFeatures<Compra, Double> param) {
-						return new SimpleObjectProperty(param.getValue().getPrecio_sin_tasas());
+						return new SimpleObjectProperty<>(param.getValue().getPrecio_sin_tasas());
 					}
 				});
 		colPrecioSinTasas.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
@@ -112,7 +112,7 @@ public class EstadoPedidosController {
 				new Callback<TableColumn.CellDataFeatures<Compra, Double>, ObservableValue<Double>>() { 
 					@Override
 					public ObservableValue<Double> call(TableColumn.CellDataFeatures<Compra, Double> param) {
-						return new SimpleObjectProperty(param.getValue().getTotal_tasas());
+						return new SimpleObjectProperty<>(param.getValue().getTotal_tasas());
 					}
 				});
 		colTasas.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
@@ -123,7 +123,7 @@ public class EstadoPedidosController {
 				new Callback<TableColumn.CellDataFeatures<Compra, Double>, ObservableValue<Double>>() { 
 					@Override
 					public ObservableValue<Double> call(TableColumn.CellDataFeatures<Compra, Double> param) {
-						return new SimpleObjectProperty(param.getValue().getPrecio_total());
+						return new SimpleObjectProperty<>(param.getValue().getPrecio_total());
 					}
 				});
 		colPrecioTotal.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
@@ -153,9 +153,9 @@ public class EstadoPedidosController {
 		
 			colEstado.setCellFactory(ComboBoxTableCell.forTableColumn(FXCollections.observableArrayList(this.estadosPedido)));
 			colEstado.setOnEditCommit((CellEditEvent<Compra, String> event) -> {
-	            TablePosition<Compra, String> pos = event.getTablePosition();
+//	            TablePosition<Compra, String> pos = event.getTablePosition();
 	 
-	            int row = pos.getRow();
+//	            int row = pos.getRow();
 	            
 	            for (Compra compra : compras) {
 					if (compra.getId() == event.getRowValue().getId()) {
@@ -230,14 +230,14 @@ public class EstadoPedidosController {
     private void initialize() { 
     	cmbEstados.setItems(FXCollections.observableArrayList(estados));
     	cmbEstados.getSelectionModel().selectFirst();
-		this.paginacion.setPageCount((int) Math.ceil((double)this.compras.size()/(double)filasPorPagina));
+		this.paginacion.setPageCount((int) Math.ceil((double)this.compras.size()/(double)FILASPORPAGINA));
 		this.paginacion.setPageFactory(this::crearPagina);
     }
     
     private Node crearPagina(int paginaIndice) {
 
-    	int desdeIndice = paginaIndice * filasPorPagina;
-    	int hastaIndice = Math.min(desdeIndice + filasPorPagina, this.compras.size());
+    	int desdeIndice = paginaIndice * FILASPORPAGINA;
+    	int hastaIndice = Math.min(desdeIndice + FILASPORPAGINA, this.compras.size());
     	tabla.setItems(FXCollections.observableArrayList(this.compras.subList(desdeIndice, hastaIndice)));
     	tabla.setEditable(true);
     	return tabla;
@@ -245,8 +245,8 @@ public class EstadoPedidosController {
     
     private Node recargarPagina(int paginaIndice) {
 
-    	int desdeIndice = paginaIndice * filasPorPagina;
-    	int hastaIndice = Math.min(desdeIndice + filasPorPagina, this.comprasFiltradas.size());
+    	int desdeIndice = paginaIndice * FILASPORPAGINA;
+    	int hastaIndice = Math.min(desdeIndice + FILASPORPAGINA, this.comprasFiltradas.size());
     	tabla.setItems(FXCollections.observableArrayList(this.comprasFiltradas.subList(desdeIndice, hastaIndice)));
     	return tabla;
     }
@@ -255,7 +255,7 @@ public class EstadoPedidosController {
     @FXML
     void filtrar() {
     	this.comprasFiltradas = filtrarProductos();
-    	this.paginacion.setPageCount((int) Math.ceil(((double)this.comprasFiltradas.size()/(double)filasPorPagina)));
+    	this.paginacion.setPageCount((int) Math.ceil(((double)this.comprasFiltradas.size()/(double)FILASPORPAGINA)));
     	this.paginacion.setPageFactory(this::recargarPagina);
     }
 	
@@ -323,17 +323,17 @@ public class EstadoPedidosController {
 			queryCompras.updateForId(compra.getId(), body);
 		}
 		comprasEditadas.clear();
-		showAlert();
+		AppManager.showInfo("Estados guardados");
 		filtrar();
 	}
 	
-	 private void showAlert() {
-	        Alert alert = new Alert(AlertType.INFORMATION);
-	        alert.setTitle("Pedidos");
-	        alert.setHeaderText(null);
-	        alert.setContentText("Estados guardados");
-	        alert.showAndWait();
-	  }	
+//	 private void showAlert() {
+//	        Alert alert = new Alert(AlertType.INFORMATION);
+//	        alert.setTitle("Pedidos");
+//	        alert.setHeaderText(null);
+//	        alert.setContentText("Estados guardados");
+//	        alert.showAndWait();
+//	  }	
 }
 
 	

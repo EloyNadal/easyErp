@@ -5,7 +5,8 @@ public class Cliente extends Persona{
 	private static QueryManager<Cliente> manager;
 	private Integer id;
 	private Integer grupo_cliente_id;
-
+	private String codigo;
+	
 	public Cliente() {
 
 	}
@@ -31,6 +32,14 @@ public class Cliente extends Persona{
 	}
 
 	
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
 	public static QueryManager<Cliente> getQueryManager() {
 		if (null == manager)
 			manager = new QueryManager<Cliente>(Cliente.class, Cliente[].class, "cliente/");

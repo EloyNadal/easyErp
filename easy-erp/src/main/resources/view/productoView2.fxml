@@ -87,7 +87,7 @@
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="btnCompras" maxWidth="600.0" onMouseClicked="#historicoCompras" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #e0e0e0; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Historico Compras" VBox.vgrow="ALWAYS">
+                  <JFXButton fx:id="btnCompras" maxWidth="600.0" onMouseClicked="#historicoCompras" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #e0e0e0; -fx-border-radius: 0pt; -fx-background-radius: 0pt;" text="Ventas Otras Tiendas" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

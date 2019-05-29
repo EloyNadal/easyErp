@@ -4,7 +4,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Categoria;
@@ -12,6 +11,7 @@ import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.Proveedor;
 import com.easyErp.project.model.QueryManager;
 import com.easyErp.project.model.Stock;
+import com.easyErp.project.model.TablaFormaters;
 import com.easyErp.project.model.Tasa;
 import com.easyErp.project.model.VentaLinea;
 import com.jfoenix.controls.JFXButton;
@@ -32,6 +32,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -120,7 +121,7 @@ public class ProductoController2 implements BaseController{
 	private boolean searchTotales;
 	private File fileImagen;
 
-	//
+	
 	private QueryManager<Stock> queryManagerStocks = Stock.getQueryManager();
 	private QueryManager<VentaLinea> queryManagerVentas = VentaLinea.getQueryManager();
 	private QueryManager<Producto> queryManagerProducto = Producto.getQueryManager();
@@ -330,7 +331,7 @@ public class ProductoController2 implements BaseController{
 			if (i == 0) {
 				label = new Label("Total");
 			} else if (table.getColumns().get(i).getText() == "Stock") {
-				label = new Label(totalCantidad.toString());
+				label = new Label(TPVController.DF.format(totalCantidad));
 				label.setAlignment(Pos.CENTER);
 			} else {
 				label = new Label(" ");
@@ -362,7 +363,7 @@ public class ProductoController2 implements BaseController{
 				label = new Label(totalCantidad.toString());
 				label.setAlignment(Pos.CENTER);
 			} else if (table.getColumns().get(i).getText() == "Total") {
-				label = new Label(totalPrecio.toString());
+				label = new Label(TPVController.DF.format(totalPrecio));
 				label.setAlignment(Pos.CENTER);
 			}
 
@@ -414,6 +415,7 @@ public class ProductoController2 implements BaseController{
 
 			colTotal.setMinWidth(90);
 			colTotal.setMaxWidth(400);
+			colTotal.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
 			colTotal.setCellValueFactory(new PropertyValueFactory<VentaLinea, Double>("precio"));
 
 			propiedadesTabla(table, ventas);
