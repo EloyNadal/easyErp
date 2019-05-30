@@ -45,7 +45,6 @@ public class QueryManager<T> {
 		AppManager.printConnection(request.toString());
 		this.respuesta.clear();
 		try {
-			System.out.println(request.toString());
 			Response response = client.newCall(request).execute();
 			respuesta.setSuccessful(response.code());
 			AppManager.printConnection(response.toString());
@@ -166,7 +165,6 @@ public class QueryManager<T> {
 		Request request = new Request.Builder().header("Authorization", token).url(this.url)
 				.post(RequestBody.create(JSON, json)).build();
 		AppManager.printConnection(json);
-		System.out.println(json);
 		this.respuesta.clear();
 
 		try {
@@ -227,7 +225,7 @@ public class QueryManager<T> {
 			response = client.newCall(request).execute();
 			JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
 			Usuario user = gson.fromJson(json.get("data"), Usuario.class);
-			token = user.getApiToken();
+			token = Encrypt.getEncrypted(user.getApiToken());
 			AppManager.setSessionUser(user.getId());
 			if (response.isSuccessful())
 				AppManager.setLogged(true);

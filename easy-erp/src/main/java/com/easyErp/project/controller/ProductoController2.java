@@ -614,16 +614,16 @@ public class ProductoController2 implements BaseController{
 
 		if(!valida()) return;
 		
-		RequestBody formBody = construirBodyProducto();
+		//RequestBody formBody = construirBodyProducto();
 
-		Producto producto = null;
+		Producto producto = construirBodyProducto();
 		lblResultado.setTextFill(Paint.valueOf("#54934c"));
 		if (this.producto != null) {			
-			producto = queryManagerProducto.updateForId(this.producto.getId(), formBody).getObject();
+			producto = queryManagerProducto.updateForId(this.producto.getId(), producto).getObject();
 			if (producto != null)
 				lblResultado.setText("Producto actualizado!");
 		} else {
-			producto = queryManagerProducto.insertOne(formBody).getObject();
+			producto = queryManagerProducto.insertOne(producto).getObject();
 			if (producto != null)
 				lblResultado.setText("Producto guardado!");
 		}
@@ -646,39 +646,30 @@ public class ProductoController2 implements BaseController{
 		lblResultado.setVisible(true);
 	}
 
-	public RequestBody construirBodyProducto() {
+	public Producto construirBodyProducto() {
 		
-		RequestBody formBody = null;
-		if (cmbProveedores.getValue() != null) {
-			formBody = new FormBody.Builder().add("nombre", this.txtNombre.getText())
-					.add("ean13", this.txtEan.getText()).add("referencia", this.txtReferencia.getText())
-					.add("categoria_id", this.cmbCategorias.getValue().getId().toString())
-					.add("unidad_mesura", this.txtUnidadMesura.getText())
-					.add("activo", chkActivo.isSelected() ? "1" : "0").add("stock_minimo", this.txtStockMin.getText())
-					.add("atributo", txtAtributo.getText()).add("atributo_valor", txtValorAtributo.getText())
-					.add("fabricante", txtFabricante.getText()).add("precio", this.txtPrecio.getText())
-					.add("tasa_id", this.cmbTasas.getValue().getId().toString())
-					.add("proveedor_id", cmbProveedores.getValue().getId().toString()).build();
-		} else {
-			formBody = new FormBody.Builder().add("nombre", this.txtNombre.getText())
-					.add("ean13", this.txtEan.getText()).add("referencia", this.txtReferencia.getText())
-					.add("categoria_id", this.cmbCategorias.getValue().getId().toString())
-					.add("unidad_mesura", this.txtUnidadMesura.getText())
-					.add("activo", chkActivo.isSelected() ? "1" : "0")
-					.add("stock_minimo", this.txtStockMin.getText())
-					.add("atributo", txtAtributo.getText()).add("atributo_valor", txtValorAtributo.getText())
-					.add("fabricante", txtFabricante.getText()).add("precio", this.txtPrecio.getText())
-					.add("tasa_id", this.cmbTasas.getValue().getId().toString()).build();
-		}
-		return formBody;
+		Producto producto = new Producto();
+		producto.setNombre(this.txtNombre.getText().trim());
+		producto.setEan13(this.txtEan.getText().trim());
+		producto.setReferencia(this.txtReferencia.getText().trim());
+		producto.setCategoria_id(this.cmbCategorias.getValue().getId());
+		producto.setUnidad_mesura(this.txtUnidadMesura.getText());
+		producto.setActivo(chkActivo.isSelected() ? 1 : 0);
+		producto.setStock_minimo(this.txtStockMin.getText().trim().isEmpty() ? 0 : Integer.parseInt(this.txtStockMin.getText()));
+		producto.setAtributo(txtAtributo.getText());
+		producto.setAtributo_valor(txtValorAtributo.getText());
+		producto.setFabricante(txtFabricante.getText());
+		producto.setPrecio(Double.parseDouble(this.txtPrecio.getText()));
+		producto.setTasa_id(this.cmbTasas.getValue().getId());
+		if(cmbProveedores.getValue() != null) producto.setProveedor(cmbProveedores.getValue());
+		
+		return producto;
 	}
 
 	public boolean valida() {
 		boolean valida = checkField(this.txtNombre);
 		valida = checkField(this.txtEan) && valida ;
 		valida = checkField(this.txtReferencia) && valida;
-		valida = checkField(this.txtUnidadMesura) && valida;
-		valida = checkField(this.txtStockMin) && valida;
 		valida = checkField(this.txtPrecio) && valida;
 		valida = checkField(this.cmbCategorias) && valida;
 		valida = checkField(this.cmbTasas) && valida;
@@ -808,5 +799,4 @@ public class ProductoController2 implements BaseController{
 	public void onCancelar() {
 		
 	}
-
 }
