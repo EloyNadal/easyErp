@@ -3,10 +3,9 @@ package com.easyErp.project.controller;
 import java.io.IOException;
 import java.net.URL;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.Producto;
-import com.easyErp.project.model.QueryManager;
+import com.easyErp.project.utils.AppManager;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +17,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * Clase para controlar la vista principal de la aplicación.
+ * Contiene los menús.
+ * 
+ */
 public class AppMainController {
 
 	@FXML
@@ -42,37 +46,42 @@ public class AppMainController {
 	private MenuItem menuEstadoPedido;
 	
 	public void verClientes() {
-		loadScene("/view/editarClientesView.fxml");
+		loadScene("/view/verClientesView.fxml");
 	}
 	
 	public void pedido() {
-		loadScene("/view/pedidosView.fxml");
+		loadScene("/view/crearPedidoView.fxml");
 	}
 	
 	public void estadoPedido() {
-		loadScene("/view/estadoPedidos.fxml");
+		loadScene("/view/verEstadoPedidos.fxml");
 	}
 	
 	public void verProductos() {
 		loadScene("/view/productoView.fxml");
 	}
-	
+	public void nuevoProducto() {
+		editarProducto(null);
+	}
+	public void nuevoCliente() {
+		editarCliente(null);
+	}
 	public void addUser() {
 		try {
-			getNewWindow(getClass().getResource("/view/usuarioView.fxml"), "Añadir Usuario").show();
+			getNewWindow(getClass().getResource("/view/crearUsuarioView.fxml"), "Añadir Usuario").show();
 		} catch (Exception e) {
-			AppManager.showError("Error al cargar la vista: usuarioView.fxml");
+			AppManager.showError("Error al cargar la vista: crearUsuarioView.fxml");
 		}
 		
 	}
 	
-	public void verProducto(Producto producto) {
+	public void editarProducto(Producto producto) {
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/productoView2.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/editarProductoView.fxml"));
 		Node vista;
 		try {
 			vista = loader.load();
-			ProductoController2 controller = loader.getController();
+			EditarProductoController controller = loader.getController();
 			controller.cargarProducto(producto, vista);
 			for(Node node:this.mainWindow.getChildren()) {
 				node.setVisible(false);
@@ -90,13 +99,13 @@ public class AppMainController {
 
 	}
 
-	public void verCliente(Cliente cliente) {
+	public void editarCliente(Cliente cliente) {
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/clienteView.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/editarClienteView.fxml"));
 		Node vista;
 		try {
 			vista = loader.load();
-			ClienteController2 controller = loader.getController();
+			EditarClienteController controller = loader.getController();
 			controller.cargarCliente(cliente, vista);
 			for(Node node:this.mainWindow.getChildren()) {
 				node.setVisible(false);
@@ -136,7 +145,7 @@ public class AppMainController {
 
 	
 	public void editarProductos() {
-		loadScene("/view/editarProductosView.fxml");
+		loadScene("/view/verProductosView.fxml");
 	}
 
 	public void loadScene(String location) {
@@ -170,20 +179,4 @@ public class AppMainController {
 	public void initialize() {
 		AppManager.getInstance().setAppMain(this);
 	}
-
-	// TODO eliminar
-	@FXML
-	public void lanzarExcepcion() {
-		AppManager.printError("Prueba de error");
-	}
-
-	// TODO eliminar
-	@FXML
-	public void printar() {
-		QueryManager<Producto> query = Producto.getQueryManager();
-		for (Producto producto : query.readAll().getObjectsArray()) {
-			System.out.println(producto.getNombre());
-		}
-	}
-
 }

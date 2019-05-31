@@ -1,5 +1,6 @@
-package com.easyErp.project.controller;
+package com.easyErp.project.main;
 
+import com.easyErp.project.controller.BaseController;
 import com.easyErp.project.model.QueryManager;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;

@@ -5,15 +5,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Categoria;
+import com.easyErp.project.model.HiloPeticiones;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.Proveedor;
 import com.easyErp.project.model.QueryManager;
 import com.easyErp.project.model.Stock;
-import com.easyErp.project.model.TablaFormaters;
 import com.easyErp.project.model.Tasa;
 import com.easyErp.project.model.VentaLinea;
+import com.easyErp.project.utils.AppManager;
+import com.easyErp.project.utils.ColumnButton;
+import com.easyErp.project.utils.TablaFormaters;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -42,11 +44,12 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.RequestBody;
 
-public class ProductoController2 implements BaseController{
+public class EditarProductoController implements BaseController {
 
 	Producto producto;
 
@@ -116,12 +119,13 @@ public class ProductoController2 implements BaseController{
 	private Label lblResultado;
 	@FXML
 	private HBox hbxTotales;
+	@FXML
+	private HBox boxBotones;
 	private Node node;
 	private TableView<VentaLinea> table;
 	private boolean searchTotales;
 	private File fileImagen;
 
-	
 	private QueryManager<Stock> queryManagerStocks = Stock.getQueryManager();
 	private QueryManager<VentaLinea> queryManagerVentas = VentaLinea.getQueryManager();
 	private QueryManager<Producto> queryManagerProducto = Producto.getQueryManager();
@@ -152,7 +156,8 @@ public class ProductoController2 implements BaseController{
 	}
 
 	public void crearProducto() {
-
+		
+		this.boxBotones.setVisible(false);
 		nodosVisibles(new Node[] {});
 		changeEditableFields(true);
 		this.btnGuardar.setVisible(true);
@@ -181,15 +186,20 @@ public class ProductoController2 implements BaseController{
 
 	public void atributosProducto() {
 
-		if(producto.getAtributo_valor() != null) this.txtValorAtributo.setText(producto.getAtributo_valor());
-		if(producto.getFabricante() != null) this.txtFabricante.setText(producto.getFabricante());
-		if(producto.getUnidad_mesura() != null) this.txtUnidadMesura.setText(producto.getUnidad_mesura());
-		if(producto.getStock_minimo() != null) this.txtStockMin.setText(producto.getStock_minimo().toString());
+		if (producto.getAtributo_valor() != null)
+			this.txtValorAtributo.setText(producto.getAtributo_valor());
+		if (producto.getFabricante() != null)
+			this.txtFabricante.setText(producto.getFabricante());
+		if (producto.getUnidad_mesura() != null)
+			this.txtUnidadMesura.setText(producto.getUnidad_mesura());
+		if (producto.getStock_minimo() != null)
+			this.txtStockMin.setText(producto.getStock_minimo().toString());
 		this.chkActivo.setSelected(producto.isActivo());
 		this.txtCategoria.setText(producto.getCategoriaNombre());
 		this.txtEan.setText(producto.getEan13());
 		this.txtReferencia.setText(producto.getReferencia());
-		if (producto.getAtributo() != null) this.txtAtributo.setText(producto.getAtributo());
+		if (producto.getAtributo() != null)
+			this.txtAtributo.setText(producto.getAtributo());
 		this.txtNombre.setText(producto.getNombre());
 		this.txtPrecio.setText(producto.getPrecio().toString());
 		this.txtTasa.setText(producto.getTasaNombre());
@@ -211,11 +221,11 @@ public class ProductoController2 implements BaseController{
 		}
 	}
 
-
 	public void crearTablaProducto() {
 
 		clearTable();
-		TableView<Stock> table = new TableView<Stock>();;
+		TableView<Stock> table = new TableView<Stock>();
+		;
 		table.setId("tabla");
 		nodosVisibles(new Node[] { this.lineAlmacen });
 		colorNodos(this.btnAlmacen);
@@ -226,13 +236,11 @@ public class ProductoController2 implements BaseController{
 		RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString())
 				.add("tienda_id", String.valueOf(AppManager.getIdTienda())).build();
 
-		ArrayList<Stock> stocks = queryManagerStocks.readQuery(formBody, 0).getObjectsArray();
+		ArrayList<Stock> stocks = queryManagerStocks.readQuery(formBody, false).getObjectsArray();
 
 		TableColumn<Stock, String> colReferencia = new TableColumn<Stock, String>("Referencia");
 		TableColumn<Stock, String> colNombre = new TableColumn<Stock, String>("Nombre");
 		TableColumn<Stock, Double> colStock = new TableColumn<Stock, Double>("Stock");
-		
-		
 
 		colReferencia.setMinWidth(90);
 		colReferencia.setMaxWidth(400);
@@ -252,9 +260,9 @@ public class ProductoController2 implements BaseController{
 		colStock.setMinWidth(90);
 		colStock.setMaxWidth(400);
 		colStock.setCellValueFactory(new PropertyValueFactory<Stock, Double>("cantidad"));
-		
-		getTable(table, new TableColumn[]{colReferencia, colNombre, colStock});
-		
+
+		getTable(table, new TableColumn[] { colReferencia, colNombre, colStock });
+
 		propiedadesTabla(table, stocks);
 		anadirTotales(stocks, table);
 	}
@@ -273,7 +281,7 @@ public class ProductoController2 implements BaseController{
 
 		RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString()).build();
 
-		ArrayList<Stock> stocks = queryManagerStocks.readQuery(formBody, 0).getObjectsArray();
+		ArrayList<Stock> stocks = queryManagerStocks.readQuery(formBody, false).getObjectsArray();
 
 		TableColumn<Stock, String> colTienda = new TableColumn<Stock, String>("Tienda");
 		TableColumn<Stock, String> colCiudad = new TableColumn<Stock, String>("Ciudad");
@@ -401,7 +409,7 @@ public class ProductoController2 implements BaseController{
 			TableColumn<VentaLinea, String> colNombreTienda = new TableColumn<VentaLinea, String>("Nombre");
 			TableColumn<VentaLinea, Double> colCantidad = new TableColumn<VentaLinea, Double>("Cantidad");
 			TableColumn<VentaLinea, Double> colTotal = new TableColumn<VentaLinea, Double>("Precio");
-			
+
 			table.getColumns().addAll(colNombreTienda, colCantidad, colTotal);
 
 			colNombreTienda.setMinWidth(90);
@@ -436,7 +444,7 @@ public class ProductoController2 implements BaseController{
 		RequestBody formBody = new FormBody.Builder().add("producto_id", this.producto.getId().toString())
 				.add("tienda_id", String.valueOf(AppManager.getIdTienda())).build();
 
-		this.ventas = queryManagerVentas.readQuery(formBody, 0).getObjectsArray();
+		this.ventas = queryManagerVentas.readQuery(formBody, false).getObjectsArray();
 
 		if (ventas != null) {
 
@@ -488,7 +496,7 @@ public class ProductoController2 implements BaseController{
 			AppManager.printError("No existen ventas de este producto");
 		}
 	}
-	
+
 	public void filtroDate() {
 
 		ObservableList<VentaLinea> array = null;
@@ -588,7 +596,7 @@ public class ProductoController2 implements BaseController{
 			this.btnGuardar.setVisible(true);
 			this.btnEditar.setText("CANCELAR");
 			this.btnEditar.setStyle("-fx-background-color: #ef9a9a");
-			
+
 			initComboBox();
 			changeEditableFields(true);
 
@@ -600,7 +608,7 @@ public class ProductoController2 implements BaseController{
 				return;
 
 			}
-			//TODO metodo cerrar ventana
+			// TODO metodo cerrar ventana
 //			AppManager.getInstance().getAppMain().volver(this.node);
 			this.btnGuardar.setVisible(false);
 			this.btnEditar.setText("EDITAR");
@@ -612,13 +620,14 @@ public class ProductoController2 implements BaseController{
 
 	public void guardarProducto() {
 
-		if(!valida()) return;
-		
-		//RequestBody formBody = construirBodyProducto();
+		if (!valida())
+			return;
+
+		// RequestBody formBody = construirBodyProducto();
 
 		Producto producto = construirBodyProducto();
 		lblResultado.setTextFill(Paint.valueOf("#54934c"));
-		if (this.producto != null) {			
+		if (this.producto != null) {
 			producto = queryManagerProducto.updateForId(this.producto.getId(), producto).getObject();
 			if (producto != null)
 				lblResultado.setText("Producto actualizado!");
@@ -647,7 +656,7 @@ public class ProductoController2 implements BaseController{
 	}
 
 	public Producto construirBodyProducto() {
-		
+
 		Producto producto = new Producto();
 		producto.setNombre(this.txtNombre.getText().trim());
 		producto.setEan13(this.txtEan.getText().trim());
@@ -655,27 +664,29 @@ public class ProductoController2 implements BaseController{
 		producto.setCategoria_id(this.cmbCategorias.getValue().getId());
 		producto.setUnidad_mesura(this.txtUnidadMesura.getText());
 		producto.setActivo(chkActivo.isSelected() ? 1 : 0);
-		producto.setStock_minimo(this.txtStockMin.getText().trim().isEmpty() ? 0 : Integer.parseInt(this.txtStockMin.getText()));
+		producto.setStock_minimo(
+				this.txtStockMin.getText().trim().isEmpty() ? 0 : Integer.parseInt(this.txtStockMin.getText()));
 		producto.setAtributo(txtAtributo.getText());
 		producto.setAtributo_valor(txtValorAtributo.getText());
 		producto.setFabricante(txtFabricante.getText());
 		producto.setPrecio(Double.parseDouble(this.txtPrecio.getText()));
 		producto.setTasa_id(this.cmbTasas.getValue().getId());
-		if(cmbProveedores.getValue() != null) producto.setProveedor(cmbProveedores.getValue());
-		
+		if (cmbProveedores.getValue() != null)
+			producto.setProveedor(cmbProveedores.getValue());
+
 		return producto;
 	}
 
 	public boolean valida() {
 		boolean valida = checkField(this.txtNombre);
-		valida = checkField(this.txtEan) && valida ;
+		valida = checkField(this.txtEan) && valida;
 		valida = checkField(this.txtReferencia) && valida;
 		valida = checkField(this.txtPrecio) && valida;
 		valida = checkField(this.cmbCategorias) && valida;
 		valida = checkField(this.cmbTasas) && valida;
 		return valida;
 	}
-	
+
 	public void colorNodos(JFXButton button) {
 		JFXButton[] buttons = { this.btnAlmacen, this.btnCompras, this.btnTiendas, this.btnVentas };
 
@@ -721,7 +732,6 @@ public class ProductoController2 implements BaseController{
 	 * Eliminar la tabla del anchorPane
 	 */
 	public void clearTable() {
-		// this.table.getColumns().clear();
 		for (int i = 0; i < pane.getChildren().size(); i++) {
 			if (pane.getChildren().get(i).getId() == "tabla") {
 				this.pane.getChildren().remove(i);
@@ -743,32 +753,32 @@ public class ProductoController2 implements BaseController{
 			e.printStackTrace();
 		}
 
-		if(!(this.cmbCategorias.getItems().size() > 0)) {
+		if (!(this.cmbCategorias.getItems().size() > 0)) {
 			initComboBox(this.cmbCategorias, Categoria.class, peticionCategorias.getRespuesta());
 		}
-		
-		if(!(this.cmbTasas.getItems().size() > 0)) {
+
+		if (!(this.cmbTasas.getItems().size() > 0)) {
 			initComboBox(this.cmbTasas, Tasa.class, peticionTasas.getRespuesta());
 		}
-		if(!(this.cmbProveedores.getItems().size() > 0)) {
+		if (!(this.cmbProveedores.getItems().size() > 0)) {
 			initComboBox(this.cmbProveedores, Proveedor.class, peticionProveedores.getRespuesta());
 		}
 
 		if (this.producto != null) {
 			this.cmbCategorias.getSelectionModel().select(this.producto.getCategoria().getId());
 			this.cmbTasas.getSelectionModel().select(this.producto.getTasa().getId());
-			if(this.producto.getProveedor() != null) {
+			if (this.producto.getProveedor() != null) {
 				this.cmbProveedores.getSelectionModel().select(this.producto.getProveedor().getId());
 			}
 		}
-
 	}
 
+	@FXML
 	public void image() {
 		File file = openFileChooser("Seleccionar imagen", true);
 
 		if (file != null && file.exists()) {
-			
+
 			this.imagen.setImage(new Image("file:///" + file.getPath()));
 			this.fileImagen = file;
 
@@ -792,11 +802,11 @@ public class ProductoController2 implements BaseController{
 
 	@Override
 	public void onOk() {
-		
+
 	}
 
 	@Override
 	public void onCancelar() {
-		
+
 	}
 }

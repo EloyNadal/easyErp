@@ -1,4 +1,4 @@
-package com.easyErp.project.controller;
+package com.easyErp.project.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.easyErp.project.model.AppManager;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -111,7 +111,7 @@ public class EscritorXLS {
 			try {
 				fileOS.close();
 				libro.close();
-				showAlert();
+				AppManager.showInfo("Tabla exportada correctamente");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -132,14 +132,6 @@ public class EscritorXLS {
 			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
 		return file;
 	}
-	
-	private static void showAlert() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Exportar tabla");
-        alert.setHeaderText(null);
-        alert.setContentText("Tabla exportada correctamente");
-        alert.showAndWait();
-  }
 	
 //	En el boton
 //	ImageView i = new ImageView(new Image(getClass().getResourceAsStream("/image/excelIcon.png")));

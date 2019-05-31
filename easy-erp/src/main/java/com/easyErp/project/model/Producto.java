@@ -3,6 +3,8 @@ package com.easyErp.project.model;
 import java.util.List;
 import java.util.Locale;
 
+import com.easyErp.project.utils.AppManager;
+
 public class Producto {
 	
 	private Integer id;	
@@ -221,7 +223,7 @@ public class Producto {
 				return stock.getCantidad();
 			}
 		}
-		return 0.000;
+		return 0.00;
 	}
 
 	public Proveedor getProveedor() {

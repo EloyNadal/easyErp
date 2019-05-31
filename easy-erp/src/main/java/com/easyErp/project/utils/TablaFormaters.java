@@ -1,4 +1,4 @@
-package com.easyErp.project.model;
+package com.easyErp.project.utils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

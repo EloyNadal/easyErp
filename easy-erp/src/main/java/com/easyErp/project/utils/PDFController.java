@@ -1,11 +1,9 @@
-package com.easyErp.project.controller;
+package com.easyErp.project.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
-
-import com.easyErp.project.model.AppManager;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;

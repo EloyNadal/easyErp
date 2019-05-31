@@ -1,4 +1,4 @@
-package com.easyErp.project.model;
+package com.easyErp.project.utils;
 
 import java.security.Key;
 
@@ -13,7 +13,7 @@ public class Encrypt {
 	private static final String ALGORITHM = "AES";
 	private static final byte[] SALT = "eAsYeRpCeRn0vIGV".getBytes();
 
-    static String getEncrypted(String plainText) {
+    public static String getEncrypted(String plainText) {
     	
         if (plainText == null) {
             return null;

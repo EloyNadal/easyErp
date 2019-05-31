@@ -10,6 +10,9 @@ public class Respuesta<T> {
 	private boolean success;
 	private ArrayList<T> objectsArray;
 	
+	public Respuesta() {
+		
+	}
 	public T getObject() {
 		return object;
 	}
@@ -31,9 +34,9 @@ public class Respuesta<T> {
 	}
 	
 	public void clear() {
-		this.object = null;
+		this.object = ((T) new Object());
 		this.success = false;
-		this.objectsArray = null;
+		this.objectsArray = new ArrayList<T>();
 	}
 	
 }

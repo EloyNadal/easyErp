@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.easyErp.project.model.AppManager;
+import com.easyErp.project.utils.AppManager;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

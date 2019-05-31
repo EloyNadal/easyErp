@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Compra;
 import com.easyErp.project.model.QueryManager;
-import com.easyErp.project.model.TablaFormaters;
 import com.easyErp.project.model.Tienda;
+import com.easyErp.project.utils.AppManager;
+import com.easyErp.project.utils.ColumnButton;
+import com.easyErp.project.utils.PDFController;
+import com.easyErp.project.utils.TablaFormaters;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -23,12 +25,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -39,7 +38,7 @@ import javafx.util.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
-public class EstadoPedidosController {
+public class VerEstadoPedidosController {
 
     @FXML private BorderPane paneEstadoPedidos; 
     @FXML private JFXComboBox<String> cmbEstados;
@@ -153,10 +152,7 @@ public class EstadoPedidosController {
 		
 			colEstado.setCellFactory(ComboBoxTableCell.forTableColumn(FXCollections.observableArrayList(this.estadosPedido)));
 			colEstado.setOnEditCommit((CellEditEvent<Compra, String> event) -> {
-//	            TablePosition<Compra, String> pos = event.getTablePosition();
-	 
-//	            int row = pos.getRow();
-	            
+
 	            for (Compra compra : compras) {
 					if (compra.getId() == event.getRowValue().getId()) {
 						compra.setEstado(event.getNewValue());
@@ -201,7 +197,7 @@ public class EstadoPedidosController {
     			add("tienda_id", String.valueOf(AppManager.getIdTienda()))
     			.build();
     	
-    	return queryCompras.readQuery(body, 0).getObjectsArray();
+    	return queryCompras.readQuery(body, false).getObjectsArray();
     }
     
     public ArrayList<Compra> filtrarProductos(){
@@ -230,7 +226,8 @@ public class EstadoPedidosController {
     private void initialize() { 
     	cmbEstados.setItems(FXCollections.observableArrayList(estados));
     	cmbEstados.getSelectionModel().selectFirst();
-		this.paginacion.setPageCount((int) Math.ceil((double)this.compras.size()/(double)FILASPORPAGINA));
+		this.paginacion.setPageCount(this.compras.size() != 0?
+				(int) Math.ceil((double)this.compras.size()/(double)FILASPORPAGINA):1);
 		this.paginacion.setPageFactory(this::crearPagina);
     }
     
@@ -255,11 +252,12 @@ public class EstadoPedidosController {
     @FXML
     void filtrar() {
     	this.comprasFiltradas = filtrarProductos();
-    	this.paginacion.setPageCount((int) Math.ceil(((double)this.comprasFiltradas.size()/(double)FILASPORPAGINA)));
+    	this.paginacion.setPageCount(this.comprasFiltradas.size() != 0?
+    			(int) Math.ceil(((double)this.comprasFiltradas.size()/(double)FILASPORPAGINA)):1);
     	this.paginacion.setPageFactory(this::recargarPagina);
     }
 	
-	//TODO: Pendiente, listo...
+	
 	public boolean generarPdf(Compra compra) {
 		
 		Gson gson = new Gson();
@@ -310,7 +308,7 @@ public class EstadoPedidosController {
 			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
 		return file;
 	}
-	
+	@FXML
 	public void guardarEstado() {
 		
 		for (Compra compra : comprasEditadas) {
@@ -326,14 +324,6 @@ public class EstadoPedidosController {
 		AppManager.showInfo("Estados guardados");
 		filtrar();
 	}
-	
-//	 private void showAlert() {
-//	        Alert alert = new Alert(AlertType.INFORMATION);
-//	        alert.setTitle("Pedidos");
-//	        alert.setHeaderText(null);
-//	        alert.setContentText("Estados guardados");
-//	        alert.showAndWait();
-//	  }	
 }
 
 	

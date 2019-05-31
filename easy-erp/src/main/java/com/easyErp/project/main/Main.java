@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import com.easyErp.project.controller.AppMainController;
 import com.easyErp.project.log.LogPro;
-import com.easyErp.project.model.AppManager;
+import com.easyErp.project.utils.AppManager;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +33,6 @@ public class Main extends Application {
 			alert.setHeaderText(null);
 			alert.showAndWait();
 		}
-		LogPro.getInstance();
 		AppManager.getInstance().setStage(primaryStage);
 		login();
 		
@@ -50,13 +49,13 @@ public class Main extends Application {
 //		Se establece acceso rápido al log de errores durante la ejecución
 		primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (AppMainController.isKeyPressed(event, KeyCode.F11)) {
-				if(!LogPro.getInstance().isShowing()) {
-					LogPro.getInstance().show();
+				if(!LogPro.getInstance().getStage().isShowing()) {
+					LogPro.getInstance().getStage().show();
 					
 				}
 					
 				else
-					LogPro.getInstance().requestFocus();
+					LogPro.getInstance().getStage().requestFocus();
 			}
 
 		});

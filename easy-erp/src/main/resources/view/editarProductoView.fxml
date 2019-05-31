@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.ProductoController2">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.EditarProductoController">
    <children>
       <ImageView fx:id="imagen" fitHeight="133.0" fitWidth="266.0" layoutX="62.0" layoutY="55.0" onMouseClicked="#image" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
       <GridPane hgap="5.0" layoutX="331.0" layoutY="48.0" vgap="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="20.0">
@@ -77,7 +77,7 @@
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXButton fx:id="btnTiendas" maxWidth="600.0" onMouseClicked="#otrasTiendas" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #e0e0e0; -fx-background-radius: 0pt; -fx-border-radius: 0pt;" text="Otras Tiendas">
+                  <JFXButton fx:id="btnTiendas" maxWidth="600.0" onMouseClicked="#otrasTiendas" prefHeight="47.0" prefWidth="205.0" ripplerFill="#4da488" style="-fx-background-color: #e0e0e0; -fx-background-radius: 0pt; -fx-border-radius: 0pt;" text="Stock Otras Tiendas">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

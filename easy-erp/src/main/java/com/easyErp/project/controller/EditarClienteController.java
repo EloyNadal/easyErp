@@ -2,16 +2,15 @@ package com.easyErp.project.controller;
 
 import java.util.ArrayList;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.GrupoClientes;
+import com.easyErp.project.model.HiloPeticiones;
 import com.easyErp.project.model.QueryManager;
-import com.easyErp.project.model.TablaFormaters;
 import com.easyErp.project.model.Venta;
-import com.easyErp.project.model.VentaLinea;
+import com.easyErp.project.utils.AppManager;
+import com.easyErp.project.utils.TablaFormaters;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -31,7 +30,7 @@ import javafx.util.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
-public class ClienteController2 implements BaseController{
+public class EditarClienteController implements BaseController{
 	private Cliente cliente;
 
 	@FXML
@@ -70,14 +69,17 @@ public class ClienteController2 implements BaseController{
 	private JFXButton btnBuscar;
 	@FXML
 	private Line lineVentas;
+	@FXML
+	private HBox tableBox;
+	@FXML
+	private Label lblHistorico;
 	
 	private Node node;
 	private TableView<Venta> table;
-
 	private QueryManager<Cliente> queryManagerCliente = Cliente.getQueryManager();
 
 	private HiloPeticiones<GrupoClientes> peticionGrupoClientes;
-
+	
 	private ArrayList<Venta> ventas;
 
 	@FXML
@@ -90,7 +92,7 @@ public class ClienteController2 implements BaseController{
 	}
 
 	public void crearCliente() {
-
+		this.lblHistorico.setVisible(false);
 		changeEditableFields(true);
 		this.btnGuardar.setVisible(true);
 		this.btnEditar.setText("CANCELAR");
@@ -127,20 +129,20 @@ public class ClienteController2 implements BaseController{
 		this.txtCodigo.setText(cliente.getCodigo());
 		if (cliente.getPais() != null) this.txtPais.setText(cliente.getPais());
 		this.txtNombre.setText(cliente.getNombre());
-		//TODO
+		//TODO Sale mal
 		for (GrupoClientes grupo:cmbGrupoCliente.getItems())
 			if(grupo.getId() == cliente.getGrupo_cliente_id() )
 				this.txtGrupoCliente.setText(grupo.getNombre());
 
 	}
 
-	//TODO Why print error?
+	
 	public void crearTablaCompras() {
 		
 		if (this.cliente == null)
 			return;		
 		RequestBody formBody = new FormBody.Builder().add("cliente_id", this.cliente.getId().toString()).build();
-		this.ventas = Venta.getQueryManager().readQuery(formBody, 0).getObjectsArray();
+		this.ventas = Venta.getQueryManager().readQuery(formBody, false).getObjectsArray();
 
 		if (ventas != null) {
 			
@@ -153,13 +155,13 @@ public class ClienteController2 implements BaseController{
 			this.table.getColumns().addAll(colFecha, colTotal);
 
 
-			colTotal.setMinWidth(90);
-			colTotal.setMaxWidth(400);
+			colTotal.setMinWidth(100);
+			colTotal.setMaxWidth(100);
 			colTotal.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
 			colTotal.setCellValueFactory(new PropertyValueFactory<Venta, Double>("precio_total"));
 			
-			colFecha.setMinWidth(90);
-			colFecha.setMaxWidth(400);
+			colFecha.setMinWidth(100);
+			colFecha.setMaxWidth(100);
 			colFecha.setCellValueFactory(
 					new Callback<TableColumn.CellDataFeatures<Venta, String>, ObservableValue<String>>() {
 						@Override
@@ -170,17 +172,13 @@ public class ClienteController2 implements BaseController{
 						}
 					});
 
-			AnchorPane.setBottomAnchor(table, 100d);
-			AnchorPane.setTopAnchor(table, 325d);
-			AnchorPane.setRightAnchor(table, 20d);
-			AnchorPane.setLeftAnchor(table, 20d);
-
+			tableBox.getChildren().add(table);
 			table.setEditable(false);
 			table.getSelectionModel().setCellSelectionEnabled(true);
 			table.setItems(FXCollections.observableArrayList(ventas));
 			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		}else {
-			AppManager.print("No hay ventas que mostrar");
+			AppManager.print("No hay compras que mostrar");
 		}
 
 	}
@@ -234,7 +232,7 @@ public class ClienteController2 implements BaseController{
 			changeEditableFields(false);
 		}
 	}
-
+	
 	//TODO
 	public void guardarProducto() {
 

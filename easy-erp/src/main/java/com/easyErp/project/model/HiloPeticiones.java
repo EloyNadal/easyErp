@@ -1,11 +1,6 @@
-package com.easyErp.project.controller;
+package com.easyErp.project.model;
 
 import java.util.ArrayList;
-
-import com.easyErp.project.model.AppManager;
-import com.easyErp.project.model.QueryManager;
-
-import javafx.scene.Scene;
 
 public class HiloPeticiones<S> extends Thread {
 

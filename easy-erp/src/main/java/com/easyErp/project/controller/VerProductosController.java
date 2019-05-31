@@ -2,11 +2,13 @@ package com.easyErp.project.controller;
 
 import java.util.ArrayList;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Categoria;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.QueryManager;
 import com.easyErp.project.model.Tasa;
+import com.easyErp.project.utils.AppManager;
+import com.easyErp.project.utils.ColumnButton;
+import com.easyErp.project.utils.EscritorXLS;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -18,15 +20,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
-public class EditarProductosController implements BaseController {
+public class VerProductosController implements BaseController {
 
 	@FXML
 	private BorderPane vistaFormProductos;
@@ -51,6 +55,8 @@ public class EditarProductosController implements BaseController {
 	private JFXButton btnFiltrar;
 	@FXML
 	private JFXButton btnQuitarFiltro;
+	@FXML
+	private Button btnExc;
 	@FXML
 	private Pagination paginacion;
 	
@@ -101,8 +107,13 @@ public class EditarProductosController implements BaseController {
 		initComboBox(cmbCategoria, Categoria.class, categorias);
 		initComboBox(cmbIva, Tasa.class, tasas);
 
-		this.paginacion.setPageCount((int) Math.ceil((double) this.productos.size() / (double) FILASPORPAGINA));
+		this.paginacion.setPageCount(this.productos.size() != 0?
+				(int) Math.ceil((double) this.productos.size() / (double) FILASPORPAGINA):1);
 		this.paginacion.setPageFactory(this::crearPagina);
+		ImageView i = new ImageView(new Image(getClass().getResourceAsStream("/image/excelIcon.png")));
+		i.setFitHeight(25);
+		i.setFitWidth(25);
+		btnExc.setGraphic(i);
 	}
 
 	private Node crearPagina(int paginaIndice) {
@@ -208,7 +219,7 @@ public class EditarProductosController implements BaseController {
 				new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
 			@Override
 			public void buttonAction(Producto producto) {
-				AppManager.getInstance().getAppMain().verProducto(producto);
+				AppManager.getInstance().getAppMain().editarProducto(producto);
 			}
 		});
 		tabla.getColumns().addAll(id, nombre, categoria, ean13, referencia, atributoValor, precio, iva, activo, ver);
@@ -224,7 +235,8 @@ public class EditarProductosController implements BaseController {
 	@FXML
 	private void filtrar() {
 		this.productosFiltrados = filtrarProductos();
-		this.paginacion.setPageCount((int) Math.ceil(((double)this.productosFiltrados.size()/(double)FILASPORPAGINA)));
+		this.paginacion.setPageCount(this.productosFiltrados.size() != 0?
+				(int) Math.ceil(((double)this.productosFiltrados.size()/(double)FILASPORPAGINA)):1);
     	this.paginacion.setPageFactory(this::recargarPagina);
 	}
 	
@@ -271,7 +283,7 @@ public class EditarProductosController implements BaseController {
 	}
 
 	public void newProducto() {
-		AppManager.getInstance().getAppMain().verProducto(null);
+		AppManager.getInstance().getAppMain().editarProducto(null);
 	}
 
 	@Override
@@ -290,7 +302,14 @@ public class EditarProductosController implements BaseController {
 		this.cmbIva.getSelectionModel().selectFirst();
 		this.txtPrecioMin.setText("0.00");
 		this.txtPrecioMax.setText("0.00");
-		this.paginacion.setPageCount((int) Math.ceil((double) this.productos.size() / (double) FILASPORPAGINA));
+		this.paginacion.setPageCount(this.productos.size() != 0?
+				(int) Math.ceil((double) this.productos.size() / (double) FILASPORPAGINA):1);
 		this.paginacion.setPageFactory(this::crearPagina);
 	}
+	
+	@FXML
+	private void imprimirResultados() {
+			EscritorXLS.crearArchivoExcel(this.productosTable);
+	}
+	
 }

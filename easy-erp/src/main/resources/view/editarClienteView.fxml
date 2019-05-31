@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.ClienteController2">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.EditarClienteController">
    <children>
-      <GridPane hgap="5.0" layoutX="331.0" layoutY="48.0" prefHeight="230.0" prefWidth="753.0" vgap="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="20.0">
+      <GridPane hgap="5.0" layoutX="331.0" layoutY="48.0" prefHeight="230.0" prefWidth="753.0" vgap="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <columnConstraints>
           <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="80.0" />
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="80.0" />
@@ -59,13 +59,14 @@
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #4da488;" text="Historico Compras" VBox.vgrow="ALWAYS" />
+                  <Label fx:id="lblHistorico" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #4da488;" text="Historico Compras" VBox.vgrow="ALWAYS" />
                   <Line fx:id="lineCompras" endX="70.0" fill="#0a0a0a" startX="-70.0" visible="false" />
                </children>
             </VBox>
          </children>
       </HBox>
-      <JFXButton fx:id="btnEditar" layoutX="280.0" layoutY="553.0"  onAction="#editarCliente" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="EDITAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
-      <JFXButton fx:id="btnGuardar" layoutX="612.0" layoutY="530.0"  prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="GUARDAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="108.0" />
+      <JFXButton fx:id="btnEditar" layoutX="280.0" layoutY="553.0" onAction="#editarCliente" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="EDITAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="20.0" />
+      <JFXButton fx:id="btnGuardar" layoutX="612.0" layoutY="530.0" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #80cbc4;" text="GUARDAR" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="108.0" />
+      <HBox fx:id="tableBox" alignment="CENTER" layoutX="20.0" layoutY="316.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="325.0" />
    </children>
 </AnchorPane>

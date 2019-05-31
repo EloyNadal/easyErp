@@ -1,9 +1,10 @@
 package com.easyErp.project.controller;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Empleado;
 import com.easyErp.project.model.GrupoUsuario;
+import com.easyErp.project.model.HiloPeticiones;
 import com.easyErp.project.model.Usuario;
+import com.easyErp.project.utils.AppManager;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
@@ -16,7 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-public class UserController extends Stage implements BaseController {
+public class CrearUsuarioController extends Stage implements BaseController {
 
 	public static final int MIN_PWD_SIZE = 4;
 	@FXML

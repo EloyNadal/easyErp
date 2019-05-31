@@ -1,16 +1,12 @@
 package com.easyErp.project.controller;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Categoria;
 import com.easyErp.project.model.Compra;
 import com.easyErp.project.model.CompraLinea;
@@ -18,9 +14,9 @@ import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.Proveedor;
 import com.easyErp.project.model.QueryManager;
 import com.easyErp.project.model.Stock;
-import com.easyErp.project.model.TablaFormaters;
 import com.easyErp.project.model.VentaLinea;
-import com.google.gson.Gson;
+import com.easyErp.project.utils.AppManager;
+import com.easyErp.project.utils.TablaFormaters;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -46,7 +42,7 @@ import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.RequestBody;
 
-public class PedidoController {
+public class CrearPedidoController {
 
     @FXML private BorderPane vistaFormProductos; 
     @FXML private JFXComboBox<Categoria> cmbCategoria;
@@ -159,7 +155,7 @@ public class PedidoController {
 								.add("tienda_id", String.valueOf(AppManager.getIdTienda()))
 								.build();
 						
-						ArrayList<Stock> stok = queryManagerStock.readQuery(body, 0).getObjectsArray();
+						ArrayList<Stock> stok = queryManagerStock.readQuery(body, false).getObjectsArray();
 						if (stok.size() == 0) {
 							return new SimpleStringProperty("0");
 						}
@@ -233,7 +229,8 @@ public class PedidoController {
     	
     	ArrayList<Categoria> c = queryManagerCategoria.readAll().getObjectsArray();
     	initComboBox(cmbCategoria, c);
-		this.paginacion.setPageCount((int) Math.ceil((double)this.productos.size()/(double)filasPorPagina));
+		this.paginacion.setPageCount(this.productos.size() != 0?
+				(int) Math.ceil((double)this.productos.size()/(double)filasPorPagina):1);
 		this.paginacion.setPageFactory(this::crearPagina);
     	
     }
@@ -257,7 +254,8 @@ public class PedidoController {
     @FXML
     void filtrar() {
     	this.prodFiltrado = filtrarProductos();
-    	this.paginacion.setPageCount((int) Math.ceil((double)this.prodFiltrado.size()/(double)filasPorPagina));
+    	this.paginacion.setPageCount(this.prodFiltrado.size() != 0?
+    			(int) Math.ceil((double)this.prodFiltrado.size()/(double)filasPorPagina):1);
     	this.paginacion.setPageFactory(this::recargarPagina);
     }
            

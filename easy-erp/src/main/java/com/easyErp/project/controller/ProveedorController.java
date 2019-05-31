@@ -1,9 +1,9 @@
 package com.easyErp.project.controller;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Proveedor;
 import com.easyErp.project.model.QueryManager;
 import com.easyErp.project.model.Respuesta;
+import com.easyErp.project.utils.AppManager;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

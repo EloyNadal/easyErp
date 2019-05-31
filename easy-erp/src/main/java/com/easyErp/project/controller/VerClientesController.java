@@ -2,11 +2,12 @@ package com.easyErp.project.controller;
 
 import java.util.ArrayList;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.GrupoClientes;
-import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.QueryManager;
+import com.easyErp.project.utils.AppManager;
+import com.easyErp.project.utils.ColumnButton;
+import com.easyErp.project.utils.EscritorXLS;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -16,15 +17,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
-public class EditarClientesController implements BaseController{
+public class VerClientesController implements BaseController{
 	@FXML
 	private BorderPane vistaFormClientes;
 	private TableView<Cliente> clientesTable = crearTabla();
@@ -46,6 +49,8 @@ public class EditarClientesController implements BaseController{
 	private JFXButton btnFiltrar;
 	@FXML
 	private JFXButton btnQuitarFiltro;
+	@FXML
+	private Button btnExc;
 	@FXML
 	private Pagination paginacion;
 	
@@ -74,8 +79,14 @@ public class EditarClientesController implements BaseController{
 		initComboBox(cmbCiudad, String.class, ciudades);
 		initComboBox(cmbPais, String.class, paises);
 
-		this.paginacion.setPageCount((int) Math.ceil((double) this.clientes.size() / (double) FILASPORPAGINA));
+		this.paginacion.setPageCount(this.clientes.size() != 0?
+				(int) Math.ceil((double) this.clientes.size() / (double) FILASPORPAGINA):1);
 		this.paginacion.setPageFactory(this::crearPagina);
+		
+		ImageView i = new ImageView(new Image(getClass().getResourceAsStream("/image/excelIcon.png")));
+		i.setFitHeight(25);
+		i.setFitWidth(25);
+		btnExc.setGraphic(i);
 	}
 
 	private Node crearPagina(int paginaIndice) {
@@ -103,7 +114,7 @@ public class EditarClientesController implements BaseController{
 		TableColumn<Cliente, String> apellidos = new TableColumn<Cliente, String>("Apellidos");
 		TableColumn<Cliente, String> direccion = new TableColumn<Cliente, String>("Dirección");
 		TableColumn<Cliente, String> telefono = new TableColumn<Cliente, String>("Teléfono");
-		TableColumn<Cliente, String> cp = new TableColumn<Cliente, String>("Código Postal");
+		TableColumn<Cliente, String> ciudad = new TableColumn<Cliente, String>("Ciudad");
 		TableColumn<Cliente, String> pais = new TableColumn<Cliente, String>("País");
 		TableColumn<Cliente, String> email = new TableColumn<Cliente, String>("Email");
 		TableColumn<Cliente, String> dni = new TableColumn<Cliente, String>("DNI");
@@ -114,23 +125,23 @@ public class EditarClientesController implements BaseController{
 		nombre.setCellValueFactory(new PropertyValueFactory<Cliente, String>("nombre"));
 
 		apellidos.setMinWidth(80);
-		apellidos.setMaxWidth(120);
+		apellidos.setMaxWidth(200);
 		apellidos.setCellValueFactory(new PropertyValueFactory<Cliente, String>("apellidos"));
 
 		direccion.setMinWidth(90);
-		direccion.setMaxWidth(120);
+		direccion.setMaxWidth(200);
 		direccion.setCellValueFactory(new PropertyValueFactory<Cliente, String>("direccion"));
 
 		telefono.setMinWidth(90);
 		telefono.setMaxWidth(120);
 		telefono.setCellValueFactory(new PropertyValueFactory<Cliente, String>("telefono"));
 
-		cp.setMinWidth(80);
-		cp.setMaxWidth(120);
-		cp.setCellValueFactory(new PropertyValueFactory<Cliente, String>("codigo_postal"));
+		ciudad.setMinWidth(80);
+		ciudad.setMaxWidth(140);
+		ciudad.setCellValueFactory(new PropertyValueFactory<Cliente, String>("ciudad"));
 
 		pais.setMinWidth(50);
-		pais.setMaxWidth(90);
+		pais.setMaxWidth(145);
 		pais.setCellValueFactory(new PropertyValueFactory<Cliente, String>("pais"));
 
 		id.setMinWidth(40);
@@ -138,7 +149,7 @@ public class EditarClientesController implements BaseController{
 		id.setCellValueFactory(new PropertyValueFactory<Cliente, Number>("id"));
 
 		email.setMinWidth(50);
-		email.setMaxWidth(90);
+		email.setMaxWidth(170);
 		email.setCellValueFactory(new PropertyValueFactory<Cliente, String>("email"));
 
 		dni.setMinWidth(50);
@@ -159,10 +170,10 @@ public class EditarClientesController implements BaseController{
 				new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
 			@Override
 			public void buttonAction(Cliente cliente) {
-				AppManager.getInstance().getAppMain().verCliente(cliente);
+				AppManager.getInstance().getAppMain().editarCliente(cliente);
 			}
 		});
-		tabla.getColumns().addAll(id, nombre, apellidos, direccion, telefono, cp, pais, email, dni, ver);
+		tabla.getColumns().addAll(id, nombre, apellidos, direccion, telefono, ciudad, pais, email, dni, ver);
 		tabla.setEditable(false);
 		tabla.getSelectionModel().getSelectedItem();
 		tabla.getSelectionModel().setCellSelectionEnabled(true);
@@ -175,7 +186,8 @@ public class EditarClientesController implements BaseController{
 	@FXML
 	private void filtrar() {
 		this.clientesFiltrados = filtrarClientes();
-		this.paginacion.setPageCount((int) Math.ceil(((double)this.clientesFiltrados.size()/(double)FILASPORPAGINA)));
+		this.paginacion.setPageCount(this.clientesFiltrados.size() != 0?
+				(int) Math.ceil(((double)this.clientesFiltrados.size()/(double)FILASPORPAGINA)):1);
     	this.paginacion.setPageFactory(this::recargarPagina);
 	}
 	
@@ -221,7 +233,7 @@ public class EditarClientesController implements BaseController{
 	}
 
 	public void newProducto() {
-		AppManager.getInstance().getAppMain().verCliente(null);
+		AppManager.getInstance().getAppMain().editarCliente(null);
 	}
 
 	@Override
@@ -239,7 +251,15 @@ public class EditarClientesController implements BaseController{
 		this.txtNombre.setText("");
 		this.cmbCiudad.getSelectionModel().selectFirst();
 		this.txtDNI.setText("");
-		this.paginacion.setPageCount((int) Math.ceil((double) this.clientes.size() / (double) FILASPORPAGINA));
+		this.paginacion.setPageCount(this.clientes.size() != 0?
+				(int) Math.ceil((double) this.clientes.size() / (double) FILASPORPAGINA):1);
 		this.paginacion.setPageFactory(this::crearPagina);
 	}
+	
+	@FXML
+	private void imprimirResultados() {
+			EscritorXLS.crearArchivoExcel(this.clientesTable);
+	}
+	
+	
 }

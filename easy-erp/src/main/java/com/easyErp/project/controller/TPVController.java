@@ -3,11 +3,11 @@ package com.easyErp.project.controller;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 
-import com.easyErp.project.model.AppManager;
 import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.Producto;
 import com.easyErp.project.model.Venta;
 import com.easyErp.project.model.VentaLinea;
+import com.easyErp.project.utils.AppManager;
 import com.jfoenix.controls.JFXButton;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -133,7 +133,7 @@ public class TPVController implements BaseController {
 		if (null == producto && cantidad > 0) {
 			RequestBody request = new FormBody.Builder().add("ean13", prodCode).build();
 			try {
-				producto = Producto.getQueryManager().readQuery(request, 1).getObjectsArray().get(0);
+				producto = Producto.getQueryManager().readQuery(request, true).getObjectsArray().get(0);
 				this.productos.addLast(producto);
 				this.lineas.addLast(getLineaFromProduct(producto, cantidad));
 			} catch (Exception e) {
@@ -233,7 +233,7 @@ public class TPVController implements BaseController {
 		if (null != codCliente) {
 			RequestBody request = new FormBody.Builder().add("codigo", codCliente).add("codigo", codCliente).build();
 			try {
-				cliente = Cliente.getQueryManager().readQuery(request, 1).getObjectsArray().get(0);
+				cliente = Cliente.getQueryManager().readQuery(request, true).getObjectsArray().get(0);
 			} catch (Exception e) {
 				AppManager.showError("Cliente no encontrado");
 			}

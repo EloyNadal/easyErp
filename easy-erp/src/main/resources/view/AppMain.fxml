@@ -13,50 +13,30 @@
             <Menu mnemonicParsing="false" text="Clientes">
                <items>
                   <MenuItem fx:id="menuClientes" mnemonicParsing="false" onAction="#verClientes" text="Ver clientes" />
-                  <MenuItem mnemonicParsing="false" onAction="#lanzarExcepcion" text="Modificar clientes" />
-                  <MenuItem mnemonicParsing="false" onAction="#printar" text="Importar clientes" />
-                  <MenuItem mnemonicParsing="false" text="Exportar clientes" />
+                  <MenuItem fx:id="menuNuevoCliente" mnemonicParsing="false" onAction="#nuevoCliente" text="Nuevo cliente" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Compras">
                <items>
-               		<MenuItem fx:id="menuPedido" mnemonicParsing="false" onAction="#pedido" text="Ralizar Pedido" />
+               		<MenuItem fx:id="menuPedido" mnemonicParsing="false" onAction="#pedido" text="Realizar Pedido" />
                	  	<MenuItem fx:id="menuEstadoPedido" mnemonicParsing="false" onAction="#estadoPedido" text="Estado Pedidos" />
-                  	<MenuItem mnemonicParsing="false" text="About" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Ventas">
-               <items>
-                  <MenuItem fx:id="menuTPV" mnemonicParsing="false" onAction="#cargarTPV" text="TPV" />
-                  <MenuItem mnemonicParsing="false" text="Facturas" />
-               </items>
-            </Menu>
+            <Menu fx:id="menuTPV" mnemonicParsing="false" onAction="#cargarTPV" text="Ventas" />
             <Menu mnemonicParsing="false" text="Empleados">
                <items>
+                  <MenuItem fx:id="menuVerEmpleados" mnemonicParsing="false" text="Ver Empleados" />
                   <MenuItem fx:id="menuAddUser" mnemonicParsing="false" onAction="#addUser" text="Añadir Usuario" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Productos">
                <items>
-                  <MenuItem fx:id="menuProductos" mnemonicParsing="false" onAction="#verProductos" text="Productos" />
+                  <MenuItem fx:id="menuProductos" mnemonicParsing="false" onAction="#editarProductos" text="Ver Productos" />
+                  <MenuItem fx:id="menuEditProductos" mnemonicParsing="false" onAction="#nuevoProducto" text="Añadir Producto" />
                   <MenuItem fx:id="menuProveedores" mnemonicParsing="false" onAction="#verProveedores" text="Proveedores" />
-                  <MenuItem mnemonicParsing="false" text="Tasas" />
-                  <MenuItem fx:id="menuEditProductos" mnemonicParsing="false" onAction="#editarProductos" text="Editar Productos" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Informes">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Herramientas">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                  <MenuItem mnemonicParsing="false" text="Close" />
-               </items>
-            </Menu>
+            <Menu mnemonicParsing="false" text="Acerca de" />
          </menus>
       </MenuBar>
       <AnchorPane fx:id="mainWindow" VBox.vgrow="ALWAYS" />
