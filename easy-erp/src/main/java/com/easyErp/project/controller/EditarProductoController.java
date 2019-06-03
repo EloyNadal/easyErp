@@ -23,6 +23,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -44,7 +45,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.RequestBody;
@@ -455,8 +455,8 @@ public class EditarProductoController implements BaseController {
 
 			TableColumn<VentaLinea, String> colNombre = new TableColumn<VentaLinea, String>("Nombre");
 			TableColumn<VentaLinea, Double> colCantidad = new TableColumn<VentaLinea, Double>("Cantidad");
-			TableColumn<VentaLinea, Double> colPrecio = new TableColumn<VentaLinea, Double>("Precio");
-			TableColumn<VentaLinea, String> colTotal = new TableColumn<VentaLinea, String>("Total");
+			TableColumn<VentaLinea, String> colPrecio = new TableColumn<VentaLinea, String>("Precio");
+			TableColumn<VentaLinea, Double> colTotal = new TableColumn<VentaLinea, Double>("Total");
 			TableColumn<VentaLinea, String> colFecha = new TableColumn<VentaLinea, String>("Fecha");
 
 			table.getColumns().addAll(colNombre, colCantidad, colPrecio, colTotal, colFecha);
@@ -472,11 +472,17 @@ public class EditarProductoController implements BaseController {
 
 			colPrecio.setMinWidth(90);
 			colPrecio.setMaxWidth(400);
-			colPrecio.setCellValueFactory(new PropertyValueFactory<VentaLinea, Double>("precio"));
-
+			colPrecio.setCellValueFactory(
+					new Callback<TableColumn.CellDataFeatures<VentaLinea, String>, ObservableValue<String>>() {
+				@Override
+				public ObservableValue<String> call(TableColumn.CellDataFeatures<VentaLinea, String> param) {
+					return new SimpleStringProperty(param.getValue().getProducto().getPrecio() + "€");
+				}
+			});
 			colTotal.setMinWidth(40);
 			colTotal.setMaxWidth(300);
-			colTotal.setCellValueFactory((param) -> new SimpleStringProperty((param.getValue().getPrecio()) + "€"));
+			colTotal.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
+			colTotal.setCellValueFactory(new PropertyValueFactory<VentaLinea, Double>("precio"));
 
 			colFecha.setMinWidth(90);
 			colFecha.setMaxWidth(400);
@@ -608,8 +614,7 @@ public class EditarProductoController implements BaseController {
 				return;
 
 			}
-			// TODO metodo cerrar ventana
-//			AppManager.getInstance().getAppMain().volver(this.node);
+			
 			this.btnGuardar.setVisible(false);
 			this.btnEditar.setText("EDITAR");
 			this.btnEditar.setStyle("-fx-background-color: #80cbc4");
@@ -807,6 +812,6 @@ public class EditarProductoController implements BaseController {
 
 	@Override
 	public void onCancelar() {
-
+		AppManager.getInstance().getAppMain().volver(this.node);
 	}
 }

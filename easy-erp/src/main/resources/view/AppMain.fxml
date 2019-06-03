@@ -22,7 +22,10 @@
                	  	<MenuItem fx:id="menuEstadoPedido" mnemonicParsing="false" onAction="#estadoPedido" text="Estado Pedidos" />
                </items>
             </Menu>
-            <Menu fx:id="menuTPV" mnemonicParsing="false" onAction="#cargarTPV" text="Ventas" />
+            <Menu fx:id="Ventas" mnemonicParsing="false" text="Ventas">
+               <items>
+                  <MenuItem fx:id="menuTPV" mnemonicParsing="false" onAction="#cargarTPV" text="TPV" />
+               </items></Menu>
             <Menu mnemonicParsing="false" text="Empleados">
                <items>
                   <MenuItem fx:id="menuVerEmpleados" mnemonicParsing="false" text="Ver Empleados" />

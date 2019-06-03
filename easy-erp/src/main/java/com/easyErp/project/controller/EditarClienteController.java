@@ -6,13 +6,16 @@ import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.GrupoClientes;
 import com.easyErp.project.model.HiloPeticiones;
 import com.easyErp.project.model.QueryManager;
+import com.easyErp.project.model.Stock;
 import com.easyErp.project.model.Venta;
 import com.easyErp.project.utils.AppManager;
+import com.easyErp.project.utils.ColumnButton;
 import com.easyErp.project.utils.TablaFormaters;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
@@ -88,7 +92,7 @@ public class EditarClienteController implements BaseController{
 		QueryManager<GrupoClientes> queryManagerGrupoClientes = GrupoClientes.getQueryManager();
 		peticionGrupoClientes = new HiloPeticiones<>(queryManagerGrupoClientes);
 		peticionGrupoClientes.run();
-
+		
 	}
 
 	public void crearCliente() {
@@ -97,8 +101,8 @@ public class EditarClienteController implements BaseController{
 		this.btnGuardar.setVisible(true);
 		this.btnEditar.setText("CANCELAR");
 		txtNombre.setPromptText("Introduce un nombre");
-
 		initComboBox();
+		
 
 	}
 
@@ -130,7 +134,7 @@ public class EditarClienteController implements BaseController{
 		if (cliente.getPais() != null) this.txtPais.setText(cliente.getPais());
 		this.txtNombre.setText(cliente.getNombre());
 		//TODO Sale mal
-		for (GrupoClientes grupo:cmbGrupoCliente.getItems())
+		for (GrupoClientes grupo:peticionGrupoClientes.getRespuesta())
 			if(grupo.getId() == cliente.getGrupo_cliente_id() )
 				this.txtGrupoCliente.setText(grupo.getNombre());
 
@@ -151,8 +155,9 @@ public class EditarClienteController implements BaseController{
 
 			TableColumn<Venta, Double> colTotal = new TableColumn<Venta, Double>("Total");
 			TableColumn<Venta, String> colFecha = new TableColumn<Venta, String>("Fecha");
-
-			this.table.getColumns().addAll(colFecha, colTotal);
+			TableColumn<Venta, Boolean> factura = new TableColumn<Venta, Boolean>("Factura");
+			
+			this.table.getColumns().addAll(colFecha, colTotal, factura);
 
 
 			colTotal.setMinWidth(100);
@@ -160,8 +165,8 @@ public class EditarClienteController implements BaseController{
 			colTotal.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
 			colTotal.setCellValueFactory(new PropertyValueFactory<Venta, Double>("precio_total"));
 			
-			colFecha.setMinWidth(100);
-			colFecha.setMaxWidth(100);
+			colFecha.setMinWidth(150);
+			colFecha.setMaxWidth(150);
 			colFecha.setCellValueFactory(
 					new Callback<TableColumn.CellDataFeatures<Venta, String>, ObservableValue<String>>() {
 						@Override
@@ -171,6 +176,23 @@ public class EditarClienteController implements BaseController{
 							return new SimpleStringProperty(param.getValue().getCreated_at());
 						}
 					});
+			factura.setMinWidth(70);
+			factura.setMaxWidth(70);
+			factura.setCellValueFactory(
+					new Callback<TableColumn.CellDataFeatures<Venta, Boolean>, ObservableValue<Boolean>>() {
+						@Override
+						public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Venta, Boolean> button) {
+							return new SimpleBooleanProperty(true);
+						}
+					});
+
+			factura.setCellFactory(new ColumnButton<Venta, Boolean>("ver",
+					new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
+				@Override
+				public void buttonAction(Venta venta) {
+
+				}
+			});
 
 			tableBox.getChildren().add(table);
 			table.setEditable(false);
@@ -216,15 +238,12 @@ public class EditarClienteController implements BaseController{
 			changeEditableFields(true);
 
 		} else {
-			// cancelar
 			if (this.cliente == null) {
 
 				AppManager.getInstance().getAppMain().volver(this.node);
 				return;
 
 			}
-			//TODO metodo cerrar ventana
-//			AppManager.getInstance().getAppMain().volver(this.node);
 			this.btnGuardar.setVisible(false);
 			this.btnEditar.setText("EDITAR");
 			this.btnEditar.setStyle("-fx-background-color: #80cbc4");
@@ -234,7 +253,7 @@ public class EditarClienteController implements BaseController{
 	}
 	
 	//TODO
-	public void guardarProducto() {
+	public void guardarCliente() {
 
 //		if(!valida()) return;
 //		
@@ -318,6 +337,6 @@ public class EditarClienteController implements BaseController{
 
 	@Override
 	public void onCancelar() {
-		
+		AppManager.getInstance().getAppMain().volver(this.node);
 	}
 }

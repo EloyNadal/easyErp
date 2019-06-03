@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -44,6 +45,7 @@ public class Main extends Application {
 		Scene scene = new Scene(root, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("EasyERP");
+		primaryStage.getIcons().add(new Image("/image/icon.png"));
 		primaryStage.setMinWidth(800);
 		primaryStage.setMinHeight(600);
 //		Se establece acceso rápido al log de errores durante la ejecución
@@ -86,6 +88,7 @@ public class Main extends Application {
 			root = loader.load();
 			Scene scene = new Scene(root, 400, 400);
 			stage.setScene(scene);
+			stage.getIcons().add(new Image("/image/icon.png"));
 			stage.setTitle("EasyERP Configuracion");
 			stage.showAndWait();
 		}
@@ -104,6 +107,7 @@ public class Main extends Application {
 				login.setTitle("Login");
 				login.setResizable(false);
 				login.setScene(new Scene(scene));
+				login.getIcons().add(new Image("/image/icon.png"));
 				login.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
 					event.consume();
 					if (!AppManager.isLogged() && AppManager.showYesNoQuestion("Cerrar",

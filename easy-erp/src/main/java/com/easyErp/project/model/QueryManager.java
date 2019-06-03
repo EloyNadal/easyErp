@@ -103,7 +103,7 @@ public class QueryManager<T> {
 	/**
 	 * Método para realizar la petición de los objetos que cumplen los parámtros body de una tabla al WebService 
 	 * @param body parametro de entrada conteniendo los parámetros a tener en cuenta en la consulta
-	 * @param metod indica si la consulta se realiza con un AND en caso de existir más de un parámetro en el body
+	 * @param metod indica si la consulta se realiza con un OR en caso de existir más de un parámetro en el body
 	 * @return Respuesta<T> respuesta contiene el resultado de la operación y una lista de objetos de la clase <T> encontrados
 	 */
 	public Respuesta<T> readQuery(RequestBody body, boolean metod) {

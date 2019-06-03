@@ -87,6 +87,7 @@ public class VerClientesController implements BaseController{
 		i.setFitHeight(25);
 		i.setFitWidth(25);
 		btnExc.setGraphic(i);
+		btnExc.setText(null);
 	}
 
 	private Node crearPagina(int paginaIndice) {

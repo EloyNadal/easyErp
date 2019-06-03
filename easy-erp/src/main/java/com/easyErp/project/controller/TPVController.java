@@ -231,7 +231,7 @@ public class TPVController implements BaseController {
 		String codCliente = AppManager.showMessageForStringResult("Cliente",
 				"Introduzca numero de socio/DNI del Cliente");
 		if (null != codCliente) {
-			RequestBody request = new FormBody.Builder().add("codigo", codCliente).add("codigo", codCliente).build();
+			RequestBody request = new FormBody.Builder().add("dni", codCliente).add("codigo", codCliente).build();
 			try {
 				cliente = Cliente.getQueryManager().readQuery(request, true).getObjectsArray().get(0);
 			} catch (Exception e) {
@@ -277,6 +277,16 @@ public class TPVController implements BaseController {
 		this.cliente = null;
 		actualizarTabla();
 		
+	}
+	
+	@FXML
+	private void realizarCierre() {
+		
+	}
+	
+	@FXML
+	private void nuevoCliente() {
+		AppManager.getInstance().getAppMain().editarCliente(null);
 	}
 	
 	@FXML

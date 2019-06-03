@@ -9,6 +9,7 @@ import com.easyErp.project.model.Tasa;
 import com.easyErp.project.utils.AppManager;
 import com.easyErp.project.utils.ColumnButton;
 import com.easyErp.project.utils.EscritorXLS;
+import com.easyErp.project.utils.TablaFormaters;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -25,6 +26,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -114,6 +116,7 @@ public class VerProductosController implements BaseController {
 		i.setFitHeight(25);
 		i.setFitWidth(25);
 		btnExc.setGraphic(i);
+		btnExc.setText(null);
 	}
 
 	private Node crearPagina(int paginaIndice) {
@@ -152,7 +155,7 @@ public class VerProductosController implements BaseController {
 		nombre.setCellValueFactory(new PropertyValueFactory<Producto, String>("nombre"));
 
 		categoria.setMinWidth(80);
-		categoria.setMaxWidth(120);
+		categoria.setMaxWidth(140);
 		categoria.setCellValueFactory(new PropertyValueFactory<Producto, String>("CategoriaNombre"));
 
 		referencia.setMinWidth(90);
@@ -160,11 +163,11 @@ public class VerProductosController implements BaseController {
 		referencia.setCellValueFactory(new PropertyValueFactory<Producto, String>("referencia"));
 
 		ean13.setMinWidth(90);
-		ean13.setMaxWidth(120);
+		ean13.setMaxWidth(130);
 		ean13.setCellValueFactory(new PropertyValueFactory<Producto, String>("ean13"));
 
 		atributoValor.setMinWidth(80);
-		atributoValor.setMaxWidth(120);
+		atributoValor.setMaxWidth(140);
 		atributoValor.setCellValueFactory(new PropertyValueFactory<Producto, String>("atributo_valor"));
 
 		iva.setMinWidth(50);
@@ -177,6 +180,7 @@ public class VerProductosController implements BaseController {
 
 		precio.setMinWidth(50);
 		precio.setMaxWidth(90);
+		precio.setCellFactory(TextFieldTableCell.forTableColumn(TablaFormaters.getModedaFormatter()));
 		precio.setCellValueFactory(new PropertyValueFactory<Producto, Double>("precio"));
 
 		activo.setMinWidth(40);

@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -172,6 +173,7 @@ public class AppMainController {
 		stage.setTitle(title);
 		stage.setResizable(false);
 		stage.setScene(new Scene(scene));
+		stage.getIcons().add(new Image("/image/icon.png"));
 		return stage; 
 	}
 

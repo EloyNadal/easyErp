@@ -264,7 +264,7 @@ public class VerEstadoPedidosController {
 		String json = gson.toJson(compra);
 		Map<String, Object> params = (Map<String, Object>) anadirParametros(compra);
 		
-		if(PDFController.CrearPdf(json, params)) {
+		if(PDFController.crearPdf(json, params)) {
 			File file = openFileChooser("Guardar PDF", false);
 			PDFController.guardarPdf(file.getAbsolutePath());
 		}

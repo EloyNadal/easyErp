@@ -50,7 +50,7 @@
                   </VBox>
                   <VBox>
                      <children>
-                        <GridPane hgap="2.0" prefHeight="345.0" prefWidth="211.0" vgap="2.0">
+                        <GridPane gridLinesVisible="true" hgap="2.0" prefHeight="345.0" prefWidth="211.0" vgap="2.0">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -162,11 +162,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Efectivo" onAction="#pagarEfectivo"/>
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Factura" GridPane.rowIndex="2" />
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Tarjeta" GridPane.columnIndex="1" onAction="#pagarTarjeta"/>
-                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" ripplerFill="#228327" text="Cliente" GridPane.rowIndex="1" onAction="#insertarCliente"/>
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#pagarEfectivo" ripplerFill="#228327" text="Efectivo" />
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#nuevoCliente" ripplerFill="#228327" text="Nuevo Cliente" GridPane.rowIndex="2" />
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#pagarTarjeta" ripplerFill="#228327" text="Tarjeta" GridPane.columnIndex="1" />
+                        <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#insertarCliente" ripplerFill="#228327" text="Cliente" GridPane.rowIndex="1" />
                         <JFXButton buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#eliminarLinea" ripplerFill="#228327" text="Eliminar línea" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <JFXButton fx:id="btnCierre" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#realizarCierre" text="Cerrar Caja" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>

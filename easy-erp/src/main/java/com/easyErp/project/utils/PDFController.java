@@ -21,11 +21,11 @@ public class PDFController{
 	
 	
 	/**
-	 * Crar archivos pdf desde un json file junto con varios parametros
+	 * Método para crear archivos pdf desde un json file junto con varios parametros
 	 * @param rawJson json array, lista de elementos a mostrar en la tabla
 	 * @param params parametros a mostrar en cabezeras (proveedor y tienda origen)
 	 */
-	public static boolean CrearPdf(String rawJson, Map<String, Object> params) {
+	public static boolean crearPdf(String rawJson, Map<String, Object> params) {
 		
 		try {
 			report = (JasperReport) JRLoader.loadObject(new File("src/main/resources/pdf/Invoice.jasper"));

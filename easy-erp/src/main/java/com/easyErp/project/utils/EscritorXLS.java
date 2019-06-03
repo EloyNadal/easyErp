@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
+
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
@@ -14,10 +15,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.FileChooser;
@@ -54,7 +51,7 @@ public class EscritorXLS {
 
 		XSSFWorkbook libro = new XSSFWorkbook();
 		
-		XSSFSheet hoja1 = libro.createSheet("data");
+		XSSFSheet hoja1 = libro.createSheet("hola");
 		CellStyle style = libro.createCellStyle();
 		
 		Font font = libro.createFont();
@@ -96,10 +93,6 @@ public class EscritorXLS {
 
 		try {
 			fileOS = new FileOutputStream(file);
-			if (file.exists()) {
-				file.delete();
-			}
-
 			libro.write(fileOS);
 			fileOS.flush();
 
@@ -132,12 +125,5 @@ public class EscritorXLS {
 			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
 		return file;
 	}
-	
-//	En el boton
-//	ImageView i = new ImageView(new Image(getClass().getResourceAsStream("/image/excelIcon.png")));
-//	i.setFitHeight(25);
-//	i.setFitWidth(25);
-//	btnExc.setGraphic(i);
-	
 
 }
