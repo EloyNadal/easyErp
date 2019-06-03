@@ -1,10 +1,13 @@
 package com.easyErp.project.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -17,11 +20,21 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.FileChooser;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
-public class EscritorXLS {
+public class ExportData {
 	
-	public static <T> boolean crearArchivoExcel(TableView<T> tabla) {
+	private static JasperReport report;
+	private static JasperPrint reportPrint;
+
+public static <T> boolean crearArchivoExcel(TableView<T> tabla) {
 		
 		LinkedList<String> header = new LinkedList<String>(); 
 		for (TableColumn<T, ?> cabeceras : tabla.getColumns()) {
@@ -41,13 +54,13 @@ public class EscritorXLS {
 			}
 		}
 		
-		File file = openFileChooser("Nombre del archivo", false);
+		File file = AppManager.openFileChooser("Nombre del archivo", false, "XLS", "*.xlsx");
 		if(file == null) return false;
-		crearResultado(rows, header, file);
+		crearResultadoExcel(rows, header, file);
 		return true;
 	}
 
-	private static void crearResultado(String[][] data, LinkedList<String> cabecera ,File file) {
+	private static void crearResultadoExcel(String[][] data, LinkedList<String> cabecera ,File file) {
 
 		XSSFWorkbook libro = new XSSFWorkbook();
 		
@@ -112,18 +125,48 @@ public class EscritorXLS {
 
 	}
 	
-	private static File openFileChooser(String title, boolean open) {
+	
+	/**
+	 * Método para crear archivos pdf desde un json file junto con varios parametros
+	 * @param rawJson json array, lista de elementos a mostrar en la tabla
+	 * @param params parametros a mostrar en cabezeras (proveedor y tienda origen)
+	 */
+	public static boolean crearPdf(String rawJson, Map<String, Object> params, String pdfResource) {
+		
+		try {
+			report = (JasperReport) JRLoader.loadObject(new File(pdfResource));
+			params.put(JsonQueryExecuterFactory.JSON_INPUT_STREAM, new ByteArrayInputStream(rawJson.getBytes("UTF-8")));
+			reportPrint = JasperFillManager.fillReport(report, params);
+			return true;
+						
+		} catch (JRException e) {
+			AppManager.printError(e.getMessage());
+		} catch (UnsupportedEncodingException e) {
+			AppManager.printError(e.getMessage());
+		} 
+		return false;
 
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle(title);
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XLS", "*.xlsx"));
-		File file;
-		if (open)
-			file = fileChooser.showOpenDialog(AppManager.getInstance().getStage());
-		else
-			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
-		return file;
 	}
-
+	
+	public static void verPdf() {
+		
+		if (reportPrint != null) {
+			JasperViewer.viewReport(reportPrint);
+		}
+		
+	}
+	
+	public static void guardarPdf(String pathGuardar) {
+		if (reportPrint != null) {
+			try {
+				JasperExportManager.exportReportToPdfFile(reportPrint, pathGuardar);
+				AppManager.showInfo("PDF creado correctamente");
+			} catch (JRException e) {
+				AppManager.printError(e.getMessage());
+			}
+		}
+	}
+	
+	
+	
 }

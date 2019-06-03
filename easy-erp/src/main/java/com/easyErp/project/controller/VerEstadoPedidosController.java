@@ -12,7 +12,7 @@ import com.easyErp.project.model.QueryManager;
 import com.easyErp.project.model.Tienda;
 import com.easyErp.project.utils.AppManager;
 import com.easyErp.project.utils.ColumnButton;
-import com.easyErp.project.utils.PDFController;
+import com.easyErp.project.utils.ExportData;
 import com.easyErp.project.utils.TablaFormaters;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
@@ -264,9 +264,9 @@ public class VerEstadoPedidosController {
 		String json = gson.toJson(compra);
 		Map<String, Object> params = (Map<String, Object>) anadirParametros(compra);
 		
-		if(PDFController.crearPdf(json, params)) {
-			File file = openFileChooser("Guardar PDF", false);
-			PDFController.guardarPdf(file.getAbsolutePath());
+		if(ExportData.crearPdf(json, params, "src/main/resources/pdf/Invoice.jasper")) {
+			File file = AppManager.openFileChooser("Guardar PDF", false, "PDF", "*.pdf");
+			ExportData.guardarPdf(file.getAbsolutePath());
 		}
 		return true;
 	}
@@ -295,19 +295,6 @@ public class VerEstadoPedidosController {
 		return params;
 	}
 	
-	public File openFileChooser(String title, boolean open) {
-
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle(title);
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
-		File file;
-		if (open)
-			file = fileChooser.showOpenDialog(AppManager.getInstance().getStage());
-		else
-			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
-		return file;
-	}
 	@FXML
 	public void guardarEstado() {
 		

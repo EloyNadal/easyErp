@@ -7,7 +7,7 @@ import com.easyErp.project.model.GrupoClientes;
 import com.easyErp.project.model.QueryManager;
 import com.easyErp.project.utils.AppManager;
 import com.easyErp.project.utils.ColumnButton;
-import com.easyErp.project.utils.EscritorXLS;
+import com.easyErp.project.utils.ExportData;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -259,7 +259,7 @@ public class VerClientesController implements BaseController{
 	
 	@FXML
 	private void imprimirResultados() {
-			EscritorXLS.crearArchivoExcel(this.clientesTable);
+			ExportData.crearArchivoExcel(this.clientesTable);
 	}
 	
 	

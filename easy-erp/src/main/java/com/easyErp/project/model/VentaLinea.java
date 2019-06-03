@@ -10,6 +10,7 @@ public class VentaLinea {
 	private Double precio;
 	private Integer tasa_id;
 	private Double cantidad;
+	private String productoNombre;
 	
 
 	private Tienda tienda;
@@ -101,6 +102,15 @@ public class VentaLinea {
 
 	public void setVenta(Venta venta) {
 		this.venta = venta;
+	}
+	
+
+	public String getProductoNombre() {
+		return productoNombre;
+	}
+
+	public void setProductoNombre(String productoNombre) {
+		this.productoNombre = productoNombre;
 	}
 
 	public static QueryManager<VentaLinea> getQueryManager(){
