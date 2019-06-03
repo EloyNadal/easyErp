@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -260,5 +261,21 @@ public class AppManager {
 		alert.setHeaderText(null);
 		alert.showAndWait();
 	}
+	
+	public static File openFileChooser(String title, boolean open, String type, String extension) {
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle(title);
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(type, extension));
+		File file;
+		if (open)
+			file = fileChooser.showOpenDialog(AppManager.getInstance().getStage());
+		else
+			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
+		return file;
+	}
+	
+	
 
 }
