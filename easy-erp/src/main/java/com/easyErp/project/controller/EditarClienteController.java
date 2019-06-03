@@ -1,16 +1,21 @@
 package com.easyErp.project.controller;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.GrupoClientes;
 import com.easyErp.project.model.HiloPeticiones;
 import com.easyErp.project.model.QueryManager;
-import com.easyErp.project.model.Stock;
+import com.easyErp.project.model.Tienda;
 import com.easyErp.project.model.Venta;
 import com.easyErp.project.utils.AppManager;
 import com.easyErp.project.utils.ColumnButton;
+import com.easyErp.project.utils.ExportData;
 import com.easyErp.project.utils.TablaFormaters;
+import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -30,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -85,6 +91,7 @@ public class EditarClienteController implements BaseController{
 	private HiloPeticiones<GrupoClientes> peticionGrupoClientes;
 	
 	private ArrayList<Venta> ventas;
+	private Tienda tienda;
 
 	@FXML
 	private void initialize() {
@@ -190,7 +197,7 @@ public class EditarClienteController implements BaseController{
 					new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
 				@Override
 				public void buttonAction(Venta venta) {
-
+					generarPdf(venta);
 				}
 			});
 
@@ -328,6 +335,61 @@ public class EditarClienteController implements BaseController{
 			this.cmbGrupoCliente.getSelectionModel().select(this.cliente.getGrupo_cliente_id());
 		}
 
+	}
+	
+public boolean generarPdf(Venta venta) {
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(venta);
+		if (this.tienda == null) {
+			this.tienda = Tienda.getQueryManager().getByPk(String.valueOf(AppManager.getIdTienda())).getObject();
+		}
+		
+		Map<String, Object> params = (Map<String, Object>) anadirParametros(venta);
+		
+		if(ExportData.crearPdf(json, params, "src/main/resources/pdf/ticket.jasper")) {
+			File file = openFileChooser("Guardar PDF", false);
+			ExportData.guardarPdf(file.getAbsolutePath());
+		}
+		return true;
+	}
+
+	private Map<String, Object> anadirParametros(Venta venta) {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("clienteNombre", cliente.getNombre());
+		params.put("clienteCiudad", cliente.getCiudad());
+		params.put("clienteCP", cliente.getCodigo_postal());
+		params.put("clienteDireccion", cliente.getDireccion());
+		params.put("clienteTelefono", cliente.getTelefono());
+		params.put("clienteEmail", cliente.getEmail());
+		
+		params.put("tiendaNombre", tienda.getNombre());
+		params.put("tiendaCiudad", tienda.getCiudad());
+		params.put("tiendaCP", tienda.getCodigo_postal());
+		params.put("tiendaDireccion", tienda.getDireccion());
+		params.put("tiendaTelefono", tienda.getTelefono());
+		params.put("tiendaEmail", tienda.getEmail());
+		
+		params.put("venta_id", venta.getId().toString());
+		params.put("precioVenta", venta.getPrecio_total().toString());
+		params.put("created_at", venta.getCreated_at());
+		
+		return params;
+	}
+	
+	public File openFileChooser(String title, boolean open) {
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle(title);
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+		File file;
+		if (open)
+			file = fileChooser.showOpenDialog(AppManager.getInstance().getStage());
+		else
+			file = fileChooser.showSaveDialog(AppManager.getInstance().getStage());
+		return file;
 	}
 
 	@Override
