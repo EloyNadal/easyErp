@@ -174,7 +174,10 @@ public class EditarProductoController implements BaseController {
 			crearProducto();
 			return;
 		}
-
+		
+		if (producto.getImagen() != null) {
+			producto.setImagen(producto.getImagen().replace(" ", "%20"));
+		}
 		this.btnGuardar.setVisible(false);
 		this.producto = producto;
 		changeEditableFields(false);
@@ -360,7 +363,7 @@ public class EditarProductoController implements BaseController {
 		Double totalPrecio = 0.00;
 		for (VentaLinea venta : array) {
 			totalCantidad += venta.getCantidad();
-			totalPrecio += (venta.getPrecio() * venta.getCantidad());
+			totalPrecio += (venta.getPrecio());
 		}
 
 		Label label;
