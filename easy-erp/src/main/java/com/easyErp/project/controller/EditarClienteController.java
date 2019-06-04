@@ -194,7 +194,7 @@ public class EditarClienteController implements BaseController{
 					});
 
 			factura.setCellFactory(new ColumnButton<Venta, Boolean>("ver",
-					new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
+					new Image(getClass().getResourceAsStream("/image/pdficon.png"))) {
 				@Override
 				public void buttonAction(Venta venta) {
 					generarPdf(venta);
