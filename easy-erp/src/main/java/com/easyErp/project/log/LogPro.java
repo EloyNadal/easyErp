@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXToggleButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -70,6 +71,7 @@ public class LogPro extends AnchorPane{
         stage = new Stage();
         stage.setTitle("Log");
 		stage.setScene(new Scene(pane));
+		stage.getIcons().add(new Image("/image/icon.png"));
 	}
 	public Stage getStage() {
 		return stage;

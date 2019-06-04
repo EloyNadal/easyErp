@@ -1,6 +1,7 @@
 package com.easyErp.project.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -318,9 +318,13 @@ public class EditarProductoController implements BaseController {
 		verTienda.setCellFactory(new ColumnButton<Stock, Boolean>("ver",
 				new Image(getClass().getResourceAsStream("/image/view-details.png"))) {
 			@Override
-			public void buttonAction(Stock tienda) {
+			public void buttonAction(Stock stock) {
 
-				// AppManager.getInstance().getAppMain().verProductos(producto);
+				try {
+					AppManager.getInstance().getAppMain().verTienda(stock.getTienda()).show();
+				} catch (IOException e) {
+					AppManager.printError("Error al cargar los datos de la tienda" + e.getMessage());
+				}
 			}
 		});
 

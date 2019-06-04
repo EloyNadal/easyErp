@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.easyErp.project.controller.TiendaController">
+   <children>
+      <VBox layoutX="120.0" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label text="Infromación" textFill="#59d049">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="30.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0">
+                     <children>
+                        <Label text="Nombre" />
+                        <Label text="Dirección" />
+                        <Label text="Ciudad" />
+                        <Label text="Teléfono" />
+                     </children>
+                     <padding>
+                        <Insets top="30.0" />
+                     </padding>
+                  </VBox>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="270.0" prefWidth="350.0" spacing="40.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <JFXTextField fx:id="txtNombre" editable="false" maxWidth="1.7976931348623157E308" />
+                        <JFXTextField fx:id="txtDireccion" editable="false" maxWidth="1.7976931348623157E308" />
+                        <JFXTextField fx:id="txtCiudad" editable="false" maxWidth="1.7976931348623157E308" />
+                        <JFXTextField fx:id="txtTelefono" editable="false" />
+                     </children>
+                     <padding>
+                        <Insets right="20.0" top="30.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

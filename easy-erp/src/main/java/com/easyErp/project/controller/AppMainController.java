@@ -5,6 +5,7 @@ import java.net.URL;
 
 import com.easyErp.project.model.Cliente;
 import com.easyErp.project.model.Producto;
+import com.easyErp.project.model.Tienda;
 import com.easyErp.project.utils.AppManager;
 
 import javafx.fxml.FXML;
@@ -100,6 +101,19 @@ public class AppMainController {
 
 	}
 
+	public Stage verTienda(Tienda tienda) throws IOException {
+		if(tienda == null) return null;
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/tiendaView.fxml"));
+		AnchorPane scene = loader.load();
+		TiendaController controller = loader.getController();
+		controller.cargarTienda(tienda);
+		Stage stage = new Stage();
+		stage.setTitle("Información tienda");
+		stage.setResizable(false);
+		stage.setScene(new Scene(scene));
+		stage.getIcons().add(new Image("/image/icon.png"));
+		return stage; 
+	}
 	public void editarCliente(Cliente cliente) {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/editarClienteView.fxml"));
