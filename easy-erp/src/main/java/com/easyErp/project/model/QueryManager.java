@@ -182,26 +182,6 @@ public class QueryManager<T> {
 		return respuesta;
 	}
 	
-//	public Respuesta<T> insertOne(RequestBody body) {
-//		Request request = new Request.Builder().header("Authorization", token).url(this.url).post(body).build();
-//		AppManager.printConnection(request.toString());
-//		this.respuesta.clear();
-//
-//		try {
-//			Response response = client.newCall(request).execute();
-//			AppManager.printConnection(response.toString());
-//			respuesta.setSuccessful(response.code());
-//			if (respuesta.isSuccessful()) {
-//				JsonObject json = parser.parse(response.body().string()).getAsJsonObject();
-//				AppManager.printConnection(Encrypt.getDecrypted(json.get("data").getAsString()));
-//				respuesta.setObject(gson.fromJson(Encrypt.getDecrypted(json.get("data").getAsString()), objectClass));
-//			} else
-//				AppManager.createExceptionFromErrorCode(response.code());
-//		} catch (Exception e) {
-//			AppManager.printError(e.getMessage());
-//		}
-//		return respuesta;
-//	}
 
 	/**
 	 * Método para insertar un nuevo objeto en una tabla

@@ -81,7 +81,7 @@ public class Main extends Application {
 	 */
 	private void comprobacionFicheroConfiguracion() throws Exception {
 		File file = new File("./config.conf");
-		while (!file.exists()) {
+		if(!file.exists()) {
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/configView.fxml"));
 			AnchorPane root;
@@ -92,6 +92,14 @@ public class Main extends Application {
 			stage.setTitle("EasyERP Configuracion");
 			stage.showAndWait();
 		}
+		if(!file.exists()) {Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setContentText("Error con el fichero de configuración, consulte al administrador.");
+		alert.setHeaderText(null);
+		alert.showAndWait();
+			System.exit(0);
+		}
+		
 	}
 
 	/**

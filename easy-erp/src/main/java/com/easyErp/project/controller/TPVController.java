@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -38,6 +39,8 @@ public class TPVController implements BaseController {
 	TableView<VentaLinea> tableVentaLinea;
 	@FXML 
 	AnchorPane parent;
+	@FXML
+	Label lblCliente;
 
 	private LinkedList<Producto> productos;
 	private LinkedList<VentaLinea> lineas;
@@ -233,7 +236,8 @@ public class TPVController implements BaseController {
 		if (null != codCliente) {
 			RequestBody request = new FormBody.Builder().add("dni", codCliente).add("codigo", codCliente).build();
 			try {
-				cliente = Cliente.getQueryManager().readQuery(request, true).getObjectsArray().get(0);
+				this.cliente = Cliente.getQueryManager().readQuery(request, true).getObjectsArray().get(0);
+				lblCliente.setText("Cliente: " + cliente.getNombre() +" " + cliente.getApellidos());
 			} catch (Exception e) {
 				AppManager.showError("Cliente no encontrado");
 			}
@@ -267,14 +271,21 @@ public class TPVController implements BaseController {
 		venta.setPrecio_sin_tasas(totalSinTasas);
 		venta.setPrecio_total(this.total);
 		venta.setTotal_tasas(this.total - totalSinTasas);
-		Venta.getQueryManager().insertOne(venta);
-		clear();
+		if(Venta.getQueryManager().insertOne(venta).isSuccessful()) {
+			AppManager.showInfo("Venta realizada");
+			clear();
+		}	
+		else
+			AppManager.showError("Error al realizar la venta");
 	}
 
 	private void clear() {
 		this.productos.clear();;
 		this.lineas.clear();
 		this.cliente = null;
+		lblCliente.setText("Cliente:");
+		txtLineaProducto.setText("");
+		txtLineaTeclado.setText("");
 		actualizarTabla();
 		
 	}

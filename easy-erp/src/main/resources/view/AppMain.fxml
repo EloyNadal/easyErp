@@ -22,10 +22,11 @@
                	  	<MenuItem fx:id="menuEstadoPedido" mnemonicParsing="false" onAction="#estadoPedido" text="Estado Pedidos" />
                </items>
             </Menu>
-            <Menu fx:id="Ventas" mnemonicParsing="false" text="Ventas">
+            <Menu fx:id="Ventas" mnemonicParsing="false" onAction="#cargarTPV" text="Ventas">
                <items>
                   <MenuItem fx:id="menuTPV" mnemonicParsing="false" onAction="#cargarTPV" text="TPV" />
-               </items></Menu>
+               </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Empleados">
                <items>
                   <MenuItem fx:id="menuVerEmpleados" mnemonicParsing="false" text="Ver Empleados" />
@@ -39,7 +40,10 @@
                   <MenuItem fx:id="menuProveedores" mnemonicParsing="false" onAction="#verProveedores" text="Proveedores" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Acerca de" />
+            <Menu mnemonicParsing="false" text="Acerca de">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showInfo" text="Info" />
+               </items></Menu>
          </menus>
       </MenuBar>
       <AnchorPane fx:id="mainWindow" VBox.vgrow="ALWAYS" />

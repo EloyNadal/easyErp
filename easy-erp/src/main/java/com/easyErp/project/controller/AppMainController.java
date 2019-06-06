@@ -77,6 +77,14 @@ public class AppMainController {
 		
 	}
 	
+	public void showInfo() {
+		try {
+			getNewWindow(getClass().getResource("/view/infoView.fxml"), "Acerca de").show();
+		} catch (Exception e) {
+			AppManager.showError("Error al cargar la vista: infoView.fxml");
+		}
+	}
+	
 	public void editarProducto(Producto producto) {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/editarProductoView.fxml"));
